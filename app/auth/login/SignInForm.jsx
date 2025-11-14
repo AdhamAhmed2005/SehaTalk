@@ -9,7 +9,40 @@ import { Card, CardContent } from '../../../components/ui/card.jsx';
 import { Input } from '../../../components/ui/input.jsx';
 import { Label } from '../../../components/ui/label.jsx';
 
-export function SignInForm() {
+const t = (lang) => ({
+  signInAs: lang === 'en' ? 'Sign in as:' : 'سجّل الدخول كـ:',
+  patient: lang === 'en' ? 'Patient' : 'مريض',
+  patientHint: lang === 'en' ? 'Seek medical advice' : 'اطلب المشورة الطبية',
+  doctor: lang === 'en' ? 'Doctor' : 'طبيب',
+  doctorHint: lang === 'en' ? 'Provide consultation' : 'قدّم الاستشارة',
+  emailAddress: lang === 'en' ? 'Email Address' : 'البريد الإلكتروني',
+  emailPlaceholderPatient: lang === 'en' ? 'patient@example.com' : 'patient@example.com',
+  emailPlaceholderDoctor: lang === 'en' ? 'dr.yourname@example.com' : 'dr.yourname@example.com',
+  password: lang === 'en' ? 'Password' : 'كلمة المرور',
+  passwordPlaceholder: lang === 'en' ? 'Enter your password' : 'أدخل كلمة المرور',
+  rememberMe: lang === 'en' ? 'Remember me' : 'تذكرني',
+  forgotPassword: lang === 'en' ? 'Forgot password?' : 'هل نسيت كلمة المرور؟',
+  demoCredentials: lang === 'en' ? 'Demo Credentials:' : 'بيانات تجريبية:',
+  demoPatient: lang === 'en' ? 'Patient:' : 'مريض:',
+  demoDoctor: lang === 'en' ? 'Doctor:' : 'طبيب:',
+  signingIn: lang === 'en' ? 'Signing In...' : 'جاري تسجيل الدخول...',
+  signInSecurely: lang === 'en' ? 'Sign In Securely' : 'تسجيل الدخول بأمان',
+  needHelp: lang === 'en' ? 'Need help with your account?' : 'تحتاج مساعدة في حسابك؟',
+  contactSupport: lang === 'en' ? 'Contact Support' : 'اتصل بالدعم',
+  verifyAccount: lang === 'en' ? 'Verify Account' : 'تأكيد الحساب',
+  protectedTitle: lang === 'en' ? 'Your data is protected' : 'بياناتك محمية',
+  protectedDesc:
+    lang === 'en'
+      ? 'We use industry-standard encryption to keep your medical information secure and private.'
+      : 'نستخدم تشفيراً بمعايير صناعية للحفاظ على معلوماتك الطبية آمنة وسرّية.',
+  errFillAll: lang === 'en' ? 'Please fill in all required fields' : 'يرجى ملء جميع الحقول المطلوبة',
+  errEmailFormat: lang === 'en' ? 'Please enter a valid email address' : 'يرجى إدخال بريد إلكتروني صالح',
+  errInvalid: lang === 'en' ? 'Invalid email or password. Please try again.' : 'البريد الإلكتروني أو كلمة المرور غير صحيحة. حاول مرة أخرى.',
+});
+
+export function SignInForm({ lang = 'ar' }) {
+  const isRTL = lang === 'ar';
+  const i = t(lang);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -31,15 +64,14 @@ export function SignInForm() {
     setIsLoading(true);
     setError('');
 
-    // Validation
     if (!formData.email || !formData.password) {
-      setError('Please fill in all required fields');
+      setError(i.errFillAll);
       setIsLoading(false);
       return;
     }
 
     if (!formData.email.includes('@')) {
-      setError('Please enter a valid email address');
+      setError(i.errEmailFormat);
       setIsLoading(false);
       return;
     }
@@ -57,7 +89,7 @@ export function SignInForm() {
         throw new Error('Invalid credentials');
       }
     } catch (err) {
-      setError('Invalid email or password. Please try again.');
+      setError(i.errInvalid);
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +100,7 @@ export function SignInForm() {
       <CardContent className="p-8">
         {/* User Type Selection */}
         <div className="mb-6">
-          <Label className="text-blue-900 font-medium mb-3 block">Sign in as:</Label>
+          <Label className="text-blue-900 font-medium mb-3 block">{i.signInAs}</Label>
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => handleInputChange('userType', 'patient')}
@@ -84,9 +116,9 @@ export function SignInForm() {
               <div className={`text-sm font-medium ${
                 formData.userType === 'patient' ? 'text-primary' : 'text-blue-600'
               }`}>
-                Patient
+                {i.patient}
               </div>
-              <div className="text-xs text-blue-500 mt-1">Seek medical advice</div>
+              <div className="text-xs text-blue-500 mt-1">{i.patientHint}</div>
             </button>
             
             <button
@@ -103,9 +135,9 @@ export function SignInForm() {
               <div className={`text-sm font-medium ${
                 formData.userType === 'doctor' ? 'text-primary' : 'text-blue-600'
               }`}>
-                Doctor
+                {i.doctor}
               </div>
-              <div className="text-xs text-blue-500 mt-1">Provide consultation</div>
+              <div className="text-xs text-blue-500 mt-1">{i.doctorHint}</div>
             </button>
           </div>
         </div>
@@ -114,16 +146,16 @@ export function SignInForm() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email Field */}
           <div>
-            <Label htmlFor="email" className="text-blue-900 font-medium">Email Address</Label>
+            <Label htmlFor="email" className="text-blue-900 font-medium">{i.emailAddress}</Label>
             <div className="relative mt-2">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-400" />
+              <Mail className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-400`} />
               <Input
                 id="email"
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                className="medical-input pl-10"
-                placeholder={formData.userType === 'patient' ? 'patient@example.com' : 'dr.yourname@example.com'}
+                className={`medical-input ${isRTL ? 'pr-10' : 'pl-10'}`}
+                placeholder={formData.userType === 'patient' ? i.emailPlaceholderPatient : i.emailPlaceholderDoctor}
                 required
               />
             </div>
@@ -131,22 +163,22 @@ export function SignInForm() {
 
           {/* Password Field */}
           <div>
-            <Label htmlFor="password" className="text-blue-900 font-medium">Password</Label>
+            <Label htmlFor="password" className="text-blue-900 font-medium">{i.password}</Label>
             <div className="relative mt-2">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-400" />
+              <Lock className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-400`} />
               <Input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 value={formData.password}
                 onChange={(e) => handleInputChange('password', e.target.value)}
-                className="medical-input pl-10 pr-12"
-                placeholder="Enter your password"
+                className={`medical-input ${isRTL ? 'pr-10 pl-12' : 'pl-10 pr-12'}`}
+                placeholder={i.passwordPlaceholder}
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 hover:text-primary transition-colors"
+                className={`absolute ${isRTL ? 'left-3' : 'right-3'} top-1/2 transform -translate-y-1/2 text-blue-400 hover:text-primary transition-colors`}
               >
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
@@ -154,7 +186,7 @@ export function SignInForm() {
           </div>
 
           {/* Remember Me & Forgot Password */}
-          <div className="flex items-center justify-between">
+          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
@@ -162,30 +194,30 @@ export function SignInForm() {
                 onChange={(e) => handleInputChange('rememberMe', e.target.checked)}
                 className="w-4 h-4 text-primary border-blue-300 rounded focus:ring-primary focus:ring-offset-0"
               />
-              <span className="text-sm text-blue-600">Remember me</span>
+              <span className="text-sm text-blue-600">{i.rememberMe}</span>
             </label>
             <Link 
               href="/auth/forgot-password" 
               className="text-sm text-primary hover:underline"
             >
-              Forgot password?
+              {i.forgotPassword}
             </Link>
           </div>
 
           {/* Error Message */}
           {error && (
             <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+              <AlertCircle className="w-5 h-5 text-red-500 shrink-0" />
               <span className="text-sm text-red-700">{error}</span>
             </div>
           )}
 
           {/* Demo Credentials */}
           <div className="p-4 bg-blue-50 rounded-lg">
-            <h4 className="text-sm font-medium text-blue-900 mb-2">Demo Credentials:</h4>
+            <h4 className="text-sm font-medium text-blue-900 mb-2">{i.demoCredentials}</h4>
             <div className="text-xs text-blue-700 space-y-1">
-              <p><strong>Patient:</strong> demo@patient.com / demo123</p>
-              <p><strong>Doctor:</strong> demo@doctor.com / demo123</p>
+              <p><strong>{i.demoPatient}</strong> demo@patient.com / demo123</p>
+              <p><strong>{i.demoDoctor}</strong> demo@doctor.com / demo123</p>
             </div>
           </div>
 
@@ -198,12 +230,12 @@ export function SignInForm() {
             {isLoading ? (
               <div className="flex items-center gap-2">
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                Signing In...
+                {i.signingIn}
               </div>
             ) : (
               <div className="flex items-center gap-2">
                 <Shield className="w-5 h-5" />
-                Sign In Securely
+                {i.signInSecurely}
               </div>
             )}
           </Button>
@@ -212,23 +244,21 @@ export function SignInForm() {
         {/* Additional Options */}
         <div className="mt-8 pt-6 border-t border-blue-100">
           <div className="text-center">
-            <p className="text-sm text-blue-600 mb-4">
-              Need help with your account?
-            </p>
+            <p className="text-sm text-blue-600 mb-4">{i.needHelp}</p>
             <div className="flex flex-col sm:flex-row gap-2 justify-center">
               <Button 
                 variant="outline" 
                 className="btn-secondary text-sm px-4 py-2" 
                 asChild
               >
-                <Link href="/support">Contact Support</Link>
+                <Link href="/support">{i.contactSupport}</Link>
               </Button>
               <Button 
                 variant="outline" 
                 className="btn-secondary text-sm px-4 py-2" 
                 asChild
               >
-                <Link href="/auth/verify-account">Verify Account</Link>
+                <Link href="/auth/verify-account">{i.verifyAccount}</Link>
               </Button>
             </div>
           </div>
@@ -237,10 +267,10 @@ export function SignInForm() {
         {/* Security Notice */}
         <div className="mt-6 p-3 bg-green-50 rounded-lg">
           <div className="flex items-start gap-2">
-            <Shield className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+            <Shield className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
             <div className="text-xs text-green-700">
-              <p className="font-medium mb-1">Your data is protected</p>
-              <p>We use industry-standard encryption to keep your medical information secure and private.</p>
+              <p className="font-medium mb-1">{i.protectedTitle}</p>
+              <p>{i.protectedDesc}</p>
             </div>
           </div>
         </div>
