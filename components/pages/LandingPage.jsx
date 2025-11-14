@@ -13,38 +13,38 @@ export function LandingPage() {
   return (
     <div className="min-h-screen bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Hero Section */}
-      <section className="hero-bg pt-40 pb-24 px-4">
+      <section className="hero-bg pt-28 pb-16 px-4">
         <div className="container mx-auto max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className={`space-y-8 ${isRTL ? 'text-right' : 'text-left'}`}>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
              
-              <h1 className="text-5xl lg:text-6xl font-bold leading-tight text-blue-900">
+              <h1 className="text-3xl lg:text-4xl font-bold leading-tight text-blue-900">
                 {t('landing.hero.title')}
                 <span className="section-header block">{t('landing.hero.titleHighlight')}</span>
                 {t('landing.hero.subtitle')}
               </h1>
-              <p className="text-xl text-blue-700 leading-relaxed max-w-lg">
+              <p className="text-lg text-blue-700 leading-relaxed max-w-lg">
                 {t('landing.hero.description')}
               </p>
               <div className={`flex flex-col sm:flex-row gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-                <Button size="lg" className="btn-primary shadow-lg" asChild>
+                <Button size="default" className="btn-primary shadow-md" asChild>
                   <Link href="/auth/patient" className={`inline-flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
                     {t('landing.hero.getStarted')}
-                    <ChevronRight className={`w-5 h-5 ${isRTL ? 'mr-2' : 'ml-2'}`} />
+                    <ChevronRight className={`w-4 h-4 ${isRTL ? 'mr-2' : 'ml-2'}`} />
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" className="btn-secondary" asChild>
+                <Button size="default" variant="outline" className="btn-secondary" asChild>
                   <Link href="/explore">{t('landing.hero.browseQuestions')}</Link>
                 </Button>
               </div>
-              <div className="grid grid-cols-2 gap-8 pt-8 border-t border-primary/10">
+              <div className="grid grid-cols-2 gap-6 pt-6 border-t border-primary/10">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">{t('landing.stats.questionsAnswered')}</div>
-                  <div className="text-sm text-blue-600">{t('landing.stats.questionsLabel')}</div>
+                  <div className="text-2xl font-semibold text-primary">{t('landing.stats.questionsAnswered')}</div>
+                  <div className="text-xs text-blue-600">{t('landing.stats.questionsLabel')}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">{t('landing.stats.verifiedDoctors')}</div>
-                  <div className="text-sm text-blue-600">{t('landing.stats.doctorsLabel')}</div>
+                  <div className="text-2xl font-semibold text-primary">{t('landing.stats.verifiedDoctors')}</div>
+                  <div className="text-xs text-blue-600">{t('landing.stats.doctorsLabel')}</div>
                 </div>
               </div>
             </div>
@@ -53,7 +53,7 @@ export function LandingPage() {
                 <ImageWithFallback
                   src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoZWFsdGhjYXJlJTIwdGVjaG5vbG9neXxlbnwxfHx8fDE3NjA3ODExNjV8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                   alt="Healthcare Technology"
-                  className="w-full h-[500px] object-cover"
+                  className="w-half h-[450px] object-cover"
                 />
               </div>
               {/* Trust indicators */}
