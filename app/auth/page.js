@@ -1,4 +1,5 @@
 import AuthOptionsContent from './AuthOptionsContent';
+import { getLang } from '../../lib/lang';
 
 export const metadata = {
   title: "Join SehaTalk – Patient or Doctor Registration",
@@ -6,7 +7,6 @@ export const metadata = {
 };
 
 export default async function AuthOptions({ searchParams }) {
-  const sp = await searchParams;
-  const lang = sp?.lang === 'en' ? 'en' : 'ar';
+  const lang = await getLang(searchParams);
   return <AuthOptionsContent lang={lang} />;
 }

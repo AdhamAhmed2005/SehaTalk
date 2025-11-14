@@ -1,4 +1,5 @@
 import DoctorSignupContent from './DoctorSignupContent';
+import { getLang } from '../../../lib/lang';
 
 export const metadata = {
   title: "Doctor Registration – SehaTalk",
@@ -6,7 +7,6 @@ export const metadata = {
 };
 
 export default async function DoctorSignup({ searchParams }) {
-  const sp = await searchParams;
-  const lang = sp?.lang === 'en' ? 'en' : 'ar';
+  const lang = await getLang(searchParams);
   return <DoctorSignupContent lang={lang} />;
 }

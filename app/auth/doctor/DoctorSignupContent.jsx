@@ -2,18 +2,11 @@
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { DoctorRegistrationForm } from './DoctorRegistrationForm.jsx';
-
-const t = (lang) => ({
-  back: lang === 'en' ? 'Back to Auth Options' : 'العودة إلى خيارات التسجيل',
-  title: lang === 'en' ? 'Doctor Registration' : 'تسجيل الطبيب',
-  subtitle:
-    lang === 'en'
-      ? 'Join our network of verified medical professionals and help patients across Egypt'
-      : 'انضم إلى شبكة الأطباء الموثقين وساعد المرضى في جميع أنحاء مصر',
-});
+import { isRTL as rtl } from '../../../lib/lang';
+import { tDoctorSignup as t } from '../i18n';
 
 export default function DoctorSignupContent({ lang }) {
-  const isRTL = lang === 'ar';
+  const isRTL = rtl(lang);
   const i = t(lang);
   return (
     <div className="min-h-screen bg-white" dir={isRTL ? 'rtl' : 'ltr'}>

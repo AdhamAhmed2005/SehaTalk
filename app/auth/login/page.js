@@ -1,4 +1,5 @@
 import LoginContent from './LoginContent';
+import { getLang } from '../../../lib/lang';
 
 export const metadata = {
   title: 'Sign In - SehaTalk | Access Your Medical Account',
@@ -7,7 +8,6 @@ export const metadata = {
 };
 
 export default async function SignInPage({ searchParams }) {
-  const sp = await searchParams;
-  const lang = sp?.lang === 'en' ? 'en' : 'ar';
+  const lang = await getLang(searchParams);
   return <LoginContent lang={lang} />;
 }

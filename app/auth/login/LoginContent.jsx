@@ -2,27 +2,11 @@
 import Link from 'next/link';
 import { Stethoscope, ArrowLeft } from 'lucide-react';
 import { SignInForm } from './SignInForm.jsx';
-
-const t = (lang) => ({
-  backHome: lang === 'en' ? 'Back to Home' : 'العودة إلى الصفحة الرئيسية',
-  welcome: lang === 'en' ? 'Welcome Back' : 'أهلاً بعودتك',
-  subtitle:
-    lang === 'en'
-      ? 'Sign in to access your medical dashboard and continue your healthcare journey'
-      : 'سجّل الدخول للوصول إلى لوحتك الطبية ومتابعة رحلتك الصحية',
-  noAccount: lang === 'en' ? "Don't have an account?" : 'ليس لديك حساب؟',
-  createAccount: lang === 'en' ? 'Create Account' : 'أنشئ حساباً',
-  privacy: lang === 'en' ? 'Privacy Policy' : 'سياسة الخصوصية',
-  terms: lang === 'en' ? 'Terms of Service' : 'شروط الخدمة',
-  help: lang === 'en' ? 'Help & Support' : 'المساعدة والدعم',
-  trusted: lang === 'en' ? 'Trusted by healthcare professionals' : 'موثوق من قبل المتخصصين في الرعاية الصحية',
-  verifiedDoctors: lang === 'en' ? 'Verified Doctors' : 'أطباء موثقون',
-  activePatients: lang === 'en' ? 'Active Patients' : 'مرضى نشطون',
-  support: lang === 'en' ? 'Support' : 'دعم',
-});
+import { isRTL as rtl } from '../../../lib/lang';
+import { tLogin as t } from '../i18n';
 
 export default function LoginContent({ lang }) {
-  const isRTL = lang === 'ar';
+  const isRTL = rtl(lang);
   const i = t(lang);
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-green-50" dir={isRTL ? 'rtl' : 'ltr'}>
