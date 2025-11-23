@@ -2,25 +2,38 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #1e3a8a; /* blue-800 */
+  --foreground: #1e3a8a;
+  /* blue-800 */
   /* Medical theme palette */
-  --primary: #1e40af; /* blue-700 - trustworthy medical blue */
+  --primary: #1e40af;
+  /* blue-700 - trustworthy medical blue */
   --primary-foreground: #ffffff;
-  --secondary: #eff6ff; /* blue-50 - very light blue */
-  --secondary-foreground: #1e3a8a; /* blue-800 */
-  --accent: #dbeafe; /* blue-100 */
-  --accent-foreground: #1e40af; /* blue-700 */
-  --muted: #f8fafc; /* slate-50 */
-  --muted-foreground: #475569; /* slate-600 */
+  --secondary: #eff6ff;
+  /* blue-50 - very light blue */
+  --secondary-foreground: #1e3a8a;
+  /* blue-800 */
+  --accent: #dbeafe;
+  /* blue-100 */
+  --accent-foreground: #1e40af;
+  /* blue-700 */
+  --muted: #f8fafc;
+  /* slate-50 */
+  --muted-foreground: #475569;
+  /* slate-600 */
   --card: #ffffff;
   --card-foreground: #1e3a8a;
   --popover: #ffffff;
   --popover-foreground: #1e3a8a;
-  --border: #e2e8f0; /* slate-200 */
-  --input: #ffffff; /* clean white instead of grey */
-  --input-background: #ffffff; /* clean white */
-  --ring: #3b82f6; /* blue-500 */
-  --destructive: #dc2626; /* red-600 */
+  --border: #e2e8f0;
+  /* slate-200 */
+  --input: #ffffff;
+  /* clean white instead of grey */
+  --input-background: #ffffff;
+  /* clean white */
+  --ring: #3b82f6;
+  /* blue-500 */
+  --destructive: #dc2626;
+  /* red-600 */
 }
 
 @theme inline {
@@ -50,21 +63,28 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0f172a; /* slate-900 */
-    --foreground: #f1f5f9; /* slate-100 */
-    --primary: #3b82f6; /* blue-500 */
+    --background: #0f172a;
+    /* slate-900 */
+    --foreground: #f1f5f9;
+    /* slate-100 */
+    --primary: #3b82f6;
+    /* blue-500 */
     --primary-foreground: #ffffff;
-    --secondary: #1e293b; /* slate-800 */
-    --secondary-foreground: #e2e8f0; /* slate-200 */
+    --secondary: #1e293b;
+    /* slate-800 */
+    --secondary-foreground: #e2e8f0;
+    /* slate-200 */
     --accent: #1e293b;
     --accent-foreground: #e2e8f0;
     --muted: #1e293b;
-    --muted-foreground: #94a3b8; /* slate-400 */
+    --muted-foreground: #94a3b8;
+    /* slate-400 */
     --card: #1e293b;
     --card-foreground: #f1f5f9;
     --popover: #1e293b;
     --popover-foreground: #f1f5f9;
-    --border: #334155; /* slate-700 */
+    --border: #334155;
+    /* slate-700 */
     --input: #334155;
     --input-background: #1e293b;
     --ring: #3b82f6;
@@ -153,7 +173,12 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 600;
   letter-spacing: -0.025em;
   line-height: 1.2;
@@ -176,17 +201,17 @@ h1, h2, h3, h4, h5, h6 {
    We handle RTL flex direction per-component with Tailwind classes. */
 
 
-[dir="rtl"] .space-x-2 > * + * {
+[dir="rtl"] .space-x-2>*+* {
   margin-left: 0;
   margin-right: 0.5rem;
 }
 
-[dir="rtl"] .space-x-3 > * + * {
+[dir="rtl"] .space-x-3>*+* {
   margin-left: 0;
   margin-right: 0.75rem;
 }
 
-[dir="rtl"] .space-x-4 > * + * {
+[dir="rtl"] .space-x-4>*+* {
   margin-left: 0;
   margin-right: 1rem;
 }
@@ -214,4 +239,18 @@ h1, h2, h3, h4, h5, h6 {
 /* Arabic font support */
 [lang="ar"] {
   font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* custom scroll bar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #FF7A00;
+  border-radius: 2px;
 }
