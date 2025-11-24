@@ -1,30 +1,34 @@
 # SehaTalk 🏥
 
 **منصتك الطبية الموثوقة في مصر للاستشارات الصحية**  
-*Your Trusted Medical Platform in Egypt for Health Consultations*
+_Your Trusted Medical Platform in Egypt for Health Consultations_
 
 SehaTalk is a bilingual (Arabic/English) medical consultation platform that connects patients with verified Egyptian doctors through a trusted community-driven Q&A system.
 
 ## ✨ Features
 
 ### 🌐 Bilingual Support
+
 - **Native Arabic Support** with RTL layout
-- **English Interface** with LTR layout  
+- **English Interface** with LTR layout
 - **Seamless Language Switching** with localStorage persistence
 - **SEO Optimized** with Arabic-first default
 
 ### 👥 User Roles
+
 - **Patients**: Ask medical questions, browse answers, manage health profiles
 - **Doctors**: Provide expert answers, build professional reputation, verify credentials
 - **Admin**: Manage users, verify doctors, moderate content
 
 ### 🔐 Authentication System
+
 - **Role-based Registration** (Patient/Doctor)
 - **Secure Login** with form validation
 - **Doctor Verification** process with credentials review
 - **Profile Management** with medical specializations
 
 ### 🏥 Medical Features
+
 - **Categorized Questions** by medical specialty
 - **Verified Doctor Badges** for trusted responses
 - **Medical Community** with professional discussions
@@ -32,6 +36,7 @@ SehaTalk is a bilingual (Arabic/English) medical consultation platform that conn
 - **Expert Consultations** from certified Egyptian doctors
 
 ### 🎨 Modern UI/UX
+
 - **Responsive Design** optimized for all devices
 - **Medical Theme** with healthcare-focused styling
 - **Accessibility** compliant interface
@@ -41,6 +46,7 @@ SehaTalk is a bilingual (Arabic/English) medical consultation platform that conn
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **Next.js 16.0.3** - React framework with App Router
 - **React 19.2.0** - Modern React with latest features
 - **TypeScript** - Type-safe development
@@ -49,6 +55,7 @@ SehaTalk is a bilingual (Arabic/English) medical consultation platform that conn
 - **Lucide React** - Modern icon library
 
 ### UI Components
+
 - **Custom UI Library** with medical-themed components
 - **Form Components** with validation
 - **Card Layouts** for medical content
@@ -56,6 +63,7 @@ SehaTalk is a bilingual (Arabic/English) medical consultation platform that conn
 - **Loading States** and error handling
 
 ### Internationalization
+
 - **Custom i18n System** with React Context
 - **Translation Management** with nested key structure
 - **RTL/LTR Layout Support** with CSS direction handling
@@ -79,24 +87,29 @@ sehatalk/
 ├── lib/                  # Utilities and configurations
 │   ├── i18n/            # Internationalization system
 │   └── lang.js          # Language helper functions
+├── models/               # Mongoose schemas (Doctor, Patient, etc.)
+├── docs/                 # Internal technical documentation
 └── public/              # Static assets
 ```
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - npm/yarn/pnpm
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/AdhamAhmed2005/SehaTalk.git
    cd sehatalk
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    # or
@@ -106,6 +119,7 @@ sehatalk/
    ```
 
 3. **Run the development server**
+
    ```bash
    npm run dev
    # or
@@ -122,25 +136,28 @@ sehatalk/
 ### Available Scripts
 
 - `npm run dev` - Start development server
-- `npm run build` - Build production application  
+- `npm run build` - Build production application
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint for code quality
 
 ## 🌍 Language Support
 
 ### Arabic (العربية) - Default
+
 - Complete RTL layout support
 - Arabic medical terminology
 - Egyptian cultural context
 - Arabic typography and fonts
 
-### English - Secondary  
+### English - Secondary
+
 - Professional medical English
 - International medical standards
 - LTR layout optimization
 - Accessible to global users
 
 ### Language Switching
+
 - Navbar language toggle
 - URL parameter support (`?lang=en`)
 - Persistent user preference
@@ -149,7 +166,7 @@ sehatalk/
 ## 🏥 Medical Categories
 
 - **طب القلب / Cardiology** - Heart and cardiovascular health
-- **الأمراض الجلدية / Dermatology** - Skin conditions and treatments  
+- **الأمراض الجلدية / Dermatology** - Skin conditions and treatments
 - **طب الأطفال / Pediatrics** - Children's health and development
 - **طب النساء / Gynecology** - Women's health and reproductive care
 - **الطب النفسي / Psychiatry** - Mental health and wellbeing
@@ -159,7 +176,7 @@ sehatalk/
 ## 👨‍⚕️ Doctor Verification
 
 - **Medical License Verification** - Egyptian medical board credentials
-- **Specialization Certificates** - Verified medical specializations  
+- **Specialization Certificates** - Verified medical specializations
 - **Professional Profile** - Detailed doctor information
 - **Badge System** - Visual verification indicators
 - **Reputation Management** - Community-driven trust scores
@@ -175,6 +192,7 @@ sehatalk/
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
+
 1. Connect GitHub repository to Vercel
 2. Configure build settings:
    - Build Command: `npm run build`
@@ -182,6 +200,7 @@ sehatalk/
 3. Deploy with automatic previews
 
 ### Manual Deployment
+
 ```bash
 npm run build
 npm run start
@@ -196,6 +215,7 @@ npm run start
 5. **Open** a Pull Request
 
 ### Development Guidelines
+
 - Follow existing code style and patterns
 - Add translations for new features (Arabic + English)
 - Test RTL layout compatibility
@@ -209,6 +229,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 For support, questions, or medical emergencies:
+
 - **Non-Emergency**: Use the platform's Q&A system
 - **Technical Issues**: Open a GitHub issue
 - **Medical Emergencies**: Contact local emergency services immediately
@@ -217,4 +238,4 @@ For support, questions, or medical emergencies:
 
 **SehaTalk** - Connecting Egyptian patients with trusted medical professionals through technology. 🏥💚
 
-*Built with ❤️ for the Egyptian healthcare community*
+_Built with ❤️ for the Egyptian healthcare community_
