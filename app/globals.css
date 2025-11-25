@@ -241,6 +241,12 @@ h6 {
   font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+@layer base {
+  button {
+    @apply cursor-pointer hover:cursor-pointer;
+  }
+}
+
 /* custom scroll bar */
 ::-webkit-scrollbar {
   width: 12px;
@@ -251,6 +257,6 @@ h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #FF7A00;
+  background-color: #1f43b3;
   border-radius: 2px;
 }

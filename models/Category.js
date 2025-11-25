@@ -2,38 +2,25 @@ import mongoose from "mongoose";
 
 const { Schema, models, model } = mongoose;
 
-const DoctorSchema = new Schema(
+const CategorySchema = new Schema(
   {
     name: {
       type: String,
       required: true,
       trim: true,
     },
-    email: {
+    slug: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
       trim: true,
     },
-    password: {
-      type: String,
-      required: true,
-    },
-    specialty: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    bio: {
+    description: {
       type: String,
       default: "",
     },
-    verified: {
-      type: Boolean,
-      default: false,
-    },
-    avatarUrl: {
+    imageUrl: {
       type: String,
       default: "",
     },
@@ -41,6 +28,6 @@ const DoctorSchema = new Schema(
   { timestamps: true }
 );
 
-const Doctor = models.Doctor || model("Doctor", DoctorSchema);
+const Category = models.Category || model("Category", CategorySchema);
 
-export default Doctor;
+export default Category;
