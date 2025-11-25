@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const { Schema, models, model } = mongoose;
 
-const PatientSchema = new Schema(
+const AdminSchema = new Schema(
   {
     name: {
       type: String,
@@ -20,18 +20,6 @@ const PatientSchema = new Schema(
       type: String,
       required: true,
     },
-    age: {
-      type: Number,
-    },
-    gender: {
-      type: String,
-      enum: ["male", "female", "other"],
-      default: "other",
-    },
-    medicalHistory: {
-      type: [String],
-      default: [],
-    },
     avatarUrl: {
       type: String,
       default: "",
@@ -40,6 +28,6 @@ const PatientSchema = new Schema(
   { timestamps: true }
 );
 
-const Patient = models.Patient || model("Patient", PatientSchema);
+const Admin = models.Admin || model("Admin", AdminSchema);
 
-export default Patient;
+export default Admin;
