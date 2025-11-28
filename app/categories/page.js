@@ -1,4 +1,5 @@
 import CategoriesContent from '../../components/pages/CategoriesContent.jsx';
+import { getLang } from '../../lib/lang.js';
 
 export const metadata = {
   title: 'Categories – التصنيفات الطبية – SehaTalk',
@@ -6,8 +7,7 @@ export const metadata = {
 };
 
 export default async function Categories({ searchParams }) {
-  // In Next.js, searchParams is a Promise in server components
   const sp = await searchParams;
-  const lang = sp?.lang === 'en' ? 'en' : 'ar';
+  const lang = getLang(sp);
   return <CategoriesContent lang={lang} />;
 }
