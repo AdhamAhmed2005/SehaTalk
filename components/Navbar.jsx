@@ -62,10 +62,10 @@ export function Navbar() {
             </Button>
             {!isLoggedIn && (
               <>
-                <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary/5 font-medium" asChild>
+                <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary/5 hover:bg-blue-50  hover:text-blue-600 font-medium" asChild>
                   <Link href="/auth/login">{t('nav.signIn')}</Link>
                 </Button>
-                <Button className="bg-linear-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 text-white shadow-lg font-medium px-6" asChild>
+                <Button className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-500/90 text-white shadow-lg font-medium px-6" asChild>
                   <Link href="/auth">{t('nav.getStarted')}</Link>
                 </Button>
               </>

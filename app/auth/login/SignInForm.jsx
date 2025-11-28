@@ -82,9 +82,9 @@ export function SignInForm({ lang = 'ar' }) {
       
       // Mock authentication logic
       if (formData.email === 'demo@patient.com' && formData.password === 'demo123') {
-        router.push('/dashboard/patient');
+        router.push('/profile/patient');
       } else if (formData.email === 'demo@doctor.com' && formData.password === 'demo123') {
-        router.push('/dashboard/doctor');
+        router.push('/profile/doctor');
       } else {
         throw new Error('Invalid credentials');
       }
