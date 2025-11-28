@@ -10,9 +10,12 @@ export async function POST(request) {
     await connectDB();
 
     const body = await request.json();
+    console.log("📝 Signup request received:", { role: body.role, email: body.email });
+    
     const { role, password, confirmPassword, ...rest } = body || {};
 
     if (!role || !["doctor", "patient", "admin"].includes(role)) {
+      console.log("❌ Invalid role:", role);
       return NextResponse.json(
         { message: "Invalid or missing role" },
         { status: 400 }
@@ -60,7 +63,8 @@ export async function POST(request) {
 
     if (role === "doctor") {
       const name = `${rest.firstName || ""} ${rest.lastName || ""}`.trim();
-      if (name) docData.name = name;
+      // Ensure name is never empty (use email as fallback)
+      docData.name = name || email.split('@')[0] || "Doctor";
       if (!docData.specialty) {
         docData.specialty = "General Practice";
       }
@@ -68,7 +72,9 @@ export async function POST(request) {
 
     if (role === "patient") {
       const name = `${rest.firstName || ""} ${rest.lastName || ""}`.trim();
-      if (name) docData.name = name;
+      console.log("👤 Patient name from form:", { firstName: rest.firstName, lastName: rest.lastName, combined: name });
+      // Ensure name is never empty (use email as fallback)
+      docData.name = name || email.split('@')[0] || "Patient";
       if (rest.dateOfBirth) {
         const year = new Date(rest.dateOfBirth).getFullYear();
         const currentYear = new Date().getFullYear();
@@ -93,6 +99,7 @@ export async function POST(request) {
       if (history.length) {
         docData.medicalHistory = history;
       }
+      console.log("📋 Patient data to save:", { ...docData, password: "[HIDDEN]" });
     }
 
     if (role === "admin") {
@@ -100,6 +107,7 @@ export async function POST(request) {
     }
 
     const user = await Model.create(docData);
+    console.log("✅ User created successfully:", user._id);
 
     const safeUser = {
       id: user._id,
@@ -113,7 +121,12 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Signup error", error);
+    console.error("❌ Signup error:", error);
+    console.error("Error details:", {
+      name: error.name,
+      message: error.message,
+      stack: error.stack
+    });
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }
