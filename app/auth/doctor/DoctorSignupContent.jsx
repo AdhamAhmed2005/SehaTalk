@@ -1,20 +1,29 @@
-'use client';
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
-import { DoctorRegistrationForm } from './DoctorRegistrationForm.jsx';
-import { isRTL as rtl } from '../../../lib/lang';
-import { tDoctorSignup as t } from '../i18n';
+"use client";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { DoctorRegistrationForm } from "./DoctorRegistrationForm.jsx";
+import { isRTL as rtl } from "@/lib/lang";
+import { tDoctorSignup as t } from "../i18n";
 
 export default function DoctorSignupContent({ lang }) {
   const isRTL = rtl(lang);
   const i = t(lang);
   return (
-    <div className="min-h-screen bg-white" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-white" dir={isRTL ? "rtl" : "ltr"}>
       <div className="hero-bg py-16 px-4">
         <div className="container mx-auto max-w-4xl">
-          <div className={`flex items-center mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <Link href="/auth" className={`flex items-center gap-2 text-blue-700 hover:text-primary transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <ArrowLeft className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
+          <div
+            className={`flex items-center mb-6 ${
+              isRTL ? "flex-row-reverse" : ""
+            }`}
+          >
+            <Link
+              href="/auth"
+              className={`flex items-center gap-2 text-blue-700 hover:text-primary transition-colors ${
+                isRTL ? "flex-row-reverse" : ""
+              }`}
+            >
+              <ArrowLeft className={`w-5 h-5 ${isRTL ? "rotate-180" : ""}`} />
               {i.back}
             </Link>
           </div>

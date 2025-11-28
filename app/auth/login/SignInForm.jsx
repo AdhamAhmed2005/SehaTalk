@@ -1,68 +1,91 @@
 "use client";
 
-import { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, UserCheck, Stethoscope, Shield, AlertCircle } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Button } from '../../../components/ui/button.jsx';
-import { Card, CardContent } from '../../../components/ui/card.jsx';
-import { Input } from '../../../components/ui/input.jsx';
-import { Label } from '../../../components/ui/label.jsx';
+import { useState } from "react";
+import axios from "axios";
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  UserCheck,
+  Stethoscope,
+  Shield,
+  AlertCircle,
+} from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "../../../components/ui/button.jsx";
+import { Card, CardContent } from "../../../components/ui/card.jsx";
+import { Input } from "../../../components/ui/input.jsx";
+import { Label } from "../../../components/ui/label.jsx";
 
 const t = (lang) => ({
-  signInAs: lang === 'en' ? 'Sign in as:' : 'سجّل الدخول كـ:',
-  patient: lang === 'en' ? 'Patient' : 'مريض',
-  patientHint: lang === 'en' ? 'Seek medical advice' : 'اطلب المشورة الطبية',
-  doctor: lang === 'en' ? 'Doctor' : 'طبيب',
-  doctorHint: lang === 'en' ? 'Provide consultation' : 'قدّم الاستشارة',
-  emailAddress: lang === 'en' ? 'Email Address' : 'البريد الإلكتروني',
-  emailPlaceholderPatient: lang === 'en' ? 'patient@example.com' : 'patient@example.com',
-  emailPlaceholderDoctor: lang === 'en' ? 'dr.yourname@example.com' : 'dr.yourname@example.com',
-  password: lang === 'en' ? 'Password' : 'كلمة المرور',
-  passwordPlaceholder: lang === 'en' ? 'Enter your password' : 'أدخل كلمة المرور',
-  rememberMe: lang === 'en' ? 'Remember me' : 'تذكرني',
-  forgotPassword: lang === 'en' ? 'Forgot password?' : 'هل نسيت كلمة المرور؟',
-  demoCredentials: lang === 'en' ? 'Demo Credentials:' : 'بيانات تجريبية:',
-  demoPatient: lang === 'en' ? 'Patient:' : 'مريض:',
-  demoDoctor: lang === 'en' ? 'Doctor:' : 'طبيب:',
-  signingIn: lang === 'en' ? 'Signing In...' : 'جاري تسجيل الدخول...',
-  signInSecurely: lang === 'en' ? 'Sign In Securely' : 'تسجيل الدخول بأمان',
-  needHelp: lang === 'en' ? 'Need help with your account?' : 'تحتاج مساعدة في حسابك؟',
-  contactSupport: lang === 'en' ? 'Contact Support' : 'اتصل بالدعم',
-  verifyAccount: lang === 'en' ? 'Verify Account' : 'تأكيد الحساب',
-  protectedTitle: lang === 'en' ? 'Your data is protected' : 'بياناتك محمية',
+  signInAs: lang === "en" ? "Sign in as:" : "سجّل الدخول كـ:",
+  patient: lang === "en" ? "Patient" : "مريض",
+  patientHint: lang === "en" ? "Seek medical advice" : "اطلب المشورة الطبية",
+  doctor: lang === "en" ? "Doctor" : "طبيب",
+  doctorHint: lang === "en" ? "Provide consultation" : "قدّم الاستشارة",
+  emailAddress: lang === "en" ? "Email Address" : "البريد الإلكتروني",
+  emailPlaceholderPatient:
+    lang === "en" ? "patient@example.com" : "patient@example.com",
+  emailPlaceholderDoctor:
+    lang === "en" ? "dr.yourname@example.com" : "dr.yourname@example.com",
+  password: lang === "en" ? "Password" : "كلمة المرور",
+  passwordPlaceholder:
+    lang === "en" ? "Enter your password" : "أدخل كلمة المرور",
+  rememberMe: lang === "en" ? "Remember me" : "تذكرني",
+  forgotPassword: lang === "en" ? "Forgot password?" : "هل نسيت كلمة المرور؟",
+  demoCredentials: lang === "en" ? "Demo Credentials:" : "بيانات تجريبية:",
+  demoPatient: lang === "en" ? "Patient:" : "مريض:",
+  demoDoctor: lang === "en" ? "Doctor:" : "طبيب:",
+  signingIn: lang === "en" ? "Signing In..." : "جاري تسجيل الدخول...",
+  signInSecurely: lang === "en" ? "Sign In Securely" : "تسجيل الدخول بأمان",
+  needHelp:
+    lang === "en" ? "Need help with your account?" : "تحتاج مساعدة في حسابك؟",
+  contactSupport: lang === "en" ? "Contact Support" : "اتصل بالدعم",
+  verifyAccount: lang === "en" ? "Verify Account" : "تأكيد الحساب",
+  protectedTitle: lang === "en" ? "Your data is protected" : "بياناتك محمية",
   protectedDesc:
-    lang === 'en'
-      ? 'We use industry-standard encryption to keep your medical information secure and private.'
-      : 'نستخدم تشفيراً بمعايير صناعية للحفاظ على معلوماتك الطبية آمنة وسرّية.',
-  errFillAll: lang === 'en' ? 'Please fill in all required fields' : 'يرجى ملء جميع الحقول المطلوبة',
-  errEmailFormat: lang === 'en' ? 'Please enter a valid email address' : 'يرجى إدخال بريد إلكتروني صالح',
-  errInvalid: lang === 'en' ? 'Invalid email or password. Please try again.' : 'البريد الإلكتروني أو كلمة المرور غير صحيحة. حاول مرة أخرى.',
+    lang === "en"
+      ? "We use industry-standard encryption to keep your medical information secure and private."
+      : "نستخدم تشفيراً بمعايير صناعية للحفاظ على معلوماتك الطبية آمنة وسرّية.",
+  errFillAll:
+    lang === "en"
+      ? "Please fill in all required fields"
+      : "يرجى ملء جميع الحقول المطلوبة",
+  errEmailFormat:
+    lang === "en"
+      ? "Please enter a valid email address"
+      : "يرجى إدخال بريد إلكتروني صالح",
+  errInvalid:
+    lang === "en"
+      ? "Invalid email or password. Please try again."
+      : "البريد الإلكتروني أو كلمة المرور غير صحيحة. حاول مرة أخرى.",
 });
 
-export function SignInForm({ lang = 'ar' }) {
-  const isRTL = lang === 'ar';
+export function SignInForm({ lang = "ar" }) {
+  const isRTL = lang === "ar";
   const i = t(lang);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    userType: 'patient', // 'patient' or 'doctor'
+    email: "",
+    password: "",
+    userType: "patient", // 'patient' or 'doctor'
     rememberMe: false,
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleInputChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    if (error) setError(''); // Clear error when user starts typing
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (error) setError(""); // Clear error when user starts typing
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
     if (!formData.email || !formData.password) {
       setError(i.errFillAll);
@@ -70,26 +93,29 @@ export function SignInForm({ lang = 'ar' }) {
       return;
     }
 
-    if (!formData.email.includes('@')) {
+    if (!formData.email.includes("@")) {
       setError(i.errEmailFormat);
       setIsLoading(false);
       return;
     }
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Mock authentication logic
-      if (formData.email === 'demo@patient.com' && formData.password === 'demo123') {
-        router.push('/dashboard/patient');
-      } else if (formData.email === 'demo@doctor.com' && formData.password === 'demo123') {
-        router.push('/dashboard/doctor');
+      const payload = {
+        email: formData.email,
+        password: formData.password,
+        role: formData.userType === "doctor" ? "doctor" : "patient",
+      };
+
+      const { data } = await axios.post("/api/auth/login", payload);
+
+      if (payload.role === "doctor") {
+        router.push("/dashboard/doctor");
       } else {
-        throw new Error('Invalid credentials');
+        router.push("/dashboard/patient");
       }
     } catch (err) {
-      setError(i.errInvalid);
+      const message = err?.response?.data?.message || i.errInvalid;
+      setError(message);
     } finally {
       setIsLoading(false);
     }
@@ -100,41 +126,59 @@ export function SignInForm({ lang = 'ar' }) {
       <CardContent className="p-8">
         {/* User Type Selection */}
         <div className="mb-6">
-          <Label className="text-blue-900 font-medium mb-3 block">{i.signInAs}</Label>
+          <Label className="text-blue-900 font-medium mb-3 block">
+            {i.signInAs}
+          </Label>
           <div className="grid grid-cols-2 gap-3">
             <button
-              onClick={() => handleInputChange('userType', 'patient')}
+              onClick={() => handleInputChange("userType", "patient")}
               className={`p-4 rounded-xl border-2 transition-all ${
-                formData.userType === 'patient'
-                  ? 'border-primary bg-primary/5 shadow-md'
-                  : 'border-blue-200 hover:border-primary/30'
+                formData.userType === "patient"
+                  ? "border-primary bg-primary/5 shadow-md"
+                  : "border-blue-200 hover:border-primary/30"
               }`}
             >
-              <UserCheck className={`w-6 h-6 mx-auto mb-2 ${
-                formData.userType === 'patient' ? 'text-primary' : 'text-blue-400'
-              }`} />
-              <div className={`text-sm font-medium ${
-                formData.userType === 'patient' ? 'text-primary' : 'text-blue-600'
-              }`}>
+              <UserCheck
+                className={`w-6 h-6 mx-auto mb-2 ${
+                  formData.userType === "patient"
+                    ? "text-primary"
+                    : "text-blue-400"
+                }`}
+              />
+              <div
+                className={`text-sm font-medium ${
+                  formData.userType === "patient"
+                    ? "text-primary"
+                    : "text-blue-600"
+                }`}
+              >
                 {i.patient}
               </div>
               <div className="text-xs text-blue-500 mt-1">{i.patientHint}</div>
             </button>
-            
+
             <button
-              onClick={() => handleInputChange('userType', 'doctor')}
+              onClick={() => handleInputChange("userType", "doctor")}
               className={`p-4 rounded-xl border-2 transition-all ${
-                formData.userType === 'doctor'
-                  ? 'border-primary bg-primary/5 shadow-md'
-                  : 'border-blue-200 hover:border-primary/30'
+                formData.userType === "doctor"
+                  ? "border-primary bg-primary/5 shadow-md"
+                  : "border-blue-200 hover:border-primary/30"
               }`}
             >
-              <Stethoscope className={`w-6 h-6 mx-auto mb-2 ${
-                formData.userType === 'doctor' ? 'text-primary' : 'text-blue-400'
-              }`} />
-              <div className={`text-sm font-medium ${
-                formData.userType === 'doctor' ? 'text-primary' : 'text-blue-600'
-              }`}>
+              <Stethoscope
+                className={`w-6 h-6 mx-auto mb-2 ${
+                  formData.userType === "doctor"
+                    ? "text-primary"
+                    : "text-blue-400"
+                }`}
+              />
+              <div
+                className={`text-sm font-medium ${
+                  formData.userType === "doctor"
+                    ? "text-primary"
+                    : "text-blue-600"
+                }`}
+              >
                 {i.doctor}
               </div>
               <div className="text-xs text-blue-500 mt-1">{i.doctorHint}</div>
@@ -146,16 +190,26 @@ export function SignInForm({ lang = 'ar' }) {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email Field */}
           <div>
-            <Label htmlFor="email" className="text-blue-900 font-medium">{i.emailAddress}</Label>
+            <Label htmlFor="email" className="text-blue-900 font-medium">
+              {i.emailAddress}
+            </Label>
             <div className="relative mt-2">
-              <Mail className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-400`} />
+              <Mail
+                className={`absolute ${
+                  isRTL ? "right-3" : "left-3"
+                } top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-400`}
+              />
               <Input
                 id="email"
                 type="email"
                 value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-                className={`medical-input ${isRTL ? 'pr-10' : 'pl-10'}`}
-                placeholder={formData.userType === 'patient' ? i.emailPlaceholderPatient : i.emailPlaceholderDoctor}
+                onChange={(e) => handleInputChange("email", e.target.value)}
+                className={`medical-input ${isRTL ? "pr-10" : "pl-10"}`}
+                placeholder={
+                  formData.userType === "patient"
+                    ? i.emailPlaceholderPatient
+                    : i.emailPlaceholderDoctor
+                }
                 required
               />
             </div>
@@ -163,41 +217,61 @@ export function SignInForm({ lang = 'ar' }) {
 
           {/* Password Field */}
           <div>
-            <Label htmlFor="password" className="text-blue-900 font-medium">{i.password}</Label>
+            <Label htmlFor="password" className="text-blue-900 font-medium">
+              {i.password}
+            </Label>
             <div className="relative mt-2">
-              <Lock className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-400`} />
+              <Lock
+                className={`absolute ${
+                  isRTL ? "right-3" : "left-3"
+                } top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-400`}
+              />
               <Input
                 id="password"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 value={formData.password}
-                onChange={(e) => handleInputChange('password', e.target.value)}
-                className={`medical-input ${isRTL ? 'pr-10 pl-12' : 'pl-10 pr-12'}`}
+                onChange={(e) => handleInputChange("password", e.target.value)}
+                className={`medical-input ${
+                  isRTL ? "pr-10 pl-12" : "pl-10 pr-12"
+                }`}
                 placeholder={i.passwordPlaceholder}
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className={`absolute ${isRTL ? 'left-3' : 'right-3'} top-1/2 transform -translate-y-1/2 text-blue-400 hover:text-primary transition-colors`}
+                className={`absolute ${
+                  isRTL ? "left-3" : "right-3"
+                } top-1/2 transform -translate-y-1/2 text-blue-400 hover:text-primary transition-colors`}
               >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
               </button>
             </div>
           </div>
 
           {/* Remember Me & Forgot Password */}
-          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div
+            className={`flex items-center justify-between ${
+              isRTL ? "flex-row-reverse" : ""
+            }`}
+          >
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
                 checked={formData.rememberMe}
-                onChange={(e) => handleInputChange('rememberMe', e.target.checked)}
+                onChange={(e) =>
+                  handleInputChange("rememberMe", e.target.checked)
+                }
                 className="w-4 h-4 text-primary border-blue-300 rounded focus:ring-primary focus:ring-offset-0"
               />
               <span className="text-sm text-blue-600">{i.rememberMe}</span>
             </label>
-            <Link 
-              href="/auth/forgot-password" 
+            <Link
+              href="/auth/forgot-password"
               className="text-sm text-primary hover:underline"
             >
               {i.forgotPassword}
@@ -214,16 +288,22 @@ export function SignInForm({ lang = 'ar' }) {
 
           {/* Demo Credentials */}
           <div className="p-4 bg-blue-50 rounded-lg">
-            <h4 className="text-sm font-medium text-blue-900 mb-2">{i.demoCredentials}</h4>
+            <h4 className="text-sm font-medium text-blue-900 mb-2">
+              {i.demoCredentials}
+            </h4>
             <div className="text-xs text-blue-700 space-y-1">
-              <p><strong>{i.demoPatient}</strong> demo@patient.com / demo123</p>
-              <p><strong>{i.demoDoctor}</strong> demo@doctor.com / demo123</p>
+              <p>
+                <strong>{i.demoPatient}</strong> demo@patient.com / demo123
+              </p>
+              <p>
+                <strong>{i.demoDoctor}</strong> demo@doctor.com / demo123
+              </p>
             </div>
           </div>
 
           {/* Submit Button */}
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             className="btn-primary w-full py-3 text-lg"
             disabled={isLoading}
           >
@@ -246,16 +326,16 @@ export function SignInForm({ lang = 'ar' }) {
           <div className="text-center">
             <p className="text-sm text-blue-600 mb-4">{i.needHelp}</p>
             <div className="flex flex-col sm:flex-row gap-2 justify-center">
-              <Button 
-                variant="outline" 
-                className="btn-secondary text-sm px-4 py-2" 
+              <Button
+                variant="outline"
+                className="btn-secondary text-sm px-4 py-2"
                 asChild
               >
                 <Link href="/support">{i.contactSupport}</Link>
               </Button>
-              <Button 
-                variant="outline" 
-                className="btn-secondary text-sm px-4 py-2" 
+              <Button
+                variant="outline"
+                className="btn-secondary text-sm px-4 py-2"
                 asChild
               >
                 <Link href="/auth/verify-account">{i.verifyAccount}</Link>
