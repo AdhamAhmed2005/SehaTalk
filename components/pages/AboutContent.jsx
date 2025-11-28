@@ -9,9 +9,9 @@ export default function AboutContent({ lang = 'ar' }) {
   
   return (
     <div className="min-h-screen bg-white" dir={isRTL ? 'rtl' : 'ltr'}>
-      <section className="hero-bg pt-16 pb-24 px-4">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h1 className={`text-5xl font-bold mb-6 text-blue-900 ${isRTL ? 'tracking-tight' : ''}`}> 
+      <section className="hero-bg pt-20 pb-24 px-4">
+        <div className="container mx-auto max-w-4xl text-center mt-15">
+          <h1 className={`text-5xl font-bold mb-6 text-blue-1000${isRTL ? 'tracking-tight' : ''}`}> 
             {t('about.title')}
           </h1>
           <p className="text-xl text-blue-700 leading-relaxed max-w-3xl mx-auto">
@@ -20,11 +20,11 @@ export default function AboutContent({ lang = 'ar' }) {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
+      <section className="py-5 bg-white">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-4xl font-bold mb-6 text-blue-900">{t('about.mission.title')}</h2>
+              <h2 className="text-4xl font-bold mb-6 text-blue-1000">{t('about.mission.title')}</h2>
               <p className="text-lg text-blue-700 leading-relaxed mb-6">
                 {t('about.mission.paragraph1')}
               </p>

@@ -15,10 +15,10 @@ export function LandingPage() {
       {/* Hero Section */}
       <section className="hero-bg pt-28 pb-16 px-4">
         <div className="container mx-auto max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-14 items-center">
             <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
              
-              <h1 className="text-3xl lg:text-4xl font-bold leading-tight text-blue-900">
+              <h1 className="text-3xl lg:text-5xl font-bold leading-tight text-blue-900 mb-10">
                 {t('landing.hero.title')}
                 <span className="section-header block">{t('landing.hero.titleHighlight')}</span>
                 {t('landing.hero.subtitle')}
@@ -53,7 +53,7 @@ export function LandingPage() {
                 <ImageWithFallback
                   src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoZWFsdGhjYXJlJTIwdGVjaG5vbG9neXxlbnwxfHx8fDE3NjA3ODExNjV8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                   alt="Healthcare Technology"
-                  className="w-half h-[450px] object-cover"
+                  className="w-half h-[400px] object-cover"
                 />
               </div>
               {/* Trust indicators */}
@@ -67,7 +67,7 @@ export function LandingPage() {
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6 text-blue-900">
+            <h2 className="text-4xl font-bold mb-6 text-blue-1000">
               {t('landing.features.title')}
               <span className="section-header block">SehaTalk</span>
             </h2>
@@ -76,7 +76,7 @@ export function LandingPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card className="medical-card hover:shadow-xl transition-all duration-300 border-0">
               <CardContent className={`p-8 text-center ${isRTL ? 'text-right' : 'text-left'}`}>
                 <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 mx-auto">
@@ -132,19 +132,19 @@ export function LandingPage() {
       <section className="py-24 bg-slate-50">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className={`text-center mb-16 ${isRTL ? 'text-right' : 'text-left'}`}>
-            <h2 className="text-4xl font-bold mb-6 text-blue-900">{t('landing.howItWorks.title')}</h2>
-            <p className="text-xl text-blue-700 max-w-3xl mx-auto leading-relaxed">
+            <h2 className="text-4xl font-bold mb-6 text-blue-1000 text-center">{t('landing.howItWorks.title')}</h2>
+            <p className="text-xl text-blue-700 max-w-3xl mx-auto leading-relaxed text-center">
               {t('landing.howItWorks.description')}
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-12">
-            <div className={`text-center group ${isRTL ? 'text-right' : 'text-left'}`}>
+          <div className="grid md:grid-cols-3 gap-12 ">
+            <div className={`text-center  group ${isRTL ? 'text-right' : 'text-left'}`}>
               <div className="w-20 h-20 bg-primary text-white rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-lg group-hover:scale-105 transition-transform duration-300">
                 1
               </div>
-              <h3 className="text-2xl font-semibold mb-4 text-blue-900">{t('landing.howItWorks.step1.title')}</h3>
-              <p className="text-blue-700 leading-relaxed text-lg">
+              <h3 className="text-2xl font-semibold mb-4 text-blue-900 text-center">{t('landing.howItWorks.step1.title')}</h3>
+              <p className="text-blue-700 leading-relaxed text-lg text-center">
                 {t('landing.howItWorks.step1.description')}
               </p>
             </div>
@@ -153,8 +153,8 @@ export function LandingPage() {
               <div className="w-20 h-20 bg-primary text-white rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-lg group-hover:scale-105 transition-transform duration-300">
                 2
               </div>
-              <h3 className="text-2xl font-semibold mb-4 text-blue-900">{t('landing.howItWorks.step2.title')}</h3>
-              <p className="text-blue-700 leading-relaxed text-lg">
+              <h3 className="text-2xl font-semibold mb-4 text-blue-900 text-center">{t('landing.howItWorks.step2.title')}</h3>
+              <p className="text-blue-700 leading-relaxed text-lg text-center">
                 {t('landing.howItWorks.step2.description')}
               </p>
             </div>
@@ -163,8 +163,8 @@ export function LandingPage() {
               <div className="w-20 h-20 bg-primary text-white rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-lg group-hover:scale-105 transition-transform duration-300">
                 3
               </div>
-              <h3 className="text-2xl font-semibold mb-4 text-blue-900">{t('landing.howItWorks.step3.title')}</h3>
-              <p className="text-blue-700 leading-relaxed text-lg">
+              <h3 className="text-2xl font-semibold mb-4 text-blue-900 text-center">{t('landing.howItWorks.step3.title')}</h3>
+              <p className="text-blue-700 leading-relaxed text-lg text-center">
                 {t('landing.howItWorks.step3.description')}
               </p>
             </div>
@@ -176,7 +176,7 @@ export function LandingPage() {
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className={`text-center mb-16 ${isRTL ? 'text-right' : 'text-left'}`}>
-            <h2 className="text-4xl font-bold mb-6 text-blue-900">{t('landing.testimonials.title')}</h2>
+            <h2 className="text-4xl font-bold mb-6 text-blue-1000 text-center">{t('landing.testimonials.title')}</h2>
             <p className="text-xl text-blue-700 max-w-3xl mx-auto leading-relaxed">
               {t('landing.testimonials.description')}
             </p>
@@ -260,10 +260,10 @@ export function LandingPage() {
             {t('landing.cta.description')}
           </p>
           <div className={`flex flex-col sm:flex-row gap-6 justify-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-            <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-gray-50 shadow-lg px-8 py-4 text-lg" asChild>
+            <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-blue-500 hover:text-white hover:text-primary backdrop-blur-sm  px-8 py-4 text-lg" asChild>
               <Link href="/auth/patient">{t('landing.cta.joinAsPatient')}</Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-primary hover:bg-white hover:text-primary backdrop-blur-sm px-8 py-4 text-lg" asChild>
+            <Button size="lg" variant="outline" className="border-white text-primary hover:bg-blue-500 hover:text-white hover:text-primary backdrop-blur-sm px-8 py-4 text-lg" asChild>
               <Link href="/auth/doctor">{t('landing.cta.joinAsDoctor')}</Link>
             </Button>
           </div>

@@ -36,9 +36,9 @@ export default function DoctorsContent({ doctors, specialties }) {
   };
 
   return (
-    <div className="min-h-screen bg-white" dir={isRTL ? "rtl" : "ltr"}>
+    <div className="w-[90%] max-w-full mx-auto min-h-screen bg-white" dir={isRTL ? "rtl" : "ltr"}>
       {/* Header Section */}
-      <section className="hero-bg pt-24 pb-16 px-4">
+      <section className="hero-bg pt-24 pb-16 px-4 ">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-8">
             <Badge className="bg-primary/10 text-primary border-primary/20 mb-4">
@@ -66,7 +66,7 @@ export default function DoctorsContent({ doctors, specialties }) {
       </section>
 
       {/* Main Content */}
-      <section className="py-12 px-4 bg-gray-50">
+      <section className=" py-12 px-4 bg-gray-50">
         <div className="container mx-auto max-w-7xl">
           {/* Specialty Filters */}
           <div className="relative mb-8 group">
@@ -118,7 +118,7 @@ export default function DoctorsContent({ doctors, specialties }) {
           </div>
 
           {/* Doctors Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredDoctors.map((doc) => (
               <Card
                 key={doc.id}
