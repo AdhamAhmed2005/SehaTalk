@@ -22,46 +22,6 @@ import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 export function SignInForm() {
   const { t, isRTL, language: lang } = useLanguage();
-  doctorHint: lang === "en" ? "Provide consultation" : "قدّم الاستشارة",
-  emailAddress: lang === "en" ? "Email Address" : "البريد الإلكتروني",
-  emailPlaceholderPatient:
-    lang === "en" ? "patient@example.com" : "patient@example.com",
-  emailPlaceholderDoctor:
-    lang === "en" ? "dr.yourname@example.com" : "dr.yourname@example.com",
-  password: lang === "en" ? "Password" : "كلمة المرور",
-  passwordPlaceholder:
-    lang === "en" ? "Enter your password" : "أدخل كلمة المرور",
-  rememberMe: lang === "en" ? "Remember me" : "تذكرني",
-  forgotPassword: lang === "en" ? "Forgot password?" : "هل نسيت كلمة المرور؟",
-  demoCredentials: lang === "en" ? "Demo Credentials:" : "بيانات تجريبية:",
-  demoPatient: lang === "en" ? "Patient:" : "مريض:",
-  demoDoctor: lang === "en" ? "Doctor:" : "طبيب:",
-  signingIn: lang === "en" ? "Signing In..." : "جاري تسجيل الدخول...",
-  signInSecurely: lang === "en" ? "Sign In Securely" : "تسجيل الدخول بأمان",
-  needHelp:
-    lang === "en" ? "Need help with your account?" : "تحتاج مساعدة في حسابك؟",
-  contactSupport: lang === "en" ? "Contact Support" : "اتصل بالدعم",
-  verifyAccount: lang === "en" ? "Verify Account" : "تأكيد الحساب",
-  protectedTitle: lang === "en" ? "Your data is protected" : "بياناتك محمية",
-  protectedDesc:
-    lang === "en"
-      ? "We use industry-standard encryption to keep your medical information secure and private."
-      : "نستخدم تشفيراً بمعايير صناعية للحفاظ على معلوماتك الطبية آمنة وسرّية.",
-  errFillAll:
-    lang === "en"
-      ? "Please fill in all required fields"
-      : "يرجى ملء جميع الحقول المطلوبة",
-  errEmailFormat:
-    lang === "en"
-      ? "Please enter a valid email address"
-      : "يرجى إدخال بريد إلكتروني صالح",
-  errInvalid:
-    lang === "en"
-      ? "Invalid email or password. Please try again."
-      : "البريد الإلكتروني أو كلمة المرور غير صحيحة. حاول مرة أخرى.",
-});
-
-export function SignInForm({ lang = "ar" }) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",

@@ -22,8 +22,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.jsx";
+import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 export function DoctorRegistrationForm() {
+  const { t, isRTL, language: lang } = useLanguage();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     // Personal Information
@@ -179,10 +181,10 @@ export function DoctorRegistrationForm() {
               <div className="text-center mb-8">
                 <User className="w-12 h-12 text-primary mx-auto mb-4" />
                 <h2 className="text-2xl font-bold text-blue-900 mb-2">
-                  Personal Information
+                  {t('auth.doctorForm.step1Title')}
                 </h2>
                 <p className="text-blue-700">
-                  Let's start with your personal details
+                  {t('auth.doctorForm.step1Subtitle')}
                 </p>
               </div>
 
@@ -192,7 +194,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="firstName"
                     className="text-blue-900 font-medium"
                   >
-                    First Name *
+                    {t('auth.doctorForm.firstName')} *
                   </Label>
                   <Input
                     id="firstName"
@@ -201,7 +203,7 @@ export function DoctorRegistrationForm() {
                       handleInputChange("firstName", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="Enter your first name"
+                    placeholder={t('auth.doctorForm.firstNamePlaceholder')}
                   />
                 </div>
                 <div>
@@ -209,7 +211,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="lastName"
                     className="text-blue-900 font-medium"
                   >
-                    Last Name *
+                    {t('auth.doctorForm.lastName')} *
                   </Label>
                   <Input
                     id="lastName"
@@ -218,12 +220,12 @@ export function DoctorRegistrationForm() {
                       handleInputChange("lastName", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="Enter your last name"
+                    placeholder={t('auth.doctorForm.lastNamePlaceholder')}
                   />
                 </div>
                 <div>
                   <Label htmlFor="email" className="text-blue-900 font-medium">
-                    Email Address *
+                    {t('auth.doctorForm.email')} *
                   </Label>
                   <Input
                     id="email"
@@ -231,12 +233,12 @@ export function DoctorRegistrationForm() {
                     value={formData.email}
                     onChange={(e) => handleInputChange("email", e.target.value)}
                     className="medical-input mt-2"
-                    placeholder="dr.yourname@example.com"
+                    placeholder={t('auth.doctorForm.emailPlaceholder')}
                   />
                 </div>
                 <div>
                   <Label htmlFor="phone" className="text-blue-900 font-medium">
-                    Phone Number *
+                    {t('auth.doctorForm.phone')} *
                   </Label>
                   <Input
                     id="phone"
@@ -244,7 +246,7 @@ export function DoctorRegistrationForm() {
                     value={formData.phone}
                     onChange={(e) => handleInputChange("phone", e.target.value)}
                     className="medical-input mt-2"
-                    placeholder="+20 1XX XXX XXXX"
+                    placeholder={t('auth.doctorForm.phonePlaceholder')}
                   />
                 </div>
                 <div>
@@ -252,7 +254,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="dateOfBirth"
                     className="text-blue-900 font-medium"
                   >
-                    Date of Birth *
+                    {t('auth.doctorForm.dateOfBirth')} *
                   </Label>
                   <Input
                     id="dateOfBirth"
@@ -265,7 +267,7 @@ export function DoctorRegistrationForm() {
                   />
                 </div>
                 <div>
-                  <Label className="text-blue-900 font-medium">Gender *</Label>
+                  <Label className="text-blue-900 font-medium">{t('auth.doctorForm.gender')} *</Label>
                   <Select
                     value={formData.gender}
                     onValueChange={(value) =>
@@ -273,12 +275,11 @@ export function DoctorRegistrationForm() {
                     }
                   >
                     <SelectTrigger className="medical-select mt-2">
-                      <SelectValue placeholder="Select gender" />
+                      <SelectValue placeholder={t('auth.doctorForm.genderPlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="male">Male</SelectItem>
-                      <SelectItem value="female">Female</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
+                      <SelectItem value="male">{t('auth.doctorForm.male')}</SelectItem>
+                      <SelectItem value="female">{t('auth.doctorForm.female')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -287,7 +288,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="password"
                     className="text-blue-900 font-medium"
                   >
-                    Password *
+                    {t('auth.doctorForm.password')} *
                   </Label>
                   <Input
                     id="password"
@@ -297,7 +298,7 @@ export function DoctorRegistrationForm() {
                       handleInputChange("password", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="Create a strong password"
+                    placeholder={t('auth.doctorForm.passwordPlaceholder')}
                   />
                 </div>
                 <div>
@@ -305,7 +306,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="confirmPassword"
                     className="text-blue-900 font-medium"
                   >
-                    Confirm Password *
+                    {t('auth.doctorForm.confirmPassword')} *
                   </Label>
                   <Input
                     id="confirmPassword"
@@ -315,14 +316,14 @@ export function DoctorRegistrationForm() {
                       handleInputChange("confirmPassword", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="Confirm your password"
+                    placeholder={t('auth.doctorForm.confirmPasswordPlaceholder')}
                   />
                 </div>
               </div>
 
               <div className="flex justify-end mt-8">
                 <Button onClick={nextStep} className="btn-primary px-8 py-3">
-                  Next: Professional Info
+                  {t('auth.doctorForm.next')}
                 </Button>
               </div>
             </div>
@@ -333,10 +334,10 @@ export function DoctorRegistrationForm() {
               <div className="text-center mb-8">
                 <Stethoscope className="w-12 h-12 text-primary mx-auto mb-4" />
                 <h2 className="text-2xl font-bold text-blue-900 mb-2">
-                  Professional Information
+                  {t('auth.doctorForm.step2Title')}
                 </h2>
                 <p className="text-blue-700">
-                  Tell us about your medical practice and expertise
+                  {t('auth.doctorForm.step2Subtitle')}
                 </p>
               </div>
 
@@ -346,7 +347,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="medicalLicenseNumber"
                     className="text-blue-900 font-medium"
                   >
-                    Medical License Number *
+                    {t('auth.doctorForm.licenseNumber')} *
                   </Label>
                   <Input
                     id="medicalLicenseNumber"
@@ -355,12 +356,12 @@ export function DoctorRegistrationForm() {
                       handleInputChange("medicalLicenseNumber", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="EG-12345678"
+                    placeholder={t('auth.doctorForm.licenseNumberPlaceholder')}
                   />
                 </div>
                 <div>
                   <Label className="text-blue-900 font-medium">
-                    Primary Specialty *
+                    {t('auth.doctorForm.specialty')} *
                   </Label>
                   <Select
                     value={formData.specialty}
@@ -369,7 +370,7 @@ export function DoctorRegistrationForm() {
                     }
                   >
                     <SelectTrigger className="medical-select mt-2">
-                      <SelectValue placeholder="Select your specialty" />
+                      <SelectValue placeholder={t('auth.doctorForm.specialtyPlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
                       {specialties.map((specialty) => (
@@ -388,7 +389,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="subSpecialty"
                     className="text-blue-900 font-medium"
                   >
-                    Sub-specialty (if any)
+                    {t('auth.doctorForm.subSpecialty')}
                   </Label>
                   <Input
                     id="subSpecialty"
@@ -397,7 +398,7 @@ export function DoctorRegistrationForm() {
                       handleInputChange("subSpecialty", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="e.g., Interventional Cardiology"
+                    placeholder={t('auth.doctorForm.subSpecialtyPlaceholder')}
                   />
                 </div>
                 <div>
@@ -405,7 +406,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="yearsOfExperience"
                     className="text-blue-900 font-medium"
                   >
-                    Years of Experience *
+                    {t('auth.doctorForm.yearsExperience')} *
                   </Label>
                   <Select
                     value={formData.yearsOfExperience}
@@ -414,14 +415,14 @@ export function DoctorRegistrationForm() {
                     }
                   >
                     <SelectTrigger className="medical-select mt-2">
-                      <SelectValue placeholder="Select experience" />
+                      <SelectValue placeholder={t('auth.doctorForm.yearsExperiencePlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="1-3">1-3 years</SelectItem>
-                      <SelectItem value="4-7">4-7 years</SelectItem>
-                      <SelectItem value="8-15">8-15 years</SelectItem>
-                      <SelectItem value="16-25">16-25 years</SelectItem>
-                      <SelectItem value="25+">25+ years</SelectItem>
+                      <SelectItem value="1-3">{lang === 'ar' ? '١-٣ سنوات' : '1-3 years'}</SelectItem>
+                      <SelectItem value="4-7">{lang === 'ar' ? '٤-٧ سنوات' : '4-7 years'}</SelectItem>
+                      <SelectItem value="8-15">{lang === 'ar' ? '٨-١٥ سنة' : '8-15 years'}</SelectItem>
+                      <SelectItem value="16-25">{lang === 'ar' ? '١٦-٢٥ سنة' : '16-25 years'}</SelectItem>
+                      <SelectItem value="25+">{lang === 'ar' ? '٢٥+ سنة' : '25+ years'}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -430,7 +431,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="hospitalAffiliation"
                     className="text-blue-900 font-medium"
                   >
-                    Hospital/Clinic Affiliation *
+                    {t('auth.doctorForm.hospitalAffiliation')} *
                   </Label>
                   <Input
                     id="hospitalAffiliation"
@@ -439,7 +440,7 @@ export function DoctorRegistrationForm() {
                       handleInputChange("hospitalAffiliation", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="Name of hospital or clinic where you practice"
+                    placeholder={t('auth.doctorForm.hospitalAffiliationPlaceholder')}
                   />
                 </div>
                 <div className="md:col-span-2">
@@ -447,7 +448,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="clinicAddress"
                     className="text-blue-900 font-medium"
                   >
-                    Practice Address
+                    {t('auth.doctorForm.clinicAddress')}
                   </Label>
                   <Input
                     id="clinicAddress"
@@ -456,7 +457,7 @@ export function DoctorRegistrationForm() {
                       handleInputChange("clinicAddress", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="Full address of your practice (optional for privacy)"
+                    placeholder={t('auth.doctorForm.clinicAddressPlaceholder')}
                   />
                 </div>
                 <div>
@@ -464,7 +465,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="consultationFee"
                     className="text-blue-900 font-medium"
                   >
-                    Consultation Fee (EGP)
+                    {t('auth.doctorForm.consultationFee')}
                   </Label>
                   <Input
                     id="consultationFee"
@@ -474,7 +475,7 @@ export function DoctorRegistrationForm() {
                       handleInputChange("consultationFee", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="500"
+                    placeholder={t('auth.doctorForm.consultationFeePlaceholder')}
                   />
                 </div>
                 <div>
@@ -482,7 +483,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="languages"
                     className="text-blue-900 font-medium"
                   >
-                    Languages Spoken *
+                    {t('auth.doctorForm.languages')} *
                   </Label>
                   <Input
                     id="languages"
@@ -491,7 +492,7 @@ export function DoctorRegistrationForm() {
                       handleInputChange("languages", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="Arabic, English, French"
+                    placeholder={t('auth.doctorForm.languagesPlaceholder')}
                   />
                 </div>
               </div>
@@ -502,10 +503,10 @@ export function DoctorRegistrationForm() {
                   variant="outline"
                   className="btn-secondary px-8 py-3"
                 >
-                  Back
+                  {t('auth.doctorForm.previous')}
                 </Button>
                 <Button onClick={nextStep} className="btn-primary px-8 py-3">
-                  Next: Education
+                  {t('auth.doctorForm.next')}
                 </Button>
               </div>
             </div>
@@ -516,10 +517,10 @@ export function DoctorRegistrationForm() {
               <div className="text-center mb-8">
                 <Award className="w-12 h-12 text-primary mx-auto mb-4" />
                 <h2 className="text-2xl font-bold text-blue-900 mb-2">
-                  Education & Certifications
+                  {t('auth.doctorForm.step3Title')}
                 </h2>
                 <p className="text-blue-700">
-                  Share your educational background and qualifications
+                  {t('auth.doctorForm.step3Subtitle')}
                 </p>
               </div>
 
@@ -529,7 +530,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="medicalSchool"
                     className="text-blue-900 font-medium"
                   >
-                    Medical School *
+                    {t('auth.doctorForm.medicalSchool')} *
                   </Label>
                   <Input
                     id="medicalSchool"
@@ -538,7 +539,7 @@ export function DoctorRegistrationForm() {
                       handleInputChange("medicalSchool", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="Cairo University Faculty of Medicine"
+                    placeholder={t('auth.doctorForm.medicalSchoolPlaceholder')}
                   />
                 </div>
                 <div>
@@ -546,7 +547,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="graduationYear"
                     className="text-blue-900 font-medium"
                   >
-                    Graduation Year *
+                    {t('auth.doctorForm.graduationYear')} *
                   </Label>
                   <Input
                     id="graduationYear"
@@ -556,7 +557,7 @@ export function DoctorRegistrationForm() {
                       handleInputChange("graduationYear", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="2015"
+                    placeholder={t('auth.doctorForm.graduationYearPlaceholder')}
                     min="1970"
                     max="2024"
                   />
@@ -566,7 +567,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="residencyProgram"
                     className="text-blue-900 font-medium"
                   >
-                    Residency Program *
+                    {t('auth.doctorForm.residencyProgram')} *
                   </Label>
                   <Input
                     id="residencyProgram"
@@ -575,7 +576,7 @@ export function DoctorRegistrationForm() {
                       handleInputChange("residencyProgram", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="Internal Medicine Residency - Ain Shams University"
+                    placeholder={t('auth.doctorForm.residencyProgramPlaceholder')}
                   />
                 </div>
                 <div className="md:col-span-2">
@@ -583,7 +584,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="fellowshipProgram"
                     className="text-blue-900 font-medium"
                   >
-                    Fellowship Program (if applicable)
+                    {t('auth.doctorForm.fellowshipProgram')}
                   </Label>
                   <Input
                     id="fellowshipProgram"
@@ -592,7 +593,7 @@ export function DoctorRegistrationForm() {
                       handleInputChange("fellowshipProgram", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="Cardiology Fellowship - National Heart Institute"
+                    placeholder={t('auth.doctorForm.fellowshipProgramPlaceholder')}
                   />
                 </div>
                 <div className="md:col-span-2">
@@ -600,7 +601,7 @@ export function DoctorRegistrationForm() {
                     htmlFor="boardCertifications"
                     className="text-blue-900 font-medium"
                   >
-                    Board Certifications
+                    {t('auth.doctorForm.boardCertifications')}
                   </Label>
                   <textarea
                     id="boardCertifications"
@@ -609,7 +610,7 @@ export function DoctorRegistrationForm() {
                       handleInputChange("boardCertifications", e.target.value)
                     }
                     className="medical-input mt-2 min-h-20 resize-none"
-                    placeholder="List your board certifications and professional memberships"
+                    placeholder={t('auth.doctorForm.boardCertificationsPlaceholder')}
                     rows={3}
                   />
                 </div>
@@ -621,10 +622,10 @@ export function DoctorRegistrationForm() {
                   variant="outline"
                   className="btn-secondary px-8 py-3"
                 >
-                  Back
+                  {t('auth.doctorForm.previous')}
                 </Button>
                 <Button onClick={nextStep} className="btn-primary px-8 py-3">
-                  Next: Document Upload
+                  {t('auth.doctorForm.next')}
                 </Button>
               </div>
             </div>
@@ -635,11 +636,10 @@ export function DoctorRegistrationForm() {
               <div className="text-center mb-8">
                 <FileText className="w-12 h-12 text-primary mx-auto mb-4" />
                 <h2 className="text-2xl font-bold text-blue-900 mb-2">
-                  Document Verification
+                  {t('auth.doctorForm.step4Title')}
                 </h2>
                 <p className="text-blue-700">
-                  Upload required documents for verification (PDF format
-                  preferred)
+                  {t('auth.doctorForm.step4Subtitle')}
                 </p>
               </div>
 
@@ -649,10 +649,10 @@ export function DoctorRegistrationForm() {
                   <div className="text-center">
                     <Upload className="w-8 h-8 text-blue-400 mx-auto mb-2" />
                     <h4 className="font-semibold text-blue-900 mb-2">
-                      Medical License Document *
+                      {t('auth.doctorForm.licenseDocument')} *
                     </h4>
                     <p className="text-sm text-blue-600 mb-4">
-                      Upload a clear copy of your medical license
+                      {t('auth.doctorForm.licenseDocumentDesc')}
                     </p>
                     <input
                       type="file"
@@ -667,7 +667,7 @@ export function DoctorRegistrationForm() {
                       htmlFor="license-upload"
                       className="btn-secondary inline-block px-6 py-2 rounded cursor-pointer"
                     >
-                      {uploadStatus.license ? "✓ Uploaded" : "Choose File"}
+                      {uploadStatus.license ? `✓ ${t('auth.doctorForm.uploaded')}` : t('auth.doctorForm.uploadButton')}
                     </label>
                   </div>
                 </div>
@@ -677,10 +677,10 @@ export function DoctorRegistrationForm() {
                   <div className="text-center">
                     <Award className="w-8 h-8 text-blue-400 mx-auto mb-2" />
                     <h4 className="font-semibold text-blue-900 mb-2">
-                      Medical Diploma *
+                      {t('auth.doctorForm.diplomaDocument')} *
                     </h4>
                     <p className="text-sm text-blue-600 mb-4">
-                      Upload your medical school diploma
+                      {t('auth.doctorForm.diplomaDocumentDesc')}
                     </p>
                     <input
                       type="file"
@@ -695,7 +695,7 @@ export function DoctorRegistrationForm() {
                       htmlFor="diploma-upload"
                       className="btn-secondary inline-block px-6 py-2 rounded cursor-pointer"
                     >
-                      {uploadStatus.diploma ? "✓ Uploaded" : "Choose File"}
+                      {uploadStatus.diploma ? `✓ ${t('auth.doctorForm.uploaded')}` : t('auth.doctorForm.uploadButton')}
                     </label>
                   </div>
                 </div>
@@ -705,10 +705,10 @@ export function DoctorRegistrationForm() {
                   <div className="text-center">
                     <FileText className="w-8 h-8 text-blue-400 mx-auto mb-2" />
                     <h4 className="font-semibold text-blue-900 mb-2">
-                      Curriculum Vitae *
+                      {t('auth.doctorForm.cvDocument')} *
                     </h4>
                     <p className="text-sm text-blue-600 mb-4">
-                      Upload your current CV/Resume
+                      {t('auth.doctorForm.cvDocumentDesc')}
                     </p>
                     <input
                       type="file"
@@ -723,7 +723,7 @@ export function DoctorRegistrationForm() {
                       htmlFor="cv-upload"
                       className="btn-secondary inline-block px-6 py-2 rounded cursor-pointer"
                     >
-                      {uploadStatus.cv ? "✓ Uploaded" : "Choose File"}
+                      {uploadStatus.cv ? `✓ ${t('auth.doctorForm.uploaded')}` : t('auth.doctorForm.uploadButton')}
                     </label>
                   </div>
                 </div>
@@ -733,10 +733,10 @@ export function DoctorRegistrationForm() {
                   <div className="text-center">
                     <User className="w-8 h-8 text-blue-400 mx-auto mb-2" />
                     <h4 className="font-semibold text-blue-900 mb-2">
-                      Professional Photo
+                      {t('auth.doctorForm.profilePhoto')}
                     </h4>
                     <p className="text-sm text-blue-600 mb-4">
-                      Upload a professional headshot (optional but recommended)
+                      {t('auth.doctorForm.profilePhotoDesc')}
                     </p>
                     <input
                       type="file"
@@ -751,7 +751,7 @@ export function DoctorRegistrationForm() {
                       htmlFor="photo-upload"
                       className="btn-secondary inline-block px-6 py-2 rounded cursor-pointer"
                     >
-                      {uploadStatus.photo ? "✓ Uploaded" : "Choose File"}
+                      {uploadStatus.photo ? `✓ ${t('auth.doctorForm.uploaded')}` : t('auth.doctorForm.uploadButton')}
                     </label>
                   </div>
                 </div>
@@ -763,24 +763,21 @@ export function DoctorRegistrationForm() {
                   <Shield className="w-6 h-6 text-primary mt-1" />
                   <div>
                     <h4 className="font-semibold text-blue-900 mb-2">
-                      Verification Process
+                      {t('auth.doctorForm.verificationNote')}
                     </h4>
                     <div className="text-sm text-blue-700 space-y-1">
                       <p>
-                        • All documents will be reviewed by our medical
-                        verification team
+                        {lang === 'ar' ? '• سيتم مراجعة جميع المستندات من قبل فريق التحقق الطبي' : '• All documents will be reviewed by our medical verification team'}
                       </p>
-                      <p>• Verification typically takes 2-5 business days</p>
+                      <p>{lang === 'ar' ? '• يستغرق التحقق عادة من 2-5 أيام عمل' : '• Verification typically takes 2-5 business days'}</p>
                       <p>
-                        • You'll receive email updates on your application
-                        status
+                        {lang === 'ar' ? '• ستتلقى تحديثات بالبريد الإلكتروني حول حالة طلبك' : '• You\'ll receive email updates on your application status'}
                       </p>
                       <p>
-                        • Additional documentation may be requested if needed
+                        {lang === 'ar' ? '• قد يُطلب منك مستندات إضافية إذا لزم الأمر' : '• Additional documentation may be requested if needed'}
                       </p>
                       <p>
-                        • Your profile will be activated only after successful
-                        verification
+                        {lang === 'ar' ? '• سيتم تفعيل ملفك الشخصي فقط بعد التحقق بنجاح' : '• Your profile will be activated only after successful verification'}
                       </p>
                     </div>
                   </div>
@@ -790,23 +787,20 @@ export function DoctorRegistrationForm() {
               {/* Terms and Conditions */}
               <div className="mt-6 p-6 bg-green-50 rounded-lg">
                 <h4 className="font-semibold text-blue-900 mb-3">
-                  Professional Agreement
+                  {lang === 'ar' ? 'الاتفاقية المهنية' : 'Professional Agreement'}
                 </h4>
                 <div className="text-sm text-blue-700 space-y-2">
                   <p>
-                    • I certify that all information provided is accurate and
-                    complete
+                    {lang === 'ar' ? '• أؤكد أن جميع المعلومات المقدمة دقيقة وكاملة' : '• I certify that all information provided is accurate and complete'}
                   </p>
                   <p>
-                    • I agree to provide professional, ethical medical guidance
+                    {lang === 'ar' ? '• أوافق على تقديم إرشادات طبية مهنية وأخلاقية' : '• I agree to provide professional, ethical medical guidance'}
                   </p>
                   <p>
-                    • I understand that patients should seek in-person care for
-                    serious conditions
+                    {lang === 'ar' ? '• أفهم أن المرضى يجب أن يطلبوا الرعاية الشخصية للحالات الخطيرة' : '• I understand that patients should seek in-person care for serious conditions'}
                   </p>
                   <p>
-                    • I will maintain patient confidentiality and privacy
-                    standards
+                    {lang === 'ar' ? '• سأحافظ على سرية المريض ومعايير الخصوصية' : '• I will maintain patient confidentiality and privacy standards'}
                   </p>
                 </div>
                 <div className="mt-4 flex items-start gap-3">
@@ -815,21 +809,43 @@ export function DoctorRegistrationForm() {
                     htmlFor="doctor-terms"
                     className="text-sm text-blue-700"
                   >
-                    I agree to the{" "}
-                    <Link
-                      href="/doctor-terms"
-                      className="text-primary hover:underline"
-                    >
-                      Medical Professional Terms
-                    </Link>
-                    ,{" "}
-                    <Link
-                      href="/privacy"
-                      className="text-primary hover:underline"
-                    >
-                      Privacy Policy
-                    </Link>
-                    , and Egyptian Medical Practice Guidelines.
+                    {lang === 'ar' ? (
+                      <>
+                        أوافق على{" "}
+                        <Link
+                          href="/doctor-terms"
+                          className="text-primary hover:underline"
+                        >
+                          شروط المهنيين الطبيين
+                        </Link>
+                        ، و{" "}
+                        <Link
+                          href="/privacy"
+                          className="text-primary hover:underline"
+                        >
+                          سياسة الخصوصية
+                        </Link>
+                        ، وإرشادات الممارسة الطبية المصرية.
+                      </>
+                    ) : (
+                      <>
+                        I agree to the{" "}
+                        <Link
+                          href="/doctor-terms"
+                          className="text-primary hover:underline"
+                        >
+                          Medical Professional Terms
+                        </Link>
+                        ,{" "}
+                        <Link
+                          href="/privacy"
+                          className="text-primary hover:underline"
+                        >
+                          Privacy Policy
+                        </Link>
+                        , and Egyptian Medical Practice Guidelines.
+                      </>
+                    )}
                   </label>
                 </div>
               </div>
@@ -840,14 +856,14 @@ export function DoctorRegistrationForm() {
                   variant="outline"
                   className="btn-secondary px-8 py-3"
                 >
-                  Back
+                  {t('auth.doctorForm.previous')}
                 </Button>
                 <Button
                   className="btn-primary px-8 py-3"
                   onClick={handleSubmit}
                   disabled={submitting}
                 >
-                  {submitting ? "Submitting..." : "Submit for Verification"}
+                  {submitting ? t('auth.doctorForm.submitting') : t('auth.doctorForm.submit')}
                 </Button>
               </div>
             </div>

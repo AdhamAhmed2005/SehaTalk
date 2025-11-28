@@ -15,8 +15,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select.jsx";
+import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 export function PatientRegistrationForm() {
+  const { t, isRTL, language: lang } = useLanguage();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     // Personal Information
@@ -126,10 +128,10 @@ export function PatientRegistrationForm() {
               <div className="text-center mb-8">
                 <User className="w-12 h-12 text-primary mx-auto mb-4" />
                 <h2 className="text-2xl font-bold text-blue-900 mb-2">
-                  Personal Information
+                  {t('auth.patientForm.step1Title')}
                 </h2>
                 <p className="text-blue-700">
-                  Let's start with your basic details
+                  {t('auth.patientForm.step1Subtitle')}
                 </p>
               </div>
 
@@ -139,7 +141,7 @@ export function PatientRegistrationForm() {
                     htmlFor="firstName"
                     className="text-blue-900 font-medium"
                   >
-                    First Name *
+                    {t('auth.patientForm.firstName')} *
                   </Label>
                   <Input
                     id="firstName"
@@ -148,7 +150,7 @@ export function PatientRegistrationForm() {
                       handleInputChange("firstName", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="Enter your first name"
+                    placeholder={t('auth.patientForm.firstNamePlaceholder')}
                   />
                 </div>
                 <div>
@@ -156,7 +158,7 @@ export function PatientRegistrationForm() {
                     htmlFor="lastName"
                     className="text-blue-900 font-medium"
                   >
-                    Last Name *
+                    {t('auth.patientForm.lastName')} *
                   </Label>
                   <Input
                     id="lastName"
@@ -165,12 +167,12 @@ export function PatientRegistrationForm() {
                       handleInputChange("lastName", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="Enter your last name"
+                    placeholder={t('auth.patientForm.lastNamePlaceholder')}
                   />
                 </div>
                 <div>
                   <Label htmlFor="email" className="text-blue-900 font-medium">
-                    Email Address *
+                    {t('auth.patientForm.email')} *
                   </Label>
                   <Input
                     id="email"
@@ -178,12 +180,12 @@ export function PatientRegistrationForm() {
                     value={formData.email}
                     onChange={(e) => handleInputChange("email", e.target.value)}
                     className="medical-input mt-2"
-                    placeholder="your.email@example.com"
+                    placeholder={t('auth.patientForm.emailPlaceholder')}
                   />
                 </div>
                 <div>
                   <Label htmlFor="phone" className="text-blue-900 font-medium">
-                    Phone Number *
+                    {t('auth.patientForm.phone')} *
                   </Label>
                   <Input
                     id="phone"
@@ -191,7 +193,7 @@ export function PatientRegistrationForm() {
                     value={formData.phone}
                     onChange={(e) => handleInputChange("phone", e.target.value)}
                     className="medical-input mt-2"
-                    placeholder="+20 1XX XXX XXXX"
+                    placeholder={t('auth.patientForm.phonePlaceholder')}
                   />
                 </div>
                 <div>
@@ -199,7 +201,7 @@ export function PatientRegistrationForm() {
                     htmlFor="dateOfBirth"
                     className="text-blue-900 font-medium"
                   >
-                    Date of Birth *
+                    {t('auth.patientForm.dateOfBirth')} *
                   </Label>
                   <Input
                     id="dateOfBirth"
@@ -212,7 +214,7 @@ export function PatientRegistrationForm() {
                   />
                 </div>
                 <div>
-                  <Label className="text-blue-900 font-medium">Gender *</Label>
+                  <Label className="text-blue-900 font-medium">{t('auth.patientForm.gender')} *</Label>
                   <Select
                     value={formData.gender}
                     onValueChange={(value) =>
@@ -220,14 +222,14 @@ export function PatientRegistrationForm() {
                     }
                   >
                     <SelectTrigger className="medical-select mt-2">
-                      <SelectValue placeholder="Select gender" />
+                      <SelectValue placeholder={t('auth.patientForm.genderPlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="male">Male</SelectItem>
-                      <SelectItem value="female">Female</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
+                      <SelectItem value="male">{t('auth.patientForm.male')}</SelectItem>
+                      <SelectItem value="female">{t('auth.patientForm.female')}</SelectItem>
+                      <SelectItem value="other">{t('auth.patientForm.other')}</SelectItem>
                       <SelectItem value="prefer-not-to-say">
-                        Prefer not to say
+                        {t('auth.patientForm.preferNotToSay')}
                       </SelectItem>
                     </SelectContent>
                   </Select>
@@ -237,7 +239,7 @@ export function PatientRegistrationForm() {
                     htmlFor="password"
                     className="text-blue-900 font-medium"
                   >
-                    Password *
+                    {t('auth.patientForm.password')} *
                   </Label>
                   <Input
                     id="password"
@@ -247,7 +249,7 @@ export function PatientRegistrationForm() {
                       handleInputChange("password", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="Create a strong password"
+                    placeholder={t('auth.patientForm.passwordPlaceholder')}
                   />
                 </div>
                 <div>
@@ -255,7 +257,7 @@ export function PatientRegistrationForm() {
                     htmlFor="confirmPassword"
                     className="text-blue-900 font-medium"
                   >
-                    Confirm Password *
+                    {t('auth.patientForm.confirmPassword')} *
                   </Label>
                   <Input
                     id="confirmPassword"
@@ -265,14 +267,14 @@ export function PatientRegistrationForm() {
                       handleInputChange("confirmPassword", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="Confirm your password"
+                    placeholder={t('auth.patientForm.confirmPasswordPlaceholder')}
                   />
                 </div>
               </div>
 
               <div className="flex justify-end mt-8">
                 <Button onClick={nextStep} className="btn-primary px-8 py-3">
-                  Next: Medical History
+                  {t('auth.patientForm.nextMedicalHistory')}
                 </Button>
               </div>
             </div>
@@ -283,18 +285,17 @@ export function PatientRegistrationForm() {
               <div className="text-center mb-8">
                 <Heart className="w-12 h-12 text-primary mx-auto mb-4" />
                 <h2 className="text-2xl font-bold text-blue-900 mb-2">
-                  Medical History
+                  {t('auth.patientForm.step2Title')}
                 </h2>
                 <p className="text-blue-700">
-                  Help our doctors provide better care by sharing your medical
-                  background
+                  {t('auth.patientForm.step2SubtitleLong')}
                 </p>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <Label htmlFor="height" className="text-blue-900 font-medium">
-                    Height (cm)
+                    {t('auth.patientForm.height')}
                   </Label>
                   <div className="relative mt-2">
                     <Ruler className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
@@ -306,13 +307,13 @@ export function PatientRegistrationForm() {
                         handleInputChange("height", e.target.value)
                       }
                       className="medical-input pl-10"
-                      placeholder="170"
+                      placeholder={t('auth.patientForm.heightPlaceholder')}
                     />
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="weight" className="text-blue-900 font-medium">
-                    Weight (kg)
+                    {t('auth.patientForm.weight')}
                   </Label>
                   <div className="relative mt-2">
                     <Weight className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
@@ -324,13 +325,13 @@ export function PatientRegistrationForm() {
                         handleInputChange("weight", e.target.value)
                       }
                       className="medical-input pl-10"
-                      placeholder="70"
+                      placeholder={t('auth.patientForm.weightPlaceholder')}
                     />
                   </div>
                 </div>
                 <div>
                   <Label className="text-blue-900 font-medium">
-                    Blood Type
+                    {t('auth.patientForm.bloodType')}
                   </Label>
                   <Select
                     value={formData.bloodType}
@@ -339,7 +340,7 @@ export function PatientRegistrationForm() {
                     }
                   >
                     <SelectTrigger className="medical-select mt-2">
-                      <SelectValue placeholder="Select blood type" />
+                      <SelectValue placeholder={t('auth.patientForm.bloodTypePlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="a+">A+</SelectItem>
@@ -350,13 +351,13 @@ export function PatientRegistrationForm() {
                       <SelectItem value="ab-">AB-</SelectItem>
                       <SelectItem value="o+">O+</SelectItem>
                       <SelectItem value="o-">O-</SelectItem>
-                      <SelectItem value="unknown">Unknown</SelectItem>
+                      <SelectItem value="unknown">{t('auth.patientForm.unknown')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
                   <Label className="text-blue-900 font-medium">
-                    Smoking Status
+                    {t('auth.patientForm.smokingStatus')}
                   </Label>
                   <Select
                     value={formData.smokingStatus}
@@ -365,14 +366,14 @@ export function PatientRegistrationForm() {
                     }
                   >
                     <SelectTrigger className="medical-select mt-2">
-                      <SelectValue placeholder="Select smoking status" />
+                      <SelectValue placeholder={t('auth.patientForm.smokingPlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="never">Never smoked</SelectItem>
-                      <SelectItem value="former">Former smoker</SelectItem>
-                      <SelectItem value="current">Current smoker</SelectItem>
+                      <SelectItem value="never">{t('auth.patientForm.neverSmoked')}</SelectItem>
+                      <SelectItem value="former">{t('auth.patientForm.formerSmoker')}</SelectItem>
+                      <SelectItem value="current">{t('auth.patientForm.currentSmoker')}</SelectItem>
                       <SelectItem value="occasional">
-                        Occasional smoker
+                        {t('auth.patientForm.occasionalSmoker')}
                       </SelectItem>
                     </SelectContent>
                   </Select>
@@ -382,7 +383,7 @@ export function PatientRegistrationForm() {
                     htmlFor="allergies"
                     className="text-blue-900 font-medium"
                   >
-                    Known Allergies
+                    {t('auth.patientForm.knownAllergies')}
                   </Label>
                   <textarea
                     id="allergies"
@@ -391,7 +392,7 @@ export function PatientRegistrationForm() {
                       handleInputChange("allergies", e.target.value)
                     }
                     className="medical-input mt-2 min-h-20 resize-none"
-                    placeholder="List any known allergies (medications, foods, environmental, etc.)"
+                    placeholder={t('auth.patientForm.knownAllergiesPlaceholder')}
                     rows={3}
                   />
                 </div>
@@ -400,7 +401,7 @@ export function PatientRegistrationForm() {
                     htmlFor="currentMedications"
                     className="text-blue-900 font-medium"
                   >
-                    Current Medications
+                    {t('auth.patientForm.currentMedications')}
                   </Label>
                   <textarea
                     id="currentMedications"
@@ -409,7 +410,7 @@ export function PatientRegistrationForm() {
                       handleInputChange("currentMedications", e.target.value)
                     }
                     className="medical-input mt-2 min-h-20 resize-none"
-                    placeholder="List all medications you're currently taking (include dosage if known)"
+                    placeholder={t('auth.patientForm.currentMedicationsLong')}
                     rows={3}
                   />
                 </div>
@@ -418,7 +419,7 @@ export function PatientRegistrationForm() {
                     htmlFor="chronicConditions"
                     className="text-blue-900 font-medium"
                   >
-                    Chronic Conditions
+                    {t('auth.patientForm.chronicConditions')}
                   </Label>
                   <textarea
                     id="chronicConditions"
@@ -427,7 +428,7 @@ export function PatientRegistrationForm() {
                       handleInputChange("chronicConditions", e.target.value)
                     }
                     className="medical-input mt-2 min-h-20 resize-none"
-                    placeholder="Any ongoing health conditions (diabetes, hypertension, asthma, etc.)"
+                    placeholder={t('auth.patientForm.chronicConditionsLong')}
                     rows={3}
                   />
                 </div>
@@ -436,7 +437,7 @@ export function PatientRegistrationForm() {
                     htmlFor="previousSurgeries"
                     className="text-blue-900 font-medium"
                   >
-                    Previous Surgeries
+                    {t('auth.patientForm.previousSurgeries')}
                   </Label>
                   <textarea
                     id="previousSurgeries"
@@ -445,7 +446,7 @@ export function PatientRegistrationForm() {
                       handleInputChange("previousSurgeries", e.target.value)
                     }
                     className="medical-input mt-2 min-h-20 resize-none"
-                    placeholder="List any surgeries or major medical procedures (include approximate dates)"
+                    placeholder={t('auth.patientForm.previousSurgeriesLong')}
                     rows={3}
                   />
                 </div>
@@ -457,10 +458,10 @@ export function PatientRegistrationForm() {
                   variant="outline"
                   className="btn-secondary px-8 py-3"
                 >
-                  Back
+                  {t('auth.patientForm.back')}
                 </Button>
                 <Button onClick={nextStep} className="btn-primary px-8 py-3">
-                  Next: Emergency Contact
+                  {t('auth.patientForm.nextEmergencyContact')}
                 </Button>
               </div>
             </div>
@@ -471,17 +472,17 @@ export function PatientRegistrationForm() {
               <div className="text-center mb-8">
                 <Shield className="w-12 h-12 text-primary mx-auto mb-4" />
                 <h2 className="text-2xl font-bold text-blue-900 mb-2">
-                  Emergency Contact & Final Details
+                  {t('auth.patientForm.step3TitleFull')}
                 </h2>
                 <p className="text-blue-700">
-                  Almost done! Please provide emergency contact information
+                  {t('auth.patientForm.step3SubtitleLong')}
                 </p>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
                   <h3 className="text-lg font-semibold text-blue-900 mb-4">
-                    Emergency Contact Information
+                    {t('auth.patientForm.emergencyContactInfo')}
                   </h3>
                 </div>
                 <div>
@@ -489,7 +490,7 @@ export function PatientRegistrationForm() {
                     htmlFor="emergencyContactName"
                     className="text-blue-900 font-medium"
                   >
-                    Contact Name *
+                    {t('auth.patientForm.contactName')} *
                   </Label>
                   <Input
                     id="emergencyContactName"
@@ -498,7 +499,7 @@ export function PatientRegistrationForm() {
                       handleInputChange("emergencyContactName", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="Emergency contact full name"
+                    placeholder={t('auth.patientForm.emergencyNamePlaceholder')}
                   />
                 </div>
                 <div>
@@ -506,7 +507,7 @@ export function PatientRegistrationForm() {
                     htmlFor="emergencyContactPhone"
                     className="text-blue-900 font-medium"
                   >
-                    Contact Phone *
+                    {t('auth.patientForm.contactPhone')} *
                   </Label>
                   <Input
                     id="emergencyContactPhone"
@@ -516,12 +517,12 @@ export function PatientRegistrationForm() {
                       handleInputChange("emergencyContactPhone", e.target.value)
                     }
                     className="medical-input mt-2"
-                    placeholder="+20 1XX XXX XXXX"
+                    placeholder={t('auth.patientForm.emergencyPhonePlaceholder')}
                   />
                 </div>
                 <div>
                   <Label className="text-blue-900 font-medium">
-                    Relationship *
+                    {t('auth.patientForm.relationship')} *
                   </Label>
                   <Select
                     value={formData.emergencyContactRelation}
@@ -530,21 +531,21 @@ export function PatientRegistrationForm() {
                     }
                   >
                     <SelectTrigger className="medical-select mt-2">
-                      <SelectValue placeholder="Select relationship" />
+                      <SelectValue placeholder={t('auth.patientForm.emergencyRelationPlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="spouse">Spouse</SelectItem>
-                      <SelectItem value="parent">Parent</SelectItem>
-                      <SelectItem value="child">Child</SelectItem>
-                      <SelectItem value="sibling">Sibling</SelectItem>
-                      <SelectItem value="friend">Friend</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
+                      <SelectItem value="spouse">{t('auth.patientForm.spouse')}</SelectItem>
+                      <SelectItem value="parent">{t('auth.patientForm.parent')}</SelectItem>
+                      <SelectItem value="child">{t('auth.patientForm.child')}</SelectItem>
+                      <SelectItem value="sibling">{t('auth.patientForm.sibling')}</SelectItem>
+                      <SelectItem value="friend">{t('auth.patientForm.friend')}</SelectItem>
+                      <SelectItem value="other">{t('auth.patientForm.other')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
                   <Label className="text-blue-900 font-medium">
-                    Exercise Frequency
+                    {t('auth.patientForm.exerciseFrequency')}
                   </Label>
                   <Select
                     value={formData.exerciseFrequency}
@@ -553,19 +554,19 @@ export function PatientRegistrationForm() {
                     }
                   >
                     <SelectTrigger className="medical-select mt-2">
-                      <SelectValue placeholder="How often do you exercise?" />
+                      <SelectValue placeholder={t('auth.patientForm.exercisePlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="daily">Daily</SelectItem>
+                      <SelectItem value="daily">{t('auth.patientForm.daily')}</SelectItem>
                       <SelectItem value="4-6-weekly">
-                        4-6 times per week
+                        {t('auth.patientForm.fourToSixWeekly')}
                       </SelectItem>
                       <SelectItem value="2-3-weekly">
-                        2-3 times per week
+                        {t('auth.patientForm.twoToThreeWeekly')}
                       </SelectItem>
-                      <SelectItem value="weekly">Once a week</SelectItem>
-                      <SelectItem value="rarely">Rarely</SelectItem>
-                      <SelectItem value="never">Never</SelectItem>
+                      <SelectItem value="weekly">{t('auth.patientForm.weekly')}</SelectItem>
+                      <SelectItem value="rarely">{t('auth.patientForm.rarely')}</SelectItem>
+                      <SelectItem value="never">{t('auth.patientForm.never')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -574,7 +575,7 @@ export function PatientRegistrationForm() {
                     htmlFor="familyMedicalHistory"
                     className="text-blue-900 font-medium"
                   >
-                    Family Medical History
+                    {t('auth.patientForm.familyMedicalHistory')}
                   </Label>
                   <textarea
                     id="familyMedicalHistory"
@@ -583,7 +584,7 @@ export function PatientRegistrationForm() {
                       handleInputChange("familyMedicalHistory", e.target.value)
                     }
                     className="medical-input mt-2 min-h-24 resize-none"
-                    placeholder="Any significant family medical history (heart disease, diabetes, cancer, etc.)"
+                    placeholder={t('auth.patientForm.familyMedicalHistoryPlaceholder')}
                     rows={4}
                   />
                 </div>
@@ -592,41 +593,38 @@ export function PatientRegistrationForm() {
               {/* Terms and Conditions */}
               <div className="mt-8 p-6 bg-blue-50 rounded-lg">
                 <h4 className="font-semibold text-blue-900 mb-3">
-                  Privacy & Terms
+                  {t('auth.patientForm.privacyTerms')}
                 </h4>
                 <div className="text-sm text-blue-700 space-y-2">
                   <p>
-                    • Your medical information is encrypted and stored securely
+                    {t('auth.patientForm.privacyPoint1')}
                   </p>
                   <p>
-                    • Only verified doctors you interact with will see relevant
-                    medical details
+                    {t('auth.patientForm.privacyPoint2')}
                   </p>
-                  <p>• You can update or delete your information at any time</p>
+                  <p>{t('auth.patientForm.privacyPoint3')}</p>
                   <p>
-                    • We follow strict medical privacy regulations (HIPAA
-                    equivalent)
+                    {t('auth.patientForm.privacyPoint4')}
                   </p>
                 </div>
                 <div className="mt-4 flex items-start gap-3">
                   <input type="checkbox" id="terms" className="mt-1" />
                   <label htmlFor="terms" className="text-sm text-blue-700">
-                    I agree to the{" "}
+                    {t('auth.patientForm.agreeTerms')}{" "}
                     <Link
                       href="/privacy"
                       className="text-primary hover:underline"
                     >
-                      Terms of Service
+                      {t('auth.patientForm.termsOfService')}
                     </Link>{" "}
-                    and{" "}
+                    {t('auth.patientForm.and')}{" "}
                     <Link
                       href="/privacy"
                       className="text-primary hover:underline"
                     >
-                      Privacy Policy
+                      {t('auth.patientForm.privacyPolicy')}
                     </Link>
-                    , and consent to the secure storage of my medical
-                    information.
+                    {t('auth.patientForm.consentStorage')}
                   </label>
                 </div>
               </div>
@@ -637,7 +635,7 @@ export function PatientRegistrationForm() {
                   variant="outline"
                   className="btn-secondary px-8 py-3"
                 >
-                  Back
+                  {t('auth.patientForm.back')}
                 </Button>
                 <Button
                   className="btn-primary px-8 py-3"
@@ -645,8 +643,8 @@ export function PatientRegistrationForm() {
                   disabled={submitting}
                 >
                   {submitting
-                    ? "Creating Account..."
-                    : "Create Patient Account"}
+                    ? t('auth.patientForm.creatingAccount')
+                    : t('auth.patientForm.createPatientAccount')}
                 </Button>
               </div>
             </div>
