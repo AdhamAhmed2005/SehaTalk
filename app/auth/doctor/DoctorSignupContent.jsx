@@ -2,12 +2,10 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { DoctorRegistrationForm } from "./DoctorRegistrationForm.jsx";
-import { isRTL as rtl } from "@/lib/lang";
-import { tDoctorSignup as t } from "../i18n";
+import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
-export default function DoctorSignupContent({ lang }) {
-  const isRTL = rtl(lang);
-  const i = t(lang);
+export default function DoctorSignupContent() {
+  const { t, isRTL } = useLanguage();
   return (
     <div className="min-h-screen bg-white" dir={isRTL ? "rtl" : "ltr"}>
       <div className="hero-bg py-16 px-4">
@@ -24,12 +22,12 @@ export default function DoctorSignupContent({ lang }) {
               }`}
             >
               <ArrowLeft className={`w-5 h-5 ${isRTL ? "rotate-180" : ""}`} />
-              {i.back}
+              {t('auth.doctorSignup.back')}
             </Link>
           </div>
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-blue-900 mb-4">{i.title}</h1>
-            <p className="text-xl text-blue-700 mb-8">{i.subtitle}</p>
+            <h1 className="text-4xl font-bold text-blue-900 mb-4">{t('auth.doctorSignup.title')}</h1>
+            <p className="text-xl text-blue-700 mb-8">{t('auth.doctorSignup.subtitle')}</p>
           </div>
         </div>
       </div>
