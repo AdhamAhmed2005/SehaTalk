@@ -72,11 +72,21 @@ export function PatientRegistrationForm() {
         ...formData,
       };
 
+      console.log("Submitting signup:", payload);
       const { data } = await axios.post("/api/auth/signup", payload);
+      console.log("Signup success:", data);
       setSuccess(data?.message || "Signup successful");
+      // Redirect to login or dashboard after successful signup
+      setTimeout(() => {
+        window.location.href = "/auth/patient/login";
+      }, 2000);
     } catch (err) {
-      const message =
-        err?.response?.data?.message || "Signup failed. Please try again.";
+      console.error("Signup failed:", err);
+      console.error("Error response:", err?.response?.data);
+      let message = err?.response?.data?.message || "Signup failed. Please try again.";
+      if (err?.response?.status === 409) {
+        message = "An account with this email already exists. Please use a different email or log in.";
+      }
       setError(message);
     } finally {
       setSubmitting(false);
