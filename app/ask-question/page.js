@@ -52,15 +52,15 @@ export default function AskQuestionPage() {
             <div className={`flex items-center gap-4 text-sm text-blue-600 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Shield className="w-4 h-4" />
-                <span>حساب مريض موثق</span>
+                <span>{t('askQuestion.verifiedPatient')}</span>
               </div>
               <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Users className="w-4 h-4" />
-                <span>500+ طبيب متاح</span>
+                <span>500+ {t('askQuestion.doctorsAvailable')}</span>
               </div>
               <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Heart className="w-4 h-4" />
-                <span>دعم 24/7</span>
+                <span>{t('askQuestion.support247')}</span>
               </div>
             </div>
           </div>
@@ -77,28 +77,27 @@ export default function AskQuestionPage() {
             </div>
             <h1 className="text-3xl font-bold text-blue-900 mb-2">{t('askQuestion.title')}</h1>
             <p className="text-blue-600 max-w-2xl mx-auto">
-              احصل على استشارة طبية مهنية من أطباء معتمدين. اوصف أعراضك أو مخاوفك أو اسأل عن العلاجات. 
-              سيقدم محترفو الرعاية الصحية لدينا إرشادات شخصية.
+              {t('askQuestion.subtitle')}
             </p>
           </div>
 
           {/* Guidelines */}
           <div className="mb-8 p-6 bg-blue-50 rounded-xl border border-blue-100">
             <h3 className={`font-semibold text-blue-900 mb-3 ${isRTL ? 'text-right' : 'text-left'}`}>
-              إرشادات طرح الأسئلة:
+              {t('askQuestion.guidelinesTitle')}
             </h3>
             <div className={`grid md:grid-cols-2 gap-4 text-sm text-blue-700 ${isRTL ? 'text-right' : 'text-left'}`}>
               <div className="space-y-2">
-                <p>✅ كن محددًا حول أعراضك</p>
-                <p>✅ شمل التاريخ الطبي ذي الصلة</p>
-                <p>✅ اذكر الأدوية الحالية</p>
-                <p>✅ اوصف متى بدأت الأعراض</p>
+                <p>✅ {t('askQuestion.doSpecific')}</p>
+                <p>✅ {t('askQuestion.doMedicalHistory')}</p>
+                <p>✅ {t('askQuestion.doMentionMeds')}</p>
+                <p>✅ {t('askQuestion.doDescribeStart')}</p>
               </div>
               <div className="space-y-2">
-                <p>❌ لا تشارك المعلومات الشخصية</p>
-                <p>❌ تجنب المواقف الطارئة</p>
-                <p>❌ لا تشمل صور المناطق الخاصة</p>
-                <p>❌ لا تطلب وصفات طبية</p>
+                <p>❌ {t('askQuestion.dontSharePersonal')}</p>
+                <p>❌ {t('askQuestion.dontEmergency')}</p>
+                <p>❌ {t('askQuestion.dontPrivateImages')}</p>
+                <p>❌ {t('askQuestion.dontPrescriptions')}</p>
               </div>
             </div>
           </div>
@@ -151,9 +150,9 @@ export default function AskQuestionPage() {
                   </svg>
                 </div>
                 <div className={isRTL ? 'text-right' : 'text-left'}>
-                  <h3 className="text-red-800 font-semibold text-sm mb-1">حالة طبية طارئة؟</h3>
+                  <h3 className="text-red-800 font-semibold text-sm mb-1">{t('askQuestion.emergencyTitle')}</h3>
                   <p className="text-red-700 text-sm">
-                    إذا كنت تواجه حالة طبية طارئة، يرجى الاتصال بخدمات الطوارئ المحلية فورًا. هذه المنصة ليست مخصصة للحالات الطبية العاجلة.
+                    {t('askQuestion.emergencyText')}
                   </p>
                 </div>
               </div>

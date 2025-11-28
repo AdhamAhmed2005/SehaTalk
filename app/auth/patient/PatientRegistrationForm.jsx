@@ -379,75 +379,99 @@ export function PatientRegistrationForm() {
                   </Select>
                 </div>
                 <div className="md:col-span-2">
-                  <Label
-                    htmlFor="allergies"
-                    className="text-blue-900 font-medium"
-                  >
-                    {t('auth.patientForm.knownAllergies')}
-                  </Label>
+                  <div className="mb-2">
+                    <Label
+                      htmlFor="allergies"
+                      className="text-blue-900 font-semibold text-base flex items-center gap-2"
+                    >
+                      <span className="text-lg">⚠️</span>
+                      {t('auth.patientForm.knownAllergies')}
+                    </Label>
+                    <p className="text-sm text-blue-600 mt-1">
+                      {t('auth.patientForm.knownAllergiesPlaceholder')}
+                    </p>
+                  </div>
                   <textarea
                     id="allergies"
                     value={formData.allergies}
                     onChange={(e) =>
                       handleInputChange("allergies", e.target.value)
                     }
-                    className="medical-input mt-2 min-h-20 resize-none"
-                    placeholder={t('auth.patientForm.knownAllergiesPlaceholder')}
-                    rows={3}
+                    className="medical-input mt-2 min-h-28 resize-y w-full bg-white hover:bg-blue-50/30 transition-colors duration-200"
+                    placeholder="e.g., Penicillin, Peanuts, Pollen..."
+                    rows={4}
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <Label
-                    htmlFor="currentMedications"
-                    className="text-blue-900 font-medium"
-                  >
-                    {t('auth.patientForm.currentMedications')}
-                  </Label>
+                  <div className="mb-2">
+                    <Label
+                      htmlFor="currentMedications"
+                      className="text-blue-900 font-semibold text-base flex items-center gap-2"
+                    >
+                      <span className="text-lg">💊</span>
+                      {t('auth.patientForm.currentMedications')}
+                    </Label>
+                    <p className="text-sm text-blue-600 mt-1">
+                      {t('auth.patientForm.currentMedicationsLong')}
+                    </p>
+                  </div>
                   <textarea
                     id="currentMedications"
                     value={formData.currentMedications}
                     onChange={(e) =>
                       handleInputChange("currentMedications", e.target.value)
                     }
-                    className="medical-input mt-2 min-h-20 resize-none"
-                    placeholder={t('auth.patientForm.currentMedicationsLong')}
-                    rows={3}
+                    className="medical-input mt-2 min-h-28 resize-y w-full bg-white hover:bg-blue-50/30 transition-colors duration-200"
+                    placeholder="e.g., Aspirin 75mg daily, Vitamin D 1000 IU..."
+                    rows={4}
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <Label
-                    htmlFor="chronicConditions"
-                    className="text-blue-900 font-medium"
-                  >
-                    {t('auth.patientForm.chronicConditions')}
-                  </Label>
+                  <div className="mb-2">
+                    <Label
+                      htmlFor="chronicConditions"
+                      className="text-blue-900 font-semibold text-base flex items-center gap-2"
+                    >
+                      <span className="text-lg">🩺</span>
+                      {t('auth.patientForm.chronicConditions')}
+                    </Label>
+                    <p className="text-sm text-blue-600 mt-1">
+                      {t('auth.patientForm.chronicConditionsLong')}
+                    </p>
+                  </div>
                   <textarea
                     id="chronicConditions"
                     value={formData.chronicConditions}
                     onChange={(e) =>
                       handleInputChange("chronicConditions", e.target.value)
                     }
-                    className="medical-input mt-2 min-h-20 resize-none"
-                    placeholder={t('auth.patientForm.chronicConditionsLong')}
-                    rows={3}
+                    className="medical-input mt-2 min-h-28 resize-y w-full bg-white hover:bg-blue-50/30 transition-colors duration-200"
+                    placeholder="e.g., Type 2 Diabetes, Hypertension, Asthma..."
+                    rows={4}
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <Label
-                    htmlFor="previousSurgeries"
-                    className="text-blue-900 font-medium"
-                  >
-                    {t('auth.patientForm.previousSurgeries')}
-                  </Label>
+                  <div className="mb-2">
+                    <Label
+                      htmlFor="previousSurgeries"
+                      className="text-blue-900 font-semibold text-base flex items-center gap-2"
+                    >
+                      <span className="text-lg">🏥</span>
+                      {t('auth.patientForm.previousSurgeries')}
+                    </Label>
+                    <p className="text-sm text-blue-600 mt-1">
+                      {t('auth.patientForm.previousSurgeriesLong')}
+                    </p>
+                  </div>
                   <textarea
                     id="previousSurgeries"
                     value={formData.previousSurgeries}
                     onChange={(e) =>
                       handleInputChange("previousSurgeries", e.target.value)
                     }
-                    className="medical-input mt-2 min-h-20 resize-none"
-                    placeholder={t('auth.patientForm.previousSurgeriesLong')}
-                    rows={3}
+                    className="medical-input mt-2 min-h-28 resize-y w-full bg-white hover:bg-blue-50/30 transition-colors duration-200"
+                    placeholder="e.g., Appendectomy (2019), Knee Surgery (2021)..."
+                    rows={4}
                   />
                 </div>
               </div>
@@ -571,20 +595,26 @@ export function PatientRegistrationForm() {
                   </Select>
                 </div>
                 <div className="md:col-span-2">
-                  <Label
-                    htmlFor="familyMedicalHistory"
-                    className="text-blue-900 font-medium"
-                  >
-                    {t('auth.patientForm.familyMedicalHistory')}
-                  </Label>
+                  <div className="mb-2">
+                    <Label
+                      htmlFor="familyMedicalHistory"
+                      className="text-blue-900 font-semibold text-base flex items-center gap-2"
+                    >
+                      <span className="text-lg">👨‍👩‍👧‍👦</span>
+                      {t('auth.patientForm.familyMedicalHistory')}
+                    </Label>
+                    <p className="text-sm text-blue-600 mt-1">
+                      {t('auth.patientForm.familyMedicalHistoryPlaceholder')}
+                    </p>
+                  </div>
                   <textarea
                     id="familyMedicalHistory"
                     value={formData.familyMedicalHistory}
                     onChange={(e) =>
                       handleInputChange("familyMedicalHistory", e.target.value)
                     }
-                    className="medical-input mt-2 min-h-24 resize-none"
-                    placeholder={t('auth.patientForm.familyMedicalHistoryPlaceholder')}
+                    className="medical-input mt-2 min-h-28 resize-y w-full bg-white hover:bg-blue-50/30 transition-colors duration-200"
+                    placeholder="e.g., Father - Heart Disease, Mother - Diabetes..."
                     rows={4}
                   />
                 </div>
