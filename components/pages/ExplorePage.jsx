@@ -134,7 +134,7 @@ export function ExplorePage() {
       {/* Hero Section */}
       <section className="hero-bg pt-24 pb-16 px-4">
         <div className={`container mx-auto max-w-6xl ${isRTL ? 'text-center' : 'text-center'}`}>
-          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/20 mb-6">
+          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/20 mb-6 mt-6">
             <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
             <span className="text-sm font-medium text-primary">مجتمع الأسئلة والأجوبة المباشر</span>
           </div>
