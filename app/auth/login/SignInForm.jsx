@@ -64,11 +64,12 @@ export function SignInForm() {
 
       const { data } = await axios.post("/api/auth/login", payload);
 
+      // Redirect to actual profile page after login and reload to update Navbar
+      let profileUrl = "/profile/patient";
       if (payload.role === "doctor") {
-        router.push("/dashboard/doctor");
-      } else {
-        router.push("/dashboard/patient");
+        profileUrl = "/profile/doctor";
       }
+      window.location.assign(profileUrl);
     } catch (err) {
       const message = err?.response?.data?.message || i.errInvalid;
       setError(message);

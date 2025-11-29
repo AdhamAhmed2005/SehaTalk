@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   MessageSquare, Plus, Clock, CheckCircle, Eye, Heart, 
@@ -11,55 +11,37 @@ import { Button } from '../../../components/ui/button.jsx';
 import { Card, CardContent } from '../../../components/ui/card.jsx';
 
 export function PatientDashboardContent() {
-  // Mock user and questions data
-  const [user] = useState({
-    name: 'Sarah Mohamed',
-    email: 'sarah.mohamed@email.com',
-    memberSince: 'January 2024',
-    profileComplete: 85
-  });
+  // Real user data
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const [questions] = useState([
-    {
-      id: 'q1',
-      title: 'Persistent headaches for the past week',
-      category: 'Neurology',
-      status: 'answered',
-      answerCount: 2,
-      views: 45,
-      createdAt: '2 days ago',
-      urgency: 'normal',
-      isAnonymous: false
-    },
-    {
-      id: 'q2',
-      title: 'Side effects from new blood pressure medication',
-      category: 'Cardiology',
-      status: 'pending',
-      answerCount: 0,
-      views: 12,
-      createdAt: '5 hours ago',
-      urgency: 'high',
-      isAnonymous: false
-    },
-    {
-      id: 'q3',
-      title: 'Skin rash after eating seafood',
-      category: 'Dermatology',
-      status: 'answered',
-      answerCount: 1,
-      views: 28,
-      createdAt: '1 week ago',
-      urgency: 'normal',
-      isAnonymous: true
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        setLoading(true);
+        const res = await fetch("/api/profile/me");
+        if (!res.ok) throw new Error("Not authenticated");
+        const data = await res.json();
+        setUser(data.user);
+      } catch (err) {
+        setError("Could not load profile. Please sign in again.");
+      } finally {
+        setLoading(false);
+      }
     }
-  ]);
+    fetchUser();
+  }, []);
 
+  // TODO: Replace with real questions fetch for this user
+  const [questions] = useState([]);
+
+  // TODO: Replace with real stats fetch for this user
   const [stats] = useState({
-    totalQuestions: 15,
-    answeredQuestions: 12,
-    totalViews: 340,
-    helpfulVotes: 23
+    totalQuestions: 0,
+    answeredQuestions: 0,
+    totalViews: 0,
+    helpfulVotes: 0
   });
 
   const getStatusBadge = (status, urgency) => {
@@ -80,6 +62,10 @@ export function PatientDashboardContent() {
       );
     }
   };
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center text-xl">Loading profile...</div>;
+  if (error) return <div className="min-h-screen flex items-center justify-center text-red-600 text-xl">{error}</div>;
+  if (!user) return null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 pt-20">

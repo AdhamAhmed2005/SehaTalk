@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   MessageSquare,
@@ -19,33 +19,41 @@ import { Button } from "../../../components/ui/button.jsx";
 import { Card, CardContent } from "../../../components/ui/card.jsx";
 
 export function DoctorDashboardContent() {
-  // Mock doctor and stats data
-  const [doctor] = useState({
-    name: "Dr. Ahmed El-Sayed",
-    specialty: "Cardiologist",
-    email: "ahmed.elsayed@clinic.com",
-    profileComplete: 92,
-    since: "March 2022"
-  });
+  // Real doctor data
+  const [doctor, setDoctor] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
+  useEffect(() => {
+    async function fetchDoctor() {
+      try {
+        setLoading(true);
+        const res = await fetch("/api/profile/me");
+        if (!res.ok) throw new Error("Not authenticated");
+        const data = await res.json();
+        setDoctor(data.user);
+      } catch (err) {
+        setError("Could not load profile. Please sign in again.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchDoctor();
+  }, []);
+
+  // TODO: Replace with real stats fetch for this doctor
   const [stats] = useState({
-    upcomingAppointments: 6,
-    todaysPatients: 4,
-    unreadMessages: 3,
-    monthlyEarnings: "$4,200"
+    upcomingAppointments: 0,
+    todaysPatients: 0,
+    unreadMessages: 0,
+    monthlyEarnings: "$0"
   });
 
-  const [appointments] = useState([
-    { id: "a1", patient: "Mona Khaled", time: "Today • 10:30 AM", type: "In-person", status: "scheduled" },
-    { id: "a2", patient: "Omar Youssef", time: "Today • 01:00 PM", type: "Teleconsult", status: "pending" },
-    { id: "a3", patient: "Fatma Ali", time: "Tomorrow • 09:00 AM", type: "In-person", status: "scheduled" }
-  ]);
+  // TODO: Replace with real appointments fetch for this doctor
+  const [appointments] = useState([]);
 
-  const [patients] = useState([
-    { id: "p1", name: "Mona Khaled", lastVisit: "2 months ago", condition: "Hypertension" },
-    { id: "p2", name: "Omar Youssef", lastVisit: "1 week ago", condition: "Chest Pain" },
-    { id: "p3", name: "Fatma Ali", lastVisit: "3 months ago", condition: "Diabetes" }
-  ]);
+  // TODO: Replace with real patients fetch for this doctor
+  const [patients] = useState([]);
 
   const getStatusBadge = (status) => {
     if (status === "scheduled") {
@@ -68,6 +76,10 @@ export function DoctorDashboardContent() {
       </span>
     );
   };
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center text-xl">Loading profile...</div>;
+  if (error) return <div className="min-h-screen flex items-center justify-center text-red-600 text-xl">{error}</div>;
+  if (!doctor) return null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 pt-20">

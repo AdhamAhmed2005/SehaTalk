@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Menu,
@@ -18,14 +18,22 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button.jsx";
 import { useLanguage } from "../lib/i18n/LanguageProvider";
+import { fetchCurrentUser } from "../lib/utils/authClient";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { t, isRTL } = useLanguage();
-  // Mock authentication state - replace with actual auth logic
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Set to false to show logged-out state
-  const [userType, setUserType] = useState("patient"); // 'patient' or 'doctor'
+  // Auth state
+  const [user, setUser] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true);
+
+  useEffect(() => {
+    fetchCurrentUser().then(u => {
+      setUser(u);
+      setLoadingUser(false);
+    });
+  }, []);
 
   return (
     <nav className="bg-white/95 backdrop-blur-md shadow-lg border-b border-blue-100 fixed top-0 left-0 right-0 z-50">
@@ -49,16 +57,29 @@ export function Navbar() {
             <div
               className={`flex flex-col ${isRTL ? "text-right" : "text-left"}`}
             >
-              <span className="text-xl font-bold text-blue-900 leading-tight">
+              <span className="text-xl font-bold text-blue-1000 leading-tight">
                 SehaTalk
               </span>
-              <span className="text-xs text-blue-600 font-medium hidden sm:block">
+              <span className="text-xs text-blue-800 font-medium hidden sm:block">
                 منصة الرعاية الصحية
               </span>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
+          <div className="flex items-center gap-4">
+            {loadingUser ? null : user ? (
+              <Link href={user.role === 'doctor' ? "/profile/doctor" : "/profile/patient"} className="flex items-center gap-2 px-3 py-1 bg-blue-50 rounded-lg border border-blue-100 min-w-[100px] max-w-[180px] hover:bg-blue-100 transition-colors">
+                <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 text-primary font-bold text-sm border border-primary/10">
+                  {user.name?.charAt(0) || '?'}
+                </span>
+                <div className="flex flex-col leading-tight">
+                  <span className="font-medium text-blue-900 truncate max-w-[100px] text-sm underline">{user.name}</span>
+                  <span className="text-xs text-blue-600 capitalize">{user.role === 'doctor' ? (isRTL ? 'طبيب' : 'Doctor') : (isRTL ? 'مريض' : 'Patient')}</span>
+                </div>
+              </Link>
+            ) : null}
+          </div>
           <div
             className={`hidden lg:flex items-center gap-6 ${
               isRTL ? "flex-row-reverse" : ""
@@ -122,7 +143,7 @@ export function Navbar() {
                 <span>{t("nav.askQuestion")}</span>
               </Link>
             </Button>
-            {!isLoggedIn && (
+            {!loadingUser && !user && (
               <>
                 <Button
                   variant="outline"
@@ -139,33 +160,19 @@ export function Navbar() {
                 </Button>
               </>
             )}
-            {isLoggedIn && (
+            {!loadingUser && user && (
               <div
                 className={`flex items-center gap-3 ${
                   isRTL ? "flex-row-reverse" : ""
                 }`}
               >
                 <Button
-                  variant="ghost"
-                  className="text-blue-600 hover:text-primary"
-                  asChild
-                >
-                  <Link
-                    href="/dashboard/patient"
-                    className={`flex items-center ${
-                      isRTL
-                        ? "flex-row-reverse space-x-reverse space-x-2"
-                        : "space-x-2"
-                    }`}
-                  >
-                    <User className="w-4 h-4" />
-                    <span>{t("nav.dashboard")}</span>
-                  </Link>
-                </Button>
-                <Button
                   variant="outline"
                   className="text-red-600 border-red-200 hover:bg-red-50"
-                  onClick={() => setIsLoggedIn(false)}
+                  onClick={() => {
+                    fetch('/auth/logout', { method: 'POST' })
+                      .then(() => window.location.href = '/');
+                  }}
                 >
                   {t("nav.signOut")}
                 </Button>
@@ -245,7 +252,7 @@ export function Navbar() {
                   <User className="w-5 h-5" />
                   <span>{t("nav.about")}</span>
                 </Link>
-                {isLoggedIn && (
+                {!loadingUser && user && (
                   <Link
                     href="/dashboard/patient"
                     className={`flex items-center gap-3 text-blue-700 hover:text-primary hover:bg-blue-50 font-medium transition-colors py-3 px-4 rounded-lg ${
@@ -261,7 +268,7 @@ export function Navbar() {
 
               {/* Mobile CTA Buttons */}
               <div className="flex flex-col gap-3 pt-6 border-t border-blue-100 mt-6">
-                {!isLoggedIn && (
+                {!loadingUser && !user && (
                   <>
                     <Button
                       variant="outline"
@@ -282,13 +289,14 @@ export function Navbar() {
                     </Button>
                   </>
                 )}
-                {isLoggedIn && (
+                {!loadingUser && user && (
                   <Button
                     variant="outline"
                     className="text-red-600 border-red-200 hover:bg-red-50 w-full py-3"
                     onClick={() => {
-                      setIsLoggedIn(false);
                       setIsOpen(false);
+                      fetch('/auth/logout', { method: 'POST' })
+                        .then(() => window.location.href = '/');
                     }}
                   >
                     {t("nav.signOut")}

@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from 'react';
+import { isPatientAuthenticated } from '../../lib/utils/questionUtils.js';
+import { useRouter } from 'next/navigation';
+import { useState as useReactState } from 'react';
 import { MessageCircle, ThumbsUp, Eye } from 'lucide-react';
 import { SearchFilterBar } from '../SearchFilterBar.jsx';
 import { VerifiedBadge } from '../VerifiedBadge.jsx';
@@ -128,13 +131,16 @@ export function ExplorePage() {
   const [category, setCategory] = useState('all');
   const [sortBy, setSortBy] = useState('recent');
   const { t, isRTL, language } = useLanguage();
+  const router = useRouter();
+  // Local state for likes (for demo, not persistent)
+  const [likes, setLikes] = useReactState({});
 
   return (
     <div className="min-h-screen bg-white" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Hero Section */}
       <section className="hero-bg pt-24 pb-16 px-4">
         <div className={`container mx-auto max-w-6xl ${isRTL ? 'text-center' : 'text-center'}`}>
-          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/20 mb-6">
+          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/20 mb-6 mt-6">
             <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
             <span className="text-sm font-medium text-primary">مجتمع الأسئلة والأجوبة المباشر</span>
           </div>
@@ -267,7 +273,23 @@ export function ExplorePage() {
                       {/* Enhanced Stats */}
                       <div className={`flex items-center ${isRTL ? 'justify-between flex-row-reverse' : 'justify-between'}`}>
                         <div className={`flex items-center gap-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <div className={`flex items-center gap-2 text-blue-600 hover:text-primary transition-colors cursor-pointer ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <div
+                            className={`flex items-center gap-2 text-blue-600 hover:text-primary transition-colors cursor-pointer ${isRTL ? 'flex-row-reverse' : ''}`}
+                            onClick={async () => {
+                              if (!isPatientAuthenticated()) {
+                                if (window.confirm(isRTL ? 'يجب تسجيل الدخول لإضافة رد. هل تريد تسجيل الدخول الآن؟' : 'You must be signed in to reply. Go to login?')) {
+                                  router.push('/auth/patient');
+                                }
+                                return;
+                              }
+                              // For demo: open a prompt and send reply to API (not implemented)
+                              const reply = window.prompt(isRTL ? 'اكتب ردك:' : 'Write your reply:');
+                              if (reply && reply.trim()) {
+                                // TODO: Call API to add reply
+                                alert(isRTL ? 'تم إرسال الرد (تجريبي).' : 'Reply sent (demo).');
+                              }
+                            }}
+                          >
                             <MessageCircle className="w-5 h-5" />
                             <span className="font-medium">{question.replies}</span>
                             <span className="text-sm hidden sm:inline">{isRTL ? 'ردود' : 'replies'}</span>
@@ -277,9 +299,34 @@ export function ExplorePage() {
                             <span className="font-medium">{question.views.toLocaleString()}</span>
                             <span className="text-sm hidden sm:inline">{isRTL ? 'مشاهدة' : 'views'}</span>
                           </div>
-                          <div className={`flex items-center gap-2 text-blue-600 hover:text-primary transition-colors cursor-pointer ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <div
+                            className={`flex items-center gap-2 text-blue-600 hover:text-primary transition-colors cursor-pointer ${isRTL ? 'flex-row-reverse' : ''}`}
+                            onClick={async () => {
+                              if (!isPatientAuthenticated()) {
+                                if (window.confirm(isRTL ? 'يجب تسجيل الدخول لإضافة إعجاب. هل تريد تسجيل الدخول الآن؟' : 'You must be signed in to like. Go to login?')) {
+                                  router.push('/auth/patient');
+                                }
+                                return;
+                              }
+                              // Call API to increment like in DB
+                              try {
+                                const res = await fetch(`/api/questions/${question.id}`, {
+                                  method: 'PATCH',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify({ $inc: { likesCount: 1 } })
+                                });
+                                if (res.ok) {
+                                  setLikes(l => ({ ...l, [question.id]: (l[question.id] || question.likes) + 1 }));
+                                } else {
+                                  alert(isRTL ? 'حدث خطأ أثناء الإعجاب.' : 'Error while liking.');
+                                }
+                              } catch (e) {
+                                alert(isRTL ? 'حدث خطأ أثناء الإعجاب.' : 'Error while liking.');
+                              }
+                            }}
+                          >
                             <ThumbsUp className="w-5 h-5" />
-                            <span className="font-medium">{question.likes}</span>
+                            <span className="font-medium">{likes[question.id] ?? question.likes}</span>
                             <span className="text-sm hidden sm:inline">{isRTL ? 'إعجاب' : 'likes'}</span>
                           </div>
                         </div>
