@@ -49,10 +49,10 @@ export function Navbar() {
             <div
               className={`flex flex-col ${isRTL ? "text-right" : "text-left"}`}
             >
-              <span className="text-xl font-bold text-blue-900 leading-tight">
+              <span className="text-xl font-bold text-blue-1000 leading-tight">
                 SehaTalk
               </span>
-              <span className="text-xs text-blue-600 font-medium hidden sm:block">
+              <span className="text-xs text-blue-800 font-medium hidden sm:block">
                 منصة الرعاية الصحية
               </span>
             </div>
