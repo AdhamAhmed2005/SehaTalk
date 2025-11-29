@@ -76,10 +76,10 @@ export function PatientRegistrationForm() {
       const { data } = await axios.post("/api/auth/signup", payload);
       console.log("Signup success:", data);
       setSuccess(data?.message || "Signup successful");
-      // Redirect to login or dashboard after successful signup
+      // Redirect to patient profile after successful signup
       setTimeout(() => {
-        window.location.href = "/auth/patient/login";
-      }, 2000);
+        window.location.href = "/profile/patient";
+      }, 1500);
     } catch (err) {
       console.error("Signup failed:", err);
       console.error("Error response:", err?.response?.data);
@@ -237,10 +237,6 @@ export function PatientRegistrationForm() {
                     <SelectContent>
                       <SelectItem value="male">{t('auth.patientForm.male')}</SelectItem>
                       <SelectItem value="female">{t('auth.patientForm.female')}</SelectItem>
-                      <SelectItem value="other">{t('auth.patientForm.other')}</SelectItem>
-                      <SelectItem value="prefer-not-to-say">
-                        {t('auth.patientForm.preferNotToSay')}
-                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

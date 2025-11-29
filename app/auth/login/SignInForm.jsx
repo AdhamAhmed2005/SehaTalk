@@ -64,10 +64,11 @@ export function SignInForm() {
 
       const { data } = await axios.post("/api/auth/login", payload);
 
+      // Redirect to actual profile page after login
       if (payload.role === "doctor") {
-        router.push("/dashboard/doctor");
+        router.push("/profile/doctor");
       } else {
-        router.push("/dashboard/patient");
+        router.push("/profile/patient");
       }
     } catch (err) {
       const message = err?.response?.data?.message || i.errInvalid;

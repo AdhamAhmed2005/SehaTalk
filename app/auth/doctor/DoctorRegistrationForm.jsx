@@ -127,6 +127,10 @@ export function DoctorRegistrationForm() {
 
       const { data } = await axios.post("/api/auth/signup", payload);
       setSuccess(data?.message || "Signup successful");
+      // Redirect to doctor profile after successful signup
+      setTimeout(() => {
+        window.location.href = "/profile/doctor";
+      }, 1500);
     } catch (err) {
       const message =
         err?.response?.data?.message || "Signup failed. Please try again.";
