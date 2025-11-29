@@ -27,7 +27,7 @@ export default async function DoctorReviewPage({ params }) {
   const doctor = MOCK_DOCTOR_DETAILS;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen bg-gray-100 p-8 pt-45">
       <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-2xl border border-gray-200">
         
      
@@ -39,7 +39,7 @@ export default async function DoctorReviewPage({ params }) {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
           
      
           <DoctorInfoCard doctor={doctor} />

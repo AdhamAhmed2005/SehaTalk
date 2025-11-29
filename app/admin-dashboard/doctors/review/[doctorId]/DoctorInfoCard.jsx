@@ -2,7 +2,7 @@
 
 export default function DoctorInfoCard({ doctor }) {
   return (
-    <div className="p-6 bg-gray-50 rounded-lg border border-gray-200 h-full">
+    <div className="p-6 bg-gray-50 rounded-lg border border-gray-200 h-full pt-5">
       <h2 className="text-xl font-bold text-gray-900 mb-4">
         Dr. {doctor.name}
       </h2>
