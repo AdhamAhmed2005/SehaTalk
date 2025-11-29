@@ -1,4 +1,4 @@
-// DoctorInfoCard.jsx
+
 
 export default function DoctorInfoCard({ doctor }) {
   return (
