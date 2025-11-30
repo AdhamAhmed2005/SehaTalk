@@ -427,7 +427,7 @@ export function PatientRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("currentMedications", e.target.value)
                     }
-                    className="medical-input mt-2 min-h-28 resize-y w-full bg-white hover:bg-blue-50/30 transition-colors duration-200"
+                    className="medical-input mt-2 min-h-28 text-black resize-y w-full bg-white hover:bg-blue-50/30 transition-colors duration-200"
                     placeholder="e.g., Aspirin 75mg daily, Vitamin D 1000 IU..."
                     rows={4}
                   />

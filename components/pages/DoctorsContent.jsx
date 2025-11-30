@@ -8,7 +8,7 @@ import { Input } from "../ui/input";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import { getRatingStars } from "@/lib/data/doctors";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
+import Link from "next/link";
 export default function DoctorsContent({ doctors, specialties }) {
   const { t, isRTL } = useLanguage();
   const [searchName, setSearchName] = useState("");
@@ -81,7 +81,7 @@ export default function DoctorsContent({ doctors, specialties }) {
             
             <button
               onClick={() => scroll('right')}
-              className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-10 h-10 items-center justify-center rounded-full bg-white shadow-lg hover:shadow-xl transition-all opacity-0 group-hover:opacity-100 border border-gray-200"
+              className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-10 h-10 items-center justify-center rounded-full bg-white shadow-lg hover:shadow-xl transition-all opacity-0 group-hover:opacity-100 border border-gray-200 "
               aria-label="Scroll right"
             >
               <ChevronRight className="w-5 h-5 text-gray-700" />
@@ -100,11 +100,11 @@ export default function DoctorsContent({ doctors, specialties }) {
                 <Button
                   key={index}
                   onClick={() => setSelectedSpecialty(spec)}
-                  variant={selectedSpecialty === spec ? "default" : "outline"}
-                  className={`rounded-full whitespace-nowrap transition-all flex-shrink-0 ${
+                  variant={selectedSpecialty === spec ? "default " : "outline"}
+                  className={`rounded-full whitespace-nowrap transition-all flex-shrink-0  ${
                     selectedSpecialty === spec
                       ? "bg-primary hover:bg-primary/90"
-                      : "bg-white hover:bg-gray-50"
+                      : "bg-white  hover:bg-primary/5 font-medium hover:text-blue-600"
                   }`}
                 >
                   {spec}
@@ -154,10 +154,11 @@ export default function DoctorsContent({ doctors, specialties }) {
                       {doc.experience} {t("doctors.yearsExp")}
                     </span>
                   </div>
-
+                 
                   <Button className="w-full bg-primary hover:bg-primary/90 rounded-full">
-                    {t("doctors.bookAppointment")}
-                  </Button>
+                  {t("doctors.bookAppointment")}
+                   </Button>
+                    
                 </CardContent>
               </Card>
             ))}

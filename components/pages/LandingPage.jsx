@@ -260,10 +260,10 @@ export function LandingPage() {
             {t('landing.cta.description')}
           </p>
           <div className={`flex flex-col sm:flex-row gap-6 justify-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-            <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-blue-500 hover:text-white hover:text-primary backdrop-blur-sm  px-8 py-4 text-lg" asChild>
+            <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-blue-500 hover:text-white backdrop-blur-sm  px-8 py-4 text-lg" asChild>
               <Link href="/auth/patient">{t('landing.cta.joinAsPatient')}</Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-primary hover:bg-blue-500 hover:text-white hover:text-primary backdrop-blur-sm px-8 py-4 text-lg" asChild>
+            <Button size="lg" variant="outline" className="bg-white text-primary hover:bg-blue-500 hover:text-white backdrop-blur-sm  px-8 py-4 text-lg" asChild>
               <Link href="/auth/doctor">{t('landing.cta.joinAsDoctor')}</Link>
             </Button>
           </div>

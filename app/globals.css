@@ -65,7 +65,7 @@ html {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0f172a;
+    --background: #fafdfc;
     /* slate-900 */
     --foreground: #f1f5f9;
     /* slate-100 */
@@ -145,6 +145,7 @@ body {
   font-size: 15px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  color: black;
 }
 
 .medical-input:hover {
@@ -478,4 +479,16 @@ h6 {
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  20% { transform: scale(1.15); }
+  40% { transform: scale(1); }
+  60% { transform: scale(1.15); }
+  80% { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+
+.heartbeat {
+  animation: heartbeat 1.5s infinite;
 }

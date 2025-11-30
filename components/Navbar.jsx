@@ -46,18 +46,18 @@ export function Navbar() {
           {/* Enhanced Logo */}
           <Link
             href="/"
-            className={`flex items-center hover:opacity-80 transition-all group ${
+            className={` flex items-center hover:opacity-80 transition-all group ${
               isRTL ? "space-x-reverse space-x-3" : "space-x-3"
             }`}
           >
             <div className="relative">
-              <Stethoscope className="h-9 w-9 text-primary group-hover:scale-110 transition-transform" />
+              <Stethoscope className=" heartbeat h-9 w-9 text-primary group-hover:scale-110 transition-transform" />
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
             </div>
             <div
               className={`flex flex-col ${isRTL ? "text-right" : "text-left"}`}
             >
-              <span className="text-xl font-bold text-blue-1000 leading-tight">
+              <span className="text-xl font-bold text-blue-800 leading-tight">
                 SehaTalk
               </span>
               <span className="text-xs text-blue-800 font-medium hidden sm:block">
@@ -147,7 +147,7 @@ export function Navbar() {
               <>
                 <Button
                   variant="outline"
-                  className="border-primary/30 text-primary hover:bg-primary/5 font-medium"
+                  className="border-primary/30 text-primary hover:bg-primary/5 font-medium hover:text-blue-600"
                   asChild
                 >
                   <Link href="/auth/login">{t("nav.signIn")}</Link>
@@ -168,7 +168,7 @@ export function Navbar() {
               >
                 <Button
                   variant="outline"
-                  className="text-red-600 border-red-200 hover:bg-red-50"
+                  className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700 font-medium"
                   onClick={() => {
                     fetch('/auth/logout', { method: 'POST' })
                       .then(() => window.location.href = '/');
