@@ -20,18 +20,45 @@ function StatCard({ title, value, detail, icon: Icon, color }) {
   );
 }
 
-export default function AdminStats() {
-    const statsData = [
-        { title: "Pending Requests", value: 12, detail: "New submissions this week", icon: Clock, color: "bg-orange-500" },
-        { title: "Total Approved", value: 254, detail: "Verified Doctors", icon: Users, color: "bg-green-600" },
-        { title: "Rejected Last Month", value: 5, detail: "Total Rejected Cases", icon: Users, color: "bg-red-500" },
-    ];
+import { useEffect, useState } from 'react';
 
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {statsData.map((stat, index) => (
-                <StatCard key={index} {...stat} />
-            ))}
-        </div>
-    );
+export default function AdminStats() {
+  const [stats, setStats] = useState({
+    pendingCount: 0,
+    newThisWeek: 0,
+    approvedCount: 0,
+    rejectedLastMonth: 0,
+    totalRejected: 0,
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchStats() {
+      setLoading(true);
+      try {
+        const res = await fetch('/api/admin-stats');
+        const data = await res.json();
+        setStats(data);
+      } catch (e) {
+        // fallback: keep zeros
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchStats();
+  }, []);
+
+  const statsData = [
+    { title: "Pending Requests", value: loading ? '...' : stats.pendingCount, detail: `New submissions this week: ${loading ? '...' : stats.newThisWeek}`, icon: Clock, color: "bg-orange-500" },
+    { title: "Total Approved", value: loading ? '...' : stats.approvedCount, detail: "Verified Doctors", icon: Users, color: "bg-green-600" },
+    { title: "Rejected Last Month", value: loading ? '...' : stats.rejectedLastMonth, detail: `Total Rejected Cases: ${loading ? '...' : stats.totalRejected}`, icon: Users, color: "bg-red-500" },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {statsData.map((stat, index) => (
+        <StatCard key={index} {...stat} />
+      ))}
+    </div>
+  );
 }

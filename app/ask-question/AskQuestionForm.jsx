@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '../../components/ui/card.jsx';
 import { Label } from '../../components/ui/label.jsx';
@@ -17,17 +17,27 @@ import { SubmitSection } from '../../components/forms/SubmitSection.jsx';
 // Constants and Utils
 import { DEFAULT_PATIENT_PROFILE, INITIAL_QUESTION_DATA } from '../../lib/constants.js';
 import { validateQuestionForm, submitQuestion } from '../../lib/utils/questionUtils.js';
+import { fetchCurrentUser } from '../../lib/utils/authClient.js';
 
-export function AskQuestionForm({ patientProfile }) {
+export function AskQuestionForm() {
   const router = useRouter();
   const { t, isRTL } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
-  
-  // Use passed patientProfile or fallback to mock data
-  const currentPatientProfile = patientProfile || DEFAULT_PATIENT_PROFILE;
-  
+  const [currentPatientProfile, setCurrentPatientProfile] = useState(null);
   const [questionData, setQuestionData] = useState(INITIAL_QUESTION_DATA);
+
+  useEffect(() => {
+    async function fetchProfile() {
+      const user = await fetchCurrentUser();
+      if (user && user.role === 'patient') {
+        setCurrentPatientProfile(user);
+      } else {
+        setCurrentPatientProfile(null);
+      }
+    }
+    fetchProfile();
+  }, []);
 
   const handleInputChange = (field, value) => {
     setQuestionData(prev => ({ ...prev, [field]: value }));
@@ -73,8 +83,10 @@ export function AskQuestionForm({ patientProfile }) {
 
   return (
     <>
-      {/* Patient Profile Summary */}
-      <PatientProfileSummary patientProfile={currentPatientProfile} />
+      {/* Patient Profile Summary - only show if signed in as patient */}
+      {currentPatientProfile && (
+        <PatientProfileSummary patientProfile={currentPatientProfile} />
+      )}
 
       <Card className="medical-card border-0 shadow-xl rounded-2xl overflow-hidden">
         <CardContent className="p-8">

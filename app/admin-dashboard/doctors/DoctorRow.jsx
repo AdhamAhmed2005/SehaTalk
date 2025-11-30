@@ -33,13 +33,7 @@ export default function DoctorRow({ doctor }) {
         >
           Review File
         </Link>
-        {doctor.status === 'Pending' && (
-             <button 
-                className="text-green-600 hover:text-green-800 transition duration-150 font-bold"
-             >
-               Approve
-             </button>
-        )}
+       
       </td>
     </tr>
   );

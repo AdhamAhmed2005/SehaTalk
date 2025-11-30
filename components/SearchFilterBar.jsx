@@ -14,6 +14,8 @@ import { useLanguage } from '../lib/i18n/LanguageProvider';
 export function SearchFilterBar({
   searchQuery,
   onSearchChange,
+  onSearchKeyDown,
+  onSearchIconClick,
   category,
   onCategoryChange,
   sortBy,
@@ -25,15 +27,24 @@ export function SearchFilterBar({
     <div className="medical-card p-8 space-y-6 border-0">
       {/* Search */}
       <div className="relative">
-        <Search className={`absolute top-1/2 -translate-y-1/2 w-5 h-5 text-blue-400 ${isRTL ? 'right-4' : 'left-4'}`} />
         <Input
           type="text"
           placeholder={isRTL ? 'ابحث في الأسئلة الصحية...' : 'Search health questions...'}
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          className={`medical-input h-14 text-lg border-2 border-slate-200 focus:border-primary focus:ring-0 focus:ring-primary/10 bg-white text-blue-900 placeholder:text-blue-400 ${isRTL ? 'pr-12 text-right' : 'pl-12 text-left'}`}
+          onKeyDown={onSearchKeyDown}
+          className={`medical-input h-14 text-lg border-2 border-slate-200 focus:border-primary focus:ring-0 focus:ring-primary/10 bg-white text-blue-900 placeholder:text-blue-400 ${isRTL ? 'pr-14 text-right' : 'pl-14 text-left'}`}
           dir={isRTL ? 'rtl' : 'ltr'}
         />
+        <button
+          type="button"
+          aria-label={isRTL ? 'ابحث' : 'Search'}
+          onClick={onSearchIconClick}
+          className={`absolute top-1/2 -translate-y-1/2 ${isRTL ? 'left-5' : 'right-5'} bg-transparent border-none p-0 m-0 cursor-pointer flex items-center justify-center`}
+          style={{outline: 'none'}}
+        >
+          <Search className="w-6 h-6 text-blue-500 hover:text-primary transition" />
+        </button>
       </div>
 
       {/* Filters */}

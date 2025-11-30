@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { connectDB } from "@/lib/mongodb";
 import Doctor from "@/models/Doctor";
 import Patient from "@/models/Patient";
 import Admin from "@/models/Admin";
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_EXPIRES_IN = "7d";
 
 export async function POST(request) {
   try {
@@ -116,10 +119,34 @@ export async function POST(request) {
       email: user.email,
     };
 
-    return NextResponse.json(
+    // Set auth_token cookie (login user after signup)
+    if (!JWT_SECRET) {
+      return NextResponse.json(
+        { message: "Server misconfiguration: missing JWT secret" },
+        { status: 500 }
+      );
+    }
+    const tokenPayload = {
+      sub: String(user._id),
+      role,
+      email: user.email,
+    };
+    const token = jwt.sign(tokenPayload, JWT_SECRET, {
+      expiresIn: JWT_EXPIRES_IN,
+    });
+
+    const response = NextResponse.json(
       { message: "Signup successful", user: safeUser },
       { status: 201 }
     );
+    response.cookies.set("auth_token", token, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: "/",
+    });
+    return response;
   } catch (error) {
     console.error("❌ Signup error:", error);
     console.error("Error details:", {

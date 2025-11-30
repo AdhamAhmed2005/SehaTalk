@@ -1,16 +1,22 @@
 import { connectDB } from "@/lib/mongodb";
 import Question from "@/models/Question";
 import { NextResponse } from "next/server";
+import Category from "@/models/Category";
+import Answer from "@/models/Answer";
+import Doctor from "@/models/Doctor";
 
 // GET /api/questions - Get all questions with pagination
 export async function GET(request) {
   try {
     await connectDB();
 
+
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
     const category = searchParams.get("category");
+    const search = searchParams.get("search");
+    const sortBy = searchParams.get("sortBy");
     const skip = (page - 1) * limit;
 
     // Build query
@@ -18,6 +24,24 @@ export async function GET(request) {
     if (category) {
       query.category = category;
     }
+    if (search) {
+      // Support both string and object (i18n) fields
+      query.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+        { 'title.en': { $regex: search, $options: "i" } },
+        { 'title.ar': { $regex: search, $options: "i" } },
+        { 'description.en': { $regex: search, $options: "i" } },
+        { 'description.ar': { $regex: search, $options: "i" } }
+      ];
+    }
+
+
+    // Determine sort
+    let sort = { createdAt: -1 };
+    if (sortBy === 'oldest') sort = { createdAt: 1 };
+    else if (sortBy === 'mostLiked') sort = { likesCount: -1 };
+    else if (sortBy === 'mostReplied') sort = { repliesCount: -1 };
 
     // Get questions with populated references
     const questions = await Question.find(query)
@@ -30,7 +54,7 @@ export async function GET(request) {
           select: "name specialty verified avatarUrl",
         },
       })
-      .sort({ createdAt: -1 })
+      .sort(sort)
       .skip(skip)
       .limit(limit)
       .lean();

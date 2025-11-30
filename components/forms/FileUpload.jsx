@@ -51,19 +51,19 @@ export default function FileUpload({ attachments, setAttachments }) {
         <span className="text-gray-500 text-xs">({t('form.optional')})</span>
       </label>
       
-      <Card 
-        className={`border-2 border-dashed transition-colors ${
-          dragActive ? 'border-blue-400 bg-blue-50' : 'border-gray-300'
+      <Card
+        className={`border-2 border-dashed transition-colors shadow-sm ${
+          dragActive ? 'border-blue-500 bg-blue-50' : 'border-primary bg-white'
         }`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
         onDrop={handleDrop}
       >
-        <CardContent className="p-6">
+        <CardContent className="p-8">
           <div className="text-center">
-            <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
-            <div className="text-sm text-gray-600 mb-2">
+            <Upload className="mx-auto h-10 w-10 text-blue-500 mb-3" />
+            <div className="text-base font-semibold text-blue-900 mb-2">
               {t('form.dragDropFiles')}
             </div>
             <input
@@ -78,11 +78,11 @@ export default function FileUpload({ attachments, setAttachments }) {
               type="button"
               variant="outline"
               onClick={() => document.getElementById('file-upload').click()}
-              className={`text-blue-600 border-blue-600 hover:bg-blue-50 ${isRTL ? 'ml-2' : 'mr-2'}`}
+              className={`text-primary border-primary hover:bg-blue-50 font-bold shadow-sm ${isRTL ? 'ml-2' : 'mr-2'}`}
             >
               {t('form.selectFiles')}
             </Button>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-blue-700 mt-3">
               {t('form.fileTypes')}
             </p>
           </div>

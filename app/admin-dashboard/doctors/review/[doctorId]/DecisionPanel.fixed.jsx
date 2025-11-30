@@ -1,68 +1,39 @@
-
-'use client'; 
+'use client';
 
 import { useState } from 'react';
-import { SimpleModal } from '@/components/ui/SimpleModal.jsx';
-
+import { SimpleModal } from '../../../../components/ui/SimpleModal.jsx';
 
 function DocumentPreview({ doc, doctorStatus }) {
-    
     const canShowApprovedBadge = doc.status === 'Approved' && doctorStatus === 'Approved';
-
     return (
         <div className="relative w-28 h-24 bg-gray-200 rounded-md overflow-hidden shadow-sm flex items-center justify-center cursor-pointer hover:shadow-lg transition">
-            
             <span className="text-sm text-gray-500 font-medium">
                 {doc.type}
             </span>
-            
-            {canShowApprovedBadge && ( 
+            {canShowApprovedBadge && (
                 <div className=" absolute top-1 right-1 px-1 text-xs bg-green-500 text-white rounded mr-2">Approved</div>
             )}
         </div>
     );
 }
 
-
-
-
-// ...existing code...
-
 export default function DecisionPanel({ doctor }) {
-
     const [rejectionReason, setRejectionReason] = useState('');
     const [modal, setModal] = useState({ open: false, title: '', message: '' });
-    const [loading, setLoading] = useState(false);
-    const router = typeof window !== 'undefined' ? require('next/navigation').useRouter() : null;
 
-    const handleDecision = async (action) => {
+    const handleDecision = (action) => {
         if (action === 'Reject' && !rejectionReason.trim()) {
             setModal({ open: true, title: 'Missing Reason', message: 'Please provide a reason for rejection.' });
             return;
         }
-        setLoading(true);
-        try {
-            const res = await fetch('/api/pending-doctors/review-status', {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: doctor.id || doctor._id,
-                    status: action === 'Approve' ? 'Approved' : 'Rejected',
-                    rejectionReason: action === 'Reject' ? rejectionReason : undefined
-                })
-            });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || 'Failed to update doctor');
-            setModal({ open: true, title: `Doctor ${action}d`, message: `You have ${action.toLowerCase()}d ${doctor.name}.` });
-            setTimeout(() => {
-                if (router) router.push('/admin-dashboard/doctors');
-                else window.location.href = '/admin-dashboard/doctors';
-            }, 1200);
-        } catch (err) {
-            setModal({ open: true, title: 'Error', message: err.message });
-        } finally {
-            setLoading(false);
+        if (action === 'Approve') {
+            setModal({ open: true, title: 'Doctor Approved', message: `You have approved ${doctor.name}.` });
+            // Add approve logic here
+            return;
         }
+        // For reject
+        setModal({ open: true, title: 'Doctor Rejected', message: `You have rejected ${doctor.name}.\nReason: ${rejectionReason}` });
+        // Add reject logic here
     };
 
     return (
@@ -76,13 +47,9 @@ export default function DecisionPanel({ doctor }) {
             <div>
                 <h3 className="text-lg font-semibold mb-3">Attached Documents</h3>
                 <div className="flex space-x-4 mb-6">
-                    {(doctor.documents && doctor.documents.length > 0) ? (
-                        doctor.documents.map((doc, index) => (
-                            <DocumentPreview key={index} doc={doc} doctorStatus={doctor.status} />
-                        ))
-                    ) : (
-                        <span className="text-gray-400">No documents submitted.</span>
-                    )}
+                    {doctor.documents.map((doc, index) => (
+                        <DocumentPreview key={index} doc={doc} doctorStatus={doctor.status} />
+                    ))}
                 </div>
             </div>
             <div className="space-y-4">
@@ -96,17 +63,15 @@ export default function DecisionPanel({ doctor }) {
                 <div className="flex space-x-4">
                     <button
                         onClick={() => handleDecision('Approve')}
-                        className="flex-1 py-3 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition shadow-md mr-2 disabled:opacity-60"
-                        disabled={loading}
+                        className="flex-1 py-3 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition shadow-md mr-2"
                     >
-                        {loading ? 'Processing...' : 'Approve Doctor'}
+                        Approve Doctor
                     </button>
                     <button
                         onClick={() => handleDecision('Reject')}
-                        className="flex-1 py-3 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition shadow-md disabled:opacity-60"
-                        disabled={loading}
+                        className="flex-1 py-3 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition shadow-md"
                     >
-                        {loading ? 'Processing...' : 'Reject Doctor'}
+                        Reject Doctor
                     </button>
                 </div>
             </div>
