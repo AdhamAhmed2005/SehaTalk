@@ -8,7 +8,8 @@ export const metadata = {
 
 export default async function DoctorsPage() {
   // Fetch doctors from the database
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/doctors`, { cache: "no-store" });
+  // Use a relative URL so it works on Vercel and locally
+  const res = await fetch(`/api/doctors`, { cache: "no-store" });
   const doctors = await res.json();
   // Get unique specialties from DB data
   const specialties = [
