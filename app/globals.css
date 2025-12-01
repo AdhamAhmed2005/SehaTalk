@@ -141,7 +141,8 @@ body {
   background: white !important;
   border: 2px solid #e2e8f0;
   border-radius: 12px;
-  padding: 12px 16px;
+  padding-top: 12px;
+  padding-bottom: 12px;
   font-size: 15px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);

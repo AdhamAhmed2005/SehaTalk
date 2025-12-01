@@ -154,14 +154,14 @@ export function SignInForm() {
               <Mail
                 className={`absolute ${
                   isRTL ? "right-3" : "left-3"
-                } top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-400`}
+                } top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-400 pointer-events-none`}
               />
               <Input
                 id="email"
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
-                className={`medical-input ${isRTL ? "pr-10" : "pl-10"}`}
+                className={`medical-input ${isRTL ? "pr-10 text-right" : "pl-5 text-left"}`}
                 placeholder={
                   formData.userType === "patient"
                     ? t('auth.login.emailPlaceholderPatient')
@@ -181,16 +181,15 @@ export function SignInForm() {
               <Lock
                 className={`absolute ${
                   isRTL ? "right-3" : "left-3"
-                } top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-400`}
+                } top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-400 pointer-events-none`}
               />
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 value={formData.password}
                 onChange={(e) => handleInputChange("password", e.target.value)}
-                className={`medical-input ${
-                  isRTL ? "pr-10 pl-12" : "pl-10 pr-12"
-                }`}
+                                className={`medical-input ${isRTL ? "pr-10 text-right" : "pl-5 text-left"}`}
+
                 placeholder={t('auth.login.passwordPlaceholder')}
                 required
               />
