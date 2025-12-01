@@ -252,18 +252,7 @@ export function Navbar() {
                   <User className="w-5 h-5" />
                   <span>{t("nav.about")}</span>
                 </Link>
-                {!loadingUser && user && (
-                  <Link
-                    href="/dashboard/patient"
-                    className={`flex items-center gap-3 text-blue-700 hover:text-primary hover:bg-blue-50 font-medium transition-colors py-3 px-4 rounded-lg ${
-                      isRTL ? "flex-row-reverse" : ""
-                    }`}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <User className="w-5 h-5" />
-                    <span>{t("nav.dashboard")}</span>
-                  </Link>
-                )}
+                
               </div>
 
               {/* Mobile CTA Buttons */}

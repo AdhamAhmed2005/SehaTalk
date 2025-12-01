@@ -29,7 +29,7 @@ export function SearchFilterBar({
       <div className="relative">
         <Input
           type="text"
-          placeholder={isRTL ? 'ابحث في الأسئلة الصحية...' : 'Search health questions...'}
+          placeholder={t('explore.searchPlaceholder')}
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           onKeyDown={onSearchKeyDown}
@@ -38,7 +38,7 @@ export function SearchFilterBar({
         />
         <button
           type="button"
-          aria-label={isRTL ? 'ابحث' : 'Search'}
+          aria-label={t('explore.searchButton')}
           onClick={onSearchIconClick}
           className={`absolute top-1/2 -translate-y-1/2 ${isRTL ? 'left-5' : 'right-5'} bg-transparent border-none p-0 m-0 cursor-pointer flex items-center justify-center`}
           style={{outline: 'none'}}
@@ -50,12 +50,12 @@ export function SearchFilterBar({
       {/* Filters */}
       <div className={`flex flex-wrap gap-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
         <Select value={category} onValueChange={onCategoryChange}>
-          <SelectTrigger className={`medical-select w-60 h-12 border-2 border-slate-200 focus:border-primary bg-white text-blue-900 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <SelectTrigger className={`medical-select w-60 h-12 border-2 border-slate-200 focus:border-primary bg-white text-blue-900 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Filter className={`w-5 h-5 text-blue-400 ${isRTL ? 'ml-3' : 'mr-3'}`} />
-            <SelectValue placeholder={isRTL ? 'التصنيف' : 'Category'} />
+            <SelectValue placeholder={t('explore.categoryPlaceholder')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{isRTL ? 'جميع التصنيفات' : 'All Categories'}</SelectItem>
+            <SelectItem value="all">{t('categories.all')}</SelectItem>
             <SelectItem value="general-health">{t('categories.general-health')}</SelectItem>
             <SelectItem value="cardiology">{t('categories.cardiology')}</SelectItem>
             <SelectItem value="dermatology">{t('categories.dermatology')}</SelectItem>
@@ -67,14 +67,14 @@ export function SearchFilterBar({
         </Select>
 
         <Select value={sortBy} onValueChange={onSortChange}>
-          <SelectTrigger className={`medical-select w-52 h-12 border-2 border-slate-200 focus:border-primary bg-white text-blue-900 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <SelectValue placeholder={isRTL ? 'ترتيب حسب' : 'Sort by'} />
+            <SelectTrigger className={`medical-select w-52 h-12 border-2 border-slate-200 focus:border-primary bg-white text-blue-900 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <SelectValue placeholder={t('explore.sortPlaceholder')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="recent">{isRTL ? 'الأحدث' : 'Most Recent'}</SelectItem>
-            <SelectItem value="popular">{isRTL ? 'الأكثر شعبية' : 'Most Popular'}</SelectItem>
-            <SelectItem value="answered">{isRTL ? 'تمت الإجابة عليه' : 'Most Answered'}</SelectItem>
-            <SelectItem value="views">{isRTL ? 'الأكثر مشاهدة' : 'Most Viewed'}</SelectItem>
+            <SelectItem value="recent">{t('explore.sort.recent')}</SelectItem>
+            <SelectItem value="popular">{t('explore.sort.popular')}</SelectItem>
+            <SelectItem value="answered">{t('explore.sort.answered')}</SelectItem>
+            <SelectItem value="views">{t('explore.sort.views')}</SelectItem>
           </SelectContent>
         </Select>
       </div>

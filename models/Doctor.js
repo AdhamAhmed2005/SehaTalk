@@ -37,6 +37,28 @@ const DoctorSchema = new Schema(
       type: String,
       default: "",
     },
+    location: {
+      type: String,
+      default: "Egypt",
+    },
+    experience: {
+      type: Number,
+      default: 0,
+    },
+    rating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
+    },
+    answeredQuestions: {
+      type: Number,
+      default: 0,
+    },
+    consultationFee: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

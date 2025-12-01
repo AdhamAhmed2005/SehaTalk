@@ -4,12 +4,12 @@ import { NextResponse } from "next/server";
 import Category from "@/models/Category";
 import Answer from "@/models/Answer";
 import Doctor from "@/models/Doctor";
+import { translateText, translateBatch } from "@/lib/utils/translateService";
 
 // GET /api/questions - Get all questions with pagination
 export async function GET(request) {
   try {
     await connectDB();
-
 
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get("page") || "1");
@@ -17,6 +17,7 @@ export async function GET(request) {
     const category = searchParams.get("category");
     const search = searchParams.get("search");
     const sortBy = searchParams.get("sortBy");
+    const lang = searchParams.get("lang") || "ar";
     const skip = (page - 1) * limit;
 
     // Build query
@@ -35,7 +36,6 @@ export async function GET(request) {
         { 'description.ar': { $regex: search, $options: "i" } }
       ];
     }
-
 
     // Determine sort
     let sort = { createdAt: -1 };
@@ -59,12 +59,33 @@ export async function GET(request) {
       .limit(limit)
       .lean();
 
+    // Translate questions if language is not Arabic (default)
+    let translatedQuestions = questions;
+    if (lang && lang !== 'ar') {
+      translatedQuestions = await Promise.all(
+        questions.map(async (q) => ({
+          ...q,
+          title: await translateText(q.title, lang),
+          description: await translateText(q.description, lang),
+          previousTreatments: q.previousTreatments 
+            ? await translateText(q.previousTreatments, lang)
+            : "",
+          replies: await Promise.all(
+            (q.replies || []).map(async (reply) => ({
+              ...reply,
+              content: await translateText(reply.content, lang),
+            }))
+          ),
+        }))
+      );
+    }
+
     // Get total count for pagination
     const total = await Question.countDocuments(query);
 
     return NextResponse.json({
       success: true,
-      data: questions,
+      data: translatedQuestions,
       pagination: {
         page,
         limit,

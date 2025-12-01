@@ -7,9 +7,9 @@ import { Button } from "../../components/ui/button.jsx";
 
 export default function SupportPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-green-100 flex flex-col justify-start">
+    <div className="min-h-screen bg-linear-to-br from-blue-100 via-white to-green-100 flex flex-col justify-start">
       {/* Hero Section */}
-      <div className="w-full bg-gradient-to-r from-primary/90 to-blue-500 py-16 shadow-lg">
+      <div className="w-full bg-linear-to-r from-primary/90 to-blue-500 py-16 shadow-lg">
         <div className="container mx-auto px-4 max-w-2xl text-center">
           <HelpCircle className="w-16 h-16 text-white mx-auto mb-4 drop-shadow-lg animate-bounce" />
           <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-3 tracking-tight">Support & Help Center</h1>

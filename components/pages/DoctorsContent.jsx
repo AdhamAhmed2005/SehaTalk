@@ -9,6 +9,7 @@ import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import { getRatingStars } from "@/lib/data/doctors";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { getSpecialtyTranslationKey } from "@/lib/utils/specialtyTranslations";
 export default function DoctorsContent({ doctors, specialties }) {
   const { t, isRTL } = useLanguage();
   const [searchName, setSearchName] = useState("");
@@ -101,32 +102,32 @@ export default function DoctorsContent({ doctors, specialties }) {
                   key={index}
                   onClick={() => setSelectedSpecialty(spec)}
                   variant={selectedSpecialty === spec ? "default " : "outline"}
-                  className={`rounded-full whitespace-nowrap transition-all flex-shrink-0  ${
+                  className={`rounded-full whitespace-nowrap transition-all shrink-0  ${
                     selectedSpecialty === spec
                       ? "bg-primary hover:bg-primary/90"
                       : "bg-white  hover:bg-primary/5 font-medium hover:text-blue-600"
                   }`}
                 >
-                  {spec}
+                  {t(getSpecialtyTranslationKey(spec))}
                 </Button>
               ))}
             </div>
 
             {/* Fade Edges */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-gray-50 to-transparent hidden md:block" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-gray-50 to-transparent hidden md:block" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-linear-to-r from-gray-50 to-transparent hidden md:block" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-linear-to-l from-gray-50 to-transparent hidden md:block" />
           </div>
 
           {/* Doctors Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredDoctors.map((doc) => (
               <Card
-                key={doc.id}
+                key={doc._id || doc.id}
                 className="medical-card hover:shadow-xl transition-all duration-300 border-0"
               >
                 <CardContent className="p-6">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-white text-xl font-bold shadow-md">
+                    <div className="w-16 h-16 rounded-full bg-linear-to-br from-primary to-primary/80 flex items-center justify-center text-white text-xl font-bold shadow-md">
                       {doc.name
                         .split(" ")
                         .map((n) => n[0])
@@ -149,15 +150,39 @@ export default function DoctorsContent({ doctors, specialties }) {
                       <span className="text-yellow-500 text-lg">
                         {getRatingStars(doc.rating)}
                       </span>
+                      <span className="text-gray-500 text-xs">({doc.rating || 0})</span>
                     </div>
-                    <span className="text-blue-700">
+                    <span className="text-blue-700 font-medium">
                       {doc.experience} {t("doctors.yearsExp")}
                     </span>
                   </div>
+
+                  {doc.location && (
+                    <div className="mb-3 text-xs text-gray-600">
+                      <span className="font-medium">📍 </span>{doc.location}
+                    </div>
+                  )}
+
+                  {doc.bio && (
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                      {doc.bio}
+                    </p>
+                  )}
+
+                  {doc.answeredQuestions > 0 && (
+                    <div className="mb-4 flex gap-4 text-xs">
+                      <div className="flex flex-col">
+                        <span className="font-semibold text-primary">{doc.answeredQuestions}</span>
+                        <span className="text-gray-600">{t("doctors.answeredQuestions")}</span>
+                      </div>
+                    </div>
+                  )}
                  
-                  <Button className="w-full bg-primary hover:bg-primary/90 rounded-full">
-                  {t("doctors.bookAppointment")}
-                   </Button>
+                  <Link href={`/profile/doctor/${doc.id || doc._id}`} className="w-full">
+                    <Button className="w-full bg-primary hover:bg-primary/90 rounded-full">
+                      {t("doctors.bookAppointment")}
+                    </Button>
+                  </Link>
                     
                 </CardContent>
               </Card>

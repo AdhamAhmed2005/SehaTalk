@@ -4,8 +4,10 @@ import { Navbar } from "@/components/Navbar";
 import AdminStats from './AdminStats';
 import DoctorVerificationTable from './DoctorVerificationTable';
 import { useEffect, useState } from 'react';
+import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 export default function AdminDoctorsPage() {
+    const { t } = useLanguage();
     const [doctors, setDoctors] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -37,7 +39,7 @@ export default function AdminDoctorsPage() {
             <main className="pt-20 px-4 md:px-10 lg:px-20 mx-auto max-w-7xl">
                 <div className="mb-8">
                     <h1 className="text-5xl font-bold text-gray-800 mb-6 pt-20 pb-10 text-center">
-                        Admin Control Panel
+                        {t('admin.panel.title')}
                     </h1>
                     <AdminStats />
                 </div>

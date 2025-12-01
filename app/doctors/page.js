@@ -1,5 +1,5 @@
+
 import DoctorsContent from "@/components/pages/DoctorsContent";
-import { doctorsData, getSpecialties } from "@/lib/data/doctors";
 
 export const metadata = {
   title: "Find Doctors | SehaTalk",
@@ -7,9 +7,13 @@ export const metadata = {
 };
 
 export default async function DoctorsPage() {
-  // Server-side data preparation
-  const doctors = doctorsData;
-  const specialties = getSpecialties();
-
+  // Fetch doctors from the database
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/doctors`, { cache: "no-store" });
+  const doctors = await res.json();
+  // Get unique specialties from DB data
+  const specialties = [
+    "All",
+    ...Array.from(new Set(doctors.map(doc => doc.specialty)))
+  ];
   return <DoctorsContent doctors={doctors} specialties={specialties} />;
 }

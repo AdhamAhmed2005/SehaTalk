@@ -482,10 +482,10 @@ export function DoctorRegistrationForm() {
                     placeholder={t('auth.doctorForm.consultationFeePlaceholder')}
                   />
                 </div>
-                <div>
+                <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
                   <Label
                     htmlFor="languages"
-                    className="text-blue-900 font-medium"
+                    className={`${isRTL ? 'text-right' : 'text-left'} text-blue-900 font-medium`}
                   >
                     {t('auth.doctorForm.languages')} *
                   </Label>
@@ -495,8 +495,9 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("languages", e.target.value)
                     }
-                    className="medical-input mt-2"
+                    className={`medical-input mt-2 ${isRTL ? 'text-right' : 'text-left'}`}
                     placeholder={t('auth.doctorForm.languagesPlaceholder')}
+                    dir={isRTL ? 'rtl' : 'ltr'}
                   />
                 </div>
               </div>
@@ -600,22 +601,26 @@ export function DoctorRegistrationForm() {
                     placeholder={t('auth.doctorForm.fellowshipProgramPlaceholder')}
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <Label
-                    htmlFor="boardCertifications"
-                    className="text-blue-900 font-medium"
-                  >
-                    {t('auth.doctorForm.boardCertifications')}
-                  </Label>
+                <div className={`md:col-span-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+                  <div className={`${isRTL ? 'flex flex-col items-end gap-1' : 'flex flex-col items-start gap-1'}`}>
+                    <Label
+                      htmlFor="boardCertifications"
+                      className={`${isRTL ? 'text-right' : 'text-left'} text-blue-900 font-medium`}
+                    >
+                      {t('auth.doctorForm.boardCertifications')}
+                    </Label>
+                    <p className={`${isRTL ? 'text-right' : 'text-left'} text-sm text-blue-700`}>{t('auth.doctorForm.boardCertificationsPlaceholder')}</p>
+                  </div>
                   <textarea
                     id="boardCertifications"
                     value={formData.boardCertifications}
                     onChange={(e) =>
                       handleInputChange("boardCertifications", e.target.value)
                     }
-                    className="medical-input mt-2 min-h-20 resize-none"
+                    className={`medical-input mt-2 min-h-20 resize-none w-full ${isRTL ? 'text-right' : 'text-left'}`}
                     placeholder={t('auth.doctorForm.boardCertificationsPlaceholder')}
                     rows={3}
+                    dir={isRTL ? 'rtl' : 'ltr'}
                   />
                 </div>
               </div>

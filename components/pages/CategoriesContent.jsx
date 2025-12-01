@@ -1,5 +1,6 @@
 'use client';
 import { Card, CardContent } from "../ui/card.jsx";
+import Link from 'next/link';
 import { useLanguage } from '../../lib/i18n/LanguageProvider';
 
 const getCategoriesData = (t) => [
@@ -17,7 +18,7 @@ const getCategoriesData = (t) => [
     key: 'cardiology',
     name: t('categories.data.cardiology.name'),
     description: t('categories.data.cardiology.description'),
-    icon: "❤️",
+    icon: "",
     count: 420,
     trending: false,
     color: "from-red-500 to-red-600",
@@ -108,6 +109,8 @@ export default function CategoriesContent({ lang }) {
           <p className="text-xl text-blue-700 leading-relaxed max-w-3xl mx-auto mb-8">
             {t('categories.page.subtitle')}
           </p>
+          
+          {/* Illustration removed as requested */}
           
           {/* Quick Stats */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-xl mx-auto">
@@ -200,12 +203,12 @@ export default function CategoriesContent({ lang }) {
               {t('categories.page.cta.description')}
             </p>
             <div className={`flex flex-col sm:flex-row gap-4 justify-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-              <button className="btn-primary px-8 py-3 rounded-lg font-semibold transition-all duration-300 hover:transform hover:scale-105">
+              <Link href="/ask-question" className="btn-primary px-8 py-3 rounded-lg font-semibold transition-all duration-300 hover:transform hover:scale-105">
                 {t('categories.page.cta.askQuestion')}
-              </button>
-              <button className="btn-secondary px-8 py-3 rounded-lg font-semibold transition-all duration-300 hover:transform hover:scale-105">
+              </Link>
+              <Link href="/explore" className="btn-secondary px-8 py-3 rounded-lg font-semibold transition-all duration-300 hover:transform hover:scale-105">
                 {t('categories.page.cta.browseQuestions')}
-              </button>
+              </Link>
             </div>
           </div>
         </div>

@@ -81,9 +81,9 @@ export function ExplorePage() {
 	const handleLike = async (question) => {
 		if (!isPatientAuthenticated()) {
 			showModal(
-				isRTL ? "تسجيل الدخول مطلوب" : "Sign In Required",
-				isRTL ? "يجب تسجيل الدخول لإضافة إعجاب." : "You must sign in to upvote."
-				, () => {
+				t('explore.signInRequiredTitle'),
+				t('explore.signInRequiredBody'),
+				() => {
 					setModal((m) => ({ ...m, open: false }));
 					router.push("/auth/patient");
 				}
@@ -92,8 +92,8 @@ export function ExplorePage() {
 		}
 		if (upvotedQuestions.has(question._id)) {
 			showModal(
-				isRTL ? "تم الإعجاب مسبقًا" : "Already Upvoted",
-				isRTL ? "لا يمكنك الإعجاب بنفس السؤال أكثر من مرة." : "You can only upvote a question once.",
+				t('explore.alreadyUpvotedTitle'),
+				t('explore.alreadyUpvotedBody'),
 				() => setModal((m) => ({ ...m, open: false }))
 			);
 			return;
@@ -115,11 +115,7 @@ export function ExplorePage() {
 				localStorage.setItem('upvotedQuestions', JSON.stringify(Array.from(updated)));
 			}
 		} catch (e) {
-			showModal(
-				isRTL ? "خطأ" : "Error",
-				isRTL ? "حدث خطأ أثناء الإعجاب." : "Error while liking.",
-				() => setModal((m) => ({ ...m, open: false }))
-			);
+			showModal(t('common.error'), t('explore.errorLiking'), () => setModal((m) => ({ ...m, open: false })));
 		}
 	};
 
@@ -133,7 +129,7 @@ useEffect(() => {
 		if (!currentUser || currentUser.role !== "doctor") {
 			// Show all replies in a modal for patients/guests
 			showModal(
-				isRTL ? "الردود على السؤال" : "Question Replies",
+				t('explore.questionRepliesTitle'),
 				null,
 				() => setModal((m) => ({ ...m, open: false })),
 				question // pass question for rendering replies
@@ -142,7 +138,7 @@ useEffect(() => {
 			return;
 		}
 		// Only doctors can write replies
-		const reply = window.prompt(isRTL ? "اكتب ردك كطبيب:" : "Write your reply as a doctor:");
+		const reply = window.prompt(t('explore.replyPrompt'));
 		if (reply && reply.trim()) {
 			try {
 				const res = await fetch(`/api/questions/${question._id}/replies`, {
@@ -157,11 +153,7 @@ useEffect(() => {
 					}));
 				}
 			} catch (e) {
-				showModal(
-					isRTL ? "خطأ" : "Error",
-					isRTL ? "حدث خطأ أثناء إضافة الرد." : "Error while replying.",
-					() => setModal((m) => ({ ...m, open: false }))
-				);
+				showModal(t('common.error'), t('explore.errorReplying'), () => setModal((m) => ({ ...m, open: false })));
 			}
 		}
 	};
@@ -180,13 +172,13 @@ useEffect(() => {
 							<div key={reply._id || idx} className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-primary/20">
 								<div className="flex items-center gap-3 mb-2">
 									<span className="font-bold text-primary">
-										{reply.doctor?.name ? (isRTL ? `د. ${reply.doctor.name}` : `Dr. ${reply.doctor.name}`) : (isRTL ? "طبيب مجهول" : "Unknown Doctor")}
+										{reply.doctor?.name ? `${t('explore.doctorPrefix')} ${reply.doctor.name}` : t('explore.unknownDoctor')}
 									</span>
 									{reply.doctor?.specialty && (
 										<span className="text-xs text-blue-700 bg-blue-100 rounded px-2 py-0.5 ml-2">{reply.doctor.specialty}</span>
 									)}
 									{reply.doctor?.verified && (
-										<span className="text-xs text-green-700 bg-green-100 rounded px-2 py-0.5 ml-2">{isRTL ? "موثق" : "Verified"}</span>
+										<span className="text-xs text-green-700 bg-green-100 rounded px-2 py-0.5 ml-2">{t('explore.verifiedDoctor')}</span>
 									)}
 								</div>
 								<div className="text-gray-900 dark:text-gray-100 whitespace-pre-line">{reply.content}</div>
@@ -194,7 +186,7 @@ useEffect(() => {
 						))}
 					</div>
 				) : modal.question ? (
-					<div className="text-gray-700 dark:text-gray-200 text-center py-8 text-lg font-medium">{isRTL ? "لا توجد ردود بعد." : "No replies yet."}</div>
+					<div className="text-gray-700 dark:text-gray-200 text-center py-8 text-lg font-medium">{t('explore.noRepliesYet')}</div>
 				) : null}
 			</SimpleModal>
 			{/* HERO SECTION */}
@@ -202,38 +194,30 @@ useEffect(() => {
 				<div className="container mx-auto max-w-6xl text-center">
 					<div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-md px-4 py-2 rounded-full border border-primary/20 mb-6 mt-6 shadow-sm">
 						<div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-						<span className="text-sm font-medium text-primary">
-							{isRTL
-								? "مجتمع الأسئلة والأجوبة المباشر"
-								: "Live Health Q&A Community"}
-						</span>
+						<span className="text-sm font-medium text-primary">{t('explore.hero.badgeLine')}</span>
 					</div>
 
 					<h1 className="text-4xl sm:text-5xl font-bold mb-6 text-blue-900">
 						{isRTL ? (
 							<>
-								استكشف <span className="section-header">الأسئلة الصحية</span>
+								{t('explore.hero.h1Prefix')} <span className="section-header">{t('explore.hero.h1Span')}</span>
 							</>
 						) : (
 							<>
-								Explore <span className="section-header">Health Questions</span>
+								{t('explore.hero.h1Prefix')} <span className="section-header">{t('explore.hero.h1Span')}</span>
 							</>
 						)}
 					</h1>
 
-					<p className="text-lg sm:text-xl text-blue-700 max-w-3xl mx-auto leading-relaxed mb-10">
-						{isRTL
-							? "تصفح آلاف الأسئلة الصحية التي أجاب عليها أطباء مصريون معتمدون."
-							: "Browse thousands of health questions answered by verified Egyptian doctors."}
-					</p>
+					<p className="text-lg sm:text-xl text-blue-700 max-w-3xl mx-auto leading-relaxed mb-10">{t('explore.hero.subtitle')}</p>
 
 					{/* Quick Stats */}
 					<div className="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-2xl mx-auto">
 						{[
-							["+5,000", isRTL ? "سؤال" : "Questions"],
-							["+200", isRTL ? "طبيب" : "Doctors"],
-							["+15", isRTL ? "تخصص" : "Specialties"],
-							["98%", isRTL ? "معتمد" : "Verified"],
+							["+5,000", t('explore.stats.questions')],
+							["+200", t('explore.stats.doctors')],
+							["+15", t('explore.stats.specialties')],
+							["98%", t('explore.stats.verified')],
 						].map(([num, label], i) => (
 							<div key={i} className="text-center">
 								<div className="text-2xl font-bold text-primary">{num}</div>
@@ -250,9 +234,9 @@ useEffect(() => {
 				<div className="mb-12">
 					<div className="rounded-2xl overflow-hidden shadow-xl bg-white/70 backdrop-blur-lg border border-primary/10">
 						   <div className="bg-linear-to-r from-primary/10 to-primary/5 px-6 py-4 border-b border-primary/20">
-							<h3 className="text-lg font-semibold text-blue-900 flex items-center gap-2">
+								<h3 className="text-lg font-semibold text-blue-900 flex items-center gap-2">
 								<span className="w-2 h-2 bg-primary rounded-full"></span>
-								{isRTL ? "اعثر على إجابتك" : "Find Your Answer"}
+								{t('explore.findYourAnswer')}
 							</h3>
 						</div>
 
@@ -279,22 +263,14 @@ useEffect(() => {
 						}`}
 					>
 						<div className={isRTL ? "text-right" : "text-left"}>
-							<h2 className="text-2xl font-bold text-blue-900 mb-1">
-								{isRTL ? "الأسئلة الحديثة" : "Recent Questions"}
-							</h2>
-							<p className="text-blue-600">
-								{isRTL
-									? "أحدث الأسئلة الصحية من مجتمعنا"
-									: "Latest health questions from our community"}
-							</p>
+							<h2 className="text-2xl font-bold text-blue-900 mb-1">{t('explore.recentQuestionsTitle')}</h2>
+							<p className="text-blue-600">{t('explore.recentQuestionsSubtitle')}</p>
 						</div>
 
 						<div className="hidden sm:flex items-center gap-2 text-sm text-blue-600">
-							<div className="flex items-center gap-1">
+								<div className="flex items-center gap-1">
 								<div className="w-3 h-3 rounded-full bg-green-400"></div>
-								<span>
-									{isRTL ? "إجابات موثقة متوفرة" : "Verified answers available"}
-								</span>
+								<span>{t('explore.verifiedAnswersAvailable')}</span>
 							</div>
 						</div>
 					</div>
@@ -303,9 +279,9 @@ useEffect(() => {
 				{/* QUESTIONS LIST */}
 				<div className="space-y-6">
 					 {loading ? (
-						 <div className="text-center text-blue-700 py-10">{isRTL ? "جاري التحميل..." : "Loading..."}</div>
+						 <div className="text-center text-blue-700 py-10">{t('common.loading')}</div>
 					 ) : questions.length === 0 ? (
-						 <div className="text-center text-blue-700 py-10">{isRTL ? "لا توجد أسئلة متاحة." : "No questions available."}</div>
+						 <div className="text-center text-blue-700 py-10">{t('explore.noQuestions')}</div>
 					) : questions.map((question) => (
 						<Card
 							key={question._id || question.id}
@@ -342,7 +318,7 @@ useEffect(() => {
 											   {Array.isArray(question.replies) && question.replies.some(r => r.doctor?.verified) && (
 												   <VerifiedBadge
 													   className="h-6 text-green-500"
-													   title="Verified Doctor"
+													   title={t('explore.verifiedDoctor')}
 												   />
 											   )}
 										</div>
@@ -399,9 +375,7 @@ useEffect(() => {
 										   >
 											<MessageCircle className="w-5 h-5" />
 											   <span className="font-medium">{replies[question._id] ?? (Array.isArray(question.replies) ? question.replies.length : 0)}</span>
-											<span className="text-sm hidden sm:inline">
-												{isRTL ? "ردود" : "replies"}
-											</span>
+											<span className="text-sm hidden sm:inline">{t('explore.labels.replies')}</span>
 										</div>
 
 										{/* Views */}
@@ -410,9 +384,7 @@ useEffect(() => {
 											   <span className="font-medium">
 												   {(question.viewsCount ?? 0).toLocaleString()}
 											   </span>
-											   <span className="text-sm hidden sm:inline">
-												   {isRTL ? "مشاهدات" : "views"}
-											   </span>
+											   <span className="text-sm hidden sm:inline">{t('explore.labels.views')}</span>
 										   </div>
 
 										{/* Likes */}
@@ -426,9 +398,7 @@ useEffect(() => {
 											   <span className="font-medium">
 												   {likes[question._id] ?? question.likesCount ?? 0}
 											   </span>
-											<span className="text-sm hidden sm:inline">
-												{isRTL ? "إعجاب" : "likes"}
-											</span>
+											<span className="text-sm hidden sm:inline">{t('explore.labels.likes')}</span>
 										</div>
 									</div>
 								</div>
