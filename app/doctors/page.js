@@ -1,5 +1,6 @@
 
 import DoctorsContent from "@/components/pages/DoctorsContent";
+import { headers } from "next/headers";
 
 export const metadata = {
   title: "Find Doctors | SehaTalk",
@@ -8,8 +9,12 @@ export const metadata = {
 
 export default async function DoctorsPage() {
   // Fetch doctors from the database
-  // Use a relative URL so it works on Vercel and locally
-  const res = await fetch(`/api/doctors`, { cache: "no-store" });
+  // Build absolute URL for SSR using incoming request headers (works on Vercel and locally)
+  const h = headers();
+  const host = h.get("host");
+  const proto = h.get("x-forwarded-proto") || (host?.includes("localhost") ? "http" : "https");
+  const base = `${proto}://${host}`;
+  const res = await fetch(`${base}/api/doctors`, { cache: "no-store" });
   const doctors = await res.json();
   // Get unique specialties from DB data
   const specialties = [
