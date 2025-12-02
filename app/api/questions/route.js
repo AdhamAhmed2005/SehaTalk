@@ -23,7 +23,14 @@ export async function GET(request) {
     // Build query
     const query = {};
     if (category) {
-      query.category = category;
+      // Accept both ObjectId and slug
+      if (category.match(/^[a-fA-F0-9]{24}$/)) {
+        query.category = category;
+      } else {
+        const catDoc = await Category.findOne({ slug: category }).lean();
+        if (catDoc) query.category = catDoc._id;
+        else query.category = undefined;
+      }
     }
     if (search) {
       // Support both string and object (i18n) fields
