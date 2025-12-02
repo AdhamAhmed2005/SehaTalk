@@ -73,6 +73,8 @@ export function DoctorRegistrationForm() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [shakeButton, setShakeButton] = useState(false);
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -114,9 +116,48 @@ export function DoctorRegistrationForm() {
     "Oncology",
   ];
 
+  const validateForm = () => {
+    const requiredStep1 = [
+      'firstName','lastName','email','phone','dateOfBirth','gender','password','confirmPassword'
+    ];
+    for (const key of requiredStep1) {
+      if (!formData[key] || String(formData[key]).trim() === '') {
+        return t('auth.login.errFillAll');
+      }
+    }
+    if (formData.password !== formData.confirmPassword) {
+      return lang === 'ar' ? 'كلمتا المرور غير متطابقتين' : 'Passwords do not match';
+    }
+    // Basic professional/doc requirements
+    const requiredStep2 = ['medicalLicenseNumber','specialty','yearsOfExperience','hospitalAffiliation','languages'];
+    for (const key of requiredStep2) {
+      if (!formData[key] || String(formData[key]).trim() === '') {
+        return t('auth.login.errFillAll');
+      }
+    }
+    const requiredStep3 = ['medicalSchool','graduationYear','residencyProgram'];
+    for (const key of requiredStep3) {
+      if (!formData[key] || String(formData[key]).trim() === '') {
+        return t('auth.login.errFillAll');
+      }
+    }
+    if (!termsAccepted) {
+      return lang === 'ar' ? 'يرجى الموافقة على الشروط' : 'Please accept the terms';
+    }
+    return null;
+  };
+
   const handleSubmit = async () => {
     setError("");
     setSuccess("");
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      setShakeButton(true);
+      setTimeout(() => setShakeButton(false), 500);
+      return;
+    }
+
     setSubmitting(true);
 
     try {
@@ -132,8 +173,10 @@ export function DoctorRegistrationForm() {
         window.location.href = "/profile/doctor";
       }, 1500);
     } catch (err) {
-      const message =
-        err?.response?.data?.message || "Signup failed. Please try again.";
+      let message = err?.response?.data?.message || "Signup failed. Please try again.";
+      if (message && message.toLowerCase().includes('password and confirmpassword are required')) {
+        message = lang === 'ar' ? 'كلمة المرور وتأكيد كلمة المرور مطلوبتان' : 'Password and Confirm Password are required.';
+      }
       setError(message);
     } finally {
       setSubmitting(false);
@@ -169,7 +212,7 @@ export function DoctorRegistrationForm() {
       </div>
 
       <Card className="medical-card border-0 shadow-xl rounded-2xl overflow-hidden">
-        <CardContent className="p-8">
+        <CardContent className="p-4 sm:p-6 md:p-8">
           {error && (
             <div className="mb-4 p-3 rounded bg-red-50 text-red-700 text-sm">
               {error}
@@ -192,7 +235,7 @@ export function DoctorRegistrationForm() {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <Label
                     htmlFor="firstName"
@@ -206,7 +249,7 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("firstName", e.target.value)
                     }
-                    className="medical-input mt-2"
+                    className={`medical-input mt-2 w-full ${isRTL ? 'text-right' : 'text-left'}`}
                     placeholder={t('auth.doctorForm.firstNamePlaceholder')}
                   />
                 </div>
@@ -223,7 +266,7 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("lastName", e.target.value)
                     }
-                    className="medical-input mt-2"
+                    className={`medical-input mt-2 w-full ${isRTL ? 'text-right' : 'text-left'}`}
                     placeholder={t('auth.doctorForm.lastNamePlaceholder')}
                   />
                 </div>
@@ -236,7 +279,7 @@ export function DoctorRegistrationForm() {
                     type="email"
                     value={formData.email}
                     onChange={(e) => handleInputChange("email", e.target.value)}
-                    className="medical-input mt-2"
+                    className={`medical-input mt-2 w-full ${isRTL ? 'text-right' : 'text-left'}`}
                     placeholder={t('auth.doctorForm.emailPlaceholder')}
                   />
                 </div>
@@ -249,7 +292,7 @@ export function DoctorRegistrationForm() {
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => handleInputChange("phone", e.target.value)}
-                    className="medical-input mt-2"
+                    className={`medical-input mt-2 w-full ${isRTL ? 'text-right' : 'text-left'}`}
                     placeholder={t('auth.doctorForm.phonePlaceholder')}
                   />
                 </div>
@@ -267,7 +310,7 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("dateOfBirth", e.target.value)
                     }
-                    className="medical-input mt-2"
+                    className={`medical-input mt-2 w-full ${isRTL ? 'text-right' : 'text-left'}`}
                   />
                 </div>
                 <div>
@@ -278,10 +321,10 @@ export function DoctorRegistrationForm() {
                       handleInputChange("gender", value)
                     }
                   >
-                    <SelectTrigger className="medical-select mt-2">
+                    <SelectTrigger className={`medical-select mt-2 w-full ${isRTL ? 'text-right' : 'text-left'}`}>
                       <SelectValue placeholder={t('auth.doctorForm.genderPlaceholder')} />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className={`${isRTL ? 'text-right' : 'text-left'}`}>
                       <SelectItem value="male">{t('auth.doctorForm.male')}</SelectItem>
                       <SelectItem value="female">{t('auth.doctorForm.female')}</SelectItem>
                     </SelectContent>
@@ -301,7 +344,7 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("password", e.target.value)
                     }
-                    className="medical-input mt-2"
+                    className={`medical-input mt-2 w-full ${isRTL ? 'text-right' : 'text-left'}`}
                     placeholder={t('auth.doctorForm.passwordPlaceholder')}
                   />
                 </div>
@@ -319,7 +362,7 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("confirmPassword", e.target.value)
                     }
-                    className="medical-input mt-2"
+                    className={`medical-input mt-2 w-full ${isRTL ? 'text-right' : 'text-left'}`}
                     placeholder={t('auth.doctorForm.confirmPasswordPlaceholder')}
                   />
                 </div>
@@ -345,7 +388,7 @@ export function DoctorRegistrationForm() {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <Label
                     htmlFor="medicalLicenseNumber"
@@ -359,7 +402,7 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("medicalLicenseNumber", e.target.value)
                     }
-                    className="medical-input mt-2"
+                    className="medical-input mt-2 w-full"
                     placeholder={t('auth.doctorForm.licenseNumberPlaceholder')}
                   />
                 </div>
@@ -373,10 +416,10 @@ export function DoctorRegistrationForm() {
                       handleInputChange("specialty", value)
                     }
                   >
-                    <SelectTrigger className="medical-select mt-2">
+                    <SelectTrigger className={`medical-select mt-2 w-full ${isRTL ? 'text-right' : 'text-left'}`}>
                       <SelectValue placeholder={t('auth.doctorForm.specialtyPlaceholder')} />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className={`${isRTL ? 'text-right' : 'text-left'}`}>
                       {specialties.map((specialty) => (
                         <SelectItem
                           key={specialty}
@@ -401,7 +444,7 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("subSpecialty", e.target.value)
                     }
-                    className="medical-input mt-2"
+                    className="medical-input mt-2 w-full"
                     placeholder={t('auth.doctorForm.subSpecialtyPlaceholder')}
                   />
                 </div>
@@ -418,10 +461,10 @@ export function DoctorRegistrationForm() {
                       handleInputChange("yearsOfExperience", value)
                     }
                   >
-                    <SelectTrigger className="medical-select mt-2">
+                    <SelectTrigger className={`medical-select mt-2 w-full ${isRTL ? 'text-right' : 'text-left'}`}>
                       <SelectValue placeholder={t('auth.doctorForm.yearsExperiencePlaceholder')} />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className={`${isRTL ? 'text-right' : 'text-left'}`}>
                       <SelectItem value="1-3">{lang === 'ar' ? '١-٣ سنوات' : '1-3 years'}</SelectItem>
                       <SelectItem value="4-7">{lang === 'ar' ? '٤-٧ سنوات' : '4-7 years'}</SelectItem>
                       <SelectItem value="8-15">{lang === 'ar' ? '٨-١٥ سنة' : '8-15 years'}</SelectItem>
@@ -443,7 +486,7 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("hospitalAffiliation", e.target.value)
                     }
-                    className="medical-input mt-2"
+                    className="medical-input mt-2 w-full"
                     placeholder={t('auth.doctorForm.hospitalAffiliationPlaceholder')}
                   />
                 </div>
@@ -460,7 +503,7 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("clinicAddress", e.target.value)
                     }
-                    className="medical-input mt-2"
+                    className="medical-input mt-2 w-full"
                     placeholder={t('auth.doctorForm.clinicAddressPlaceholder')}
                   />
                 </div>
@@ -478,7 +521,7 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("consultationFee", e.target.value)
                     }
-                    className="medical-input mt-2"
+                    className="medical-input mt-2 w-full"
                     placeholder={t('auth.doctorForm.consultationFeePlaceholder')}
                   />
                 </div>
@@ -495,7 +538,7 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("languages", e.target.value)
                     }
-                    className={`medical-input mt-2 ${isRTL ? 'text-right' : 'text-left'}`}
+                    className={`medical-input mt-2 w-full ${isRTL ? 'text-right' : 'text-left'}`}
                     placeholder={t('auth.doctorForm.languagesPlaceholder')}
                     dir={isRTL ? 'rtl' : 'ltr'}
                   />
@@ -529,7 +572,7 @@ export function DoctorRegistrationForm() {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <Label
                     htmlFor="medicalSchool"
@@ -543,7 +586,7 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("medicalSchool", e.target.value)
                     }
-                    className="medical-input mt-2"
+                    className="medical-input mt-2 w-full"
                     placeholder={t('auth.doctorForm.medicalSchoolPlaceholder')}
                   />
                 </div>
@@ -561,7 +604,7 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("graduationYear", e.target.value)
                     }
-                    className="medical-input mt-2"
+                    className="medical-input mt-2 w-full"
                     placeholder={t('auth.doctorForm.graduationYearPlaceholder')}
                     min="1970"
                     max="2024"
@@ -580,7 +623,7 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("residencyProgram", e.target.value)
                     }
-                    className="medical-input mt-2"
+                    className="medical-input mt-2 w-full"
                     placeholder={t('auth.doctorForm.residencyProgramPlaceholder')}
                   />
                 </div>
@@ -597,7 +640,7 @@ export function DoctorRegistrationForm() {
                     onChange={(e) =>
                       handleInputChange("fellowshipProgram", e.target.value)
                     }
-                    className="medical-input mt-2"
+                    className="medical-input mt-2 w-full"
                     placeholder={t('auth.doctorForm.fellowshipProgramPlaceholder')}
                   />
                 </div>
@@ -813,7 +856,13 @@ export function DoctorRegistrationForm() {
                   </p>
                 </div>
                 <div className="mt-4 flex items-start gap-3">
-                  <input type="checkbox" id="doctor-terms" className="mt-1" />
+                  <input
+                    type="checkbox"
+                    id="doctor-terms"
+                    className="mt-1"
+                    checked={termsAccepted}
+                    onChange={(e) => setTermsAccepted(e.target.checked)}
+                  />
                   <label
                     htmlFor="doctor-terms"
                     className="text-sm text-blue-700"
@@ -868,11 +917,11 @@ export function DoctorRegistrationForm() {
                   {t('auth.doctorForm.previous')}
                 </Button>
                 <Button
-                  className="btn-primary px-8 py-3"
+                  className={`btn-primary px-8 py-3 ${shakeButton ? 'shake' : ''}`}
                   onClick={handleSubmit}
                   disabled={submitting}
                 >
-                  {submitting ? t('auth.doctorForm.submitting') : t('auth.doctorForm.submit')}
+                  {submitting ? t('auth.doctorForm.submitting') : (lang === 'ar' ? 'إنشاء ملف الطبيب' : 'Create Doctor Profile')}
                 </Button>
               </div>
             </div>

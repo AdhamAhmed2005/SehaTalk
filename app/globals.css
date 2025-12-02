@@ -147,6 +147,7 @@ body {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   color: black;
+  text-align: left;
 }
 
 .medical-input:hover {
@@ -165,6 +166,85 @@ body {
 .medical-input::placeholder {
   color: #94a3b8;
   font-size: 14px;
+}
+
+/* Placeholder alignment for LTR/RTL */
+.medical-input::placeholder {
+  text-align: left;
+}
+[dir="ltr"] .medical-input::placeholder {
+  text-align: left;
+}
+[dir="ltr"] .medical-input::-webkit-input-placeholder {
+  text-align: left;
+}
+[dir="ltr"] .medical-input::-moz-placeholder {
+  text-align: left;
+}
+[dir="ltr"] .medical-input:-ms-input-placeholder {
+  text-align: left;
+}
+[dir="ltr"] .medical-input::-ms-input-placeholder {
+  text-align: left;
+}
+[dir="rtl"] .medical-input::placeholder {
+  text-align: right;
+}
+[dir="rtl"] .medical-input::-webkit-input-placeholder {
+  text-align: right;
+}
+[dir="rtl"] .medical-input::-moz-placeholder {
+  text-align: right;
+}
+[dir="rtl"] .medical-input:-ms-input-placeholder {
+  text-align: right;
+}
+[dir="rtl"] .medical-input::-ms-input-placeholder {
+  text-align: right;
+}
+
+[dir="rtl"] .medical-input {
+  text-align: right;
+}
+
+/* Textarea placeholder alignment follows input */
+textarea.medical-input::placeholder {
+  text-align: left;
+}
+[dir="ltr"] textarea.medical-input::-webkit-input-placeholder {
+  text-align: left;
+}
+[dir="ltr"] textarea.medical-input::-moz-placeholder {
+  text-align: left;
+}
+[dir="ltr"] textarea.medical-input:-ms-input-placeholder {
+  text-align: left;
+}
+[dir="ltr"] textarea.medical-input::-ms-input-placeholder {
+  text-align: left;
+}
+[dir="rtl"] textarea.medical-input::placeholder {
+  text-align: right;
+}
+[dir="rtl"] textarea.medical-input::-webkit-input-placeholder {
+  text-align: right;
+}
+[dir="rtl"] textarea.medical-input::-moz-placeholder {
+  text-align: right;
+}
+[dir="rtl"] textarea.medical-input:-ms-input-placeholder {
+  text-align: right;
+}
+[dir="rtl"] textarea.medical-input::-ms-input-placeholder {
+  text-align: right;
+}
+
+/* Align Select trigger content per direction */
+.medical-select .select-trigger-content {
+  text-align: left;
+}
+[dir="rtl"] .medical-select .select-trigger-content {
+  text-align: right;
 }
 
 .medical-input:disabled {
@@ -492,4 +572,18 @@ h6 {
 
 .heartbeat {
   animation: heartbeat 1.5s infinite;
+}
+
+/* Shake animation for error feedback */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.4s ease;
 }
