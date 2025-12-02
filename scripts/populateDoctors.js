@@ -11,7 +11,7 @@ const doctors = [
     specialty: "Cardiologist",
     bio: "Experienced cardiologist with 8 years in clinical practice. Specialized in heart failure and interventional cardiology.",
     verified: true,
-    avatarUrl: "",
+    avatarUrl: "https://randomuser.me/api/portraits/men/22.jpg",
     location: "Cairo, Egypt"
   },
   {
@@ -21,7 +21,7 @@ const doctors = [
     specialty: "Orthopedist",
     bio: "Orthopedic surgeon with a focus on sports injuries and joint replacement. 5 years of experience.",
     verified: true,
-    avatarUrl: "",
+    avatarUrl: "https://randomuser.me/api/portraits/men/13.jpg",
     location: "Alexandria, Egypt"
   },
   {
@@ -31,7 +31,7 @@ const doctors = [
     specialty: "Psychologist",
     bio: "Clinical psychologist helping patients with anxiety and depression. 6 years of experience.",
     verified: true,
-    avatarUrl: "",
+    avatarUrl: "https://randomuser.me/api/portraits/women/24.jpg",
     location: "Giza, Egypt"
   },
   {
@@ -41,7 +41,7 @@ const doctors = [
     specialty: "Pediatrician",
     bio: "Pediatrician with a passion for child health and preventive care. 10 years of experience.",
     verified: true,
-    avatarUrl: "",
+    avatarUrl: "https://randomuser.me/api/portraits/women/53.jpg",
     location: "Mansoura, Egypt"
   },
   {
@@ -51,7 +51,7 @@ const doctors = [
     specialty: "Neurologist",
     bio: "Neurologist specializing in epilepsy and neurodegenerative diseases. 9 years of experience.",
     verified: true,
-    avatarUrl: "",
+    avatarUrl: "https://randomuser.me/api/portraits/men/35.jpg",
     location: "Tanta, Egypt"
   }
 ];

@@ -194,6 +194,18 @@ export function Navbar() {
         {isOpen && (
           <div className="lg:hidden border-t border-blue-100 bg-white/98 backdrop-blur-md">
             <div className="p-4">
+              {/* Current User (Mobile) */}
+              {!loadingUser && user && (
+                <div className={`flex items-center gap-3 mb-4 px-4 py-3 rounded-lg bg-blue-50 border border-blue-100 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm border border-primary/10">
+                    {user.name?.charAt(0) || '?'}
+                  </span>
+                  <div className="flex flex-col leading-tight">
+                    <span className="font-medium text-blue-900 text-sm">{user.name}</span>
+                    <span className="text-xs text-blue-600 capitalize">{user.role === 'doctor' ? (isRTL ? 'طبيب' : 'Doctor') : (isRTL ? 'مريض' : 'Patient')}</span>
+                  </div>
+                </div>
+              )}
               {/* Mobile Menu Items */}
               <div className="space-y-2">
                 {/* Language Switcher */}

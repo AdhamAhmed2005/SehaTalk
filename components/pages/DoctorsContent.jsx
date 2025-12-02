@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { Card, CardContent } from "../ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar.jsx";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -127,14 +128,19 @@ export default function DoctorsContent({ doctors, specialties }) {
               >
                 <CardContent className="p-6">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-16 h-16 rounded-full bg-linear-to-br from-primary to-primary/80 flex items-center justify-center text-white text-xl font-bold shadow-md">
-                      {doc.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")
-                        .toUpperCase()
-                        .slice(0, 2)}
-                    </div>
+                    <Avatar className="w-16 h-16 border-2 border-primary/20 shadow-md">
+                      <AvatarFallback className="bg-primary/10 text-primary font-semibold text-lg">
+                        {doc.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")
+                          .toUpperCase()
+                          .slice(0, 2)}
+                      </AvatarFallback>
+                      {doc.avatarUrl && (
+                        <AvatarImage src={doc.avatarUrl} alt={doc.name} />
+                      )}
+                    </Avatar>
                     <div className="flex-1">
                       <h3 className="text-lg font-semibold text-gray-900">
                         {doc.name}

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { isPatientAuthenticated } from "../../lib/utils/questionUtils.js";
 import { useRouter } from "next/navigation";
-import { MessageCircle, ThumbsUp, Eye } from "lucide-react";
+import { MessageCircle, ArrowBigUp, Eye } from "lucide-react";
 import { SearchFilterBar } from "../SearchFilterBar.jsx";
 import { VerifiedBadge } from "../VerifiedBadge.jsx";
 import { Card, CardContent } from "../ui/card.jsx";
@@ -77,8 +77,8 @@ export function ExplorePage() {
 		setSearchQuery(searchInput);
 	};
 
-	// Like handler
-	const handleLike = async (question) => {
+	// Upvote handler
+	const handleUpvote = async (question) => {
 		if (!isPatientAuthenticated()) {
 			showModal(
 				t('explore.signInRequiredTitle'),
@@ -387,18 +387,18 @@ useEffect(() => {
 											   <span className="text-sm hidden sm:inline">{t('explore.labels.views')}</span>
 										   </div>
 
-										{/* Likes */}
+										{/* Upvotes */}
 										   <div
 											   className="
 												flex items-center gap-2 cursor-pointer text-blue-600 hover:text-primary transition
 											  "
-											   onClick={() => handleLike(question)}
+											   onClick={() => handleUpvote(question)}
 										   >
-											<ThumbsUp className="w-5 h-5" />
+											<ArrowBigUp className="w-5 h-5" />
 											   <span className="font-medium">
 												   {likes[question._id] ?? question.likesCount ?? 0}
 											   </span>
-											<span className="text-sm hidden sm:inline">{t('explore.labels.likes')}</span>
+											<span className="text-sm hidden sm:inline">{t('explore.labels.upvotes')}</span>
 										</div>
 									</div>
 								</div>
