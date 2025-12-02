@@ -10,10 +10,12 @@ import { Card, CardContent } from "../ui/card.jsx";
 import { Badge } from "../ui/badge.jsx";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar.jsx";
 import { useLanguage } from "../../lib/i18n/LanguageProvider";
+import MedicalSpinner from "../MedicalSpinner.jsx";
 import Link from "next/link";
 
 // ...existing code...
 import { SimpleModal } from "../ui/SimpleModal.jsx";
+import Toast from "../ui/Toast.jsx";
 import { fetchCurrentUser } from "../../lib/utils/authClient";
 
 export function ExplorePage() {
@@ -27,6 +29,11 @@ export function ExplorePage() {
 	const [questions, setQuestions] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [likes, setLikes] = useState({});
+		const [toast, setToast] = useState({ open: false, message: '', type: 'info' });
+		const showToast = (message, type = 'info') => {
+			setToast({ open: true, message, type });
+			setTimeout(() => setToast({ open: false, message: '', type }), 2000);
+		};
 	const [replies, setReplies] = useState({});
 	const [upvotedQuestions, setUpvotedQuestions] = useState(() => {
 		if (typeof window !== 'undefined') {
@@ -41,8 +48,8 @@ export function ExplorePage() {
 		return new Set();
 	});
 
-	const [modal, setModal] = useState({ open: false, title: '', message: '', onClose: null });
-	const showModal = (title, message, onClose) => setModal({ open: true, title, message, onClose });
+	const [modal, setModal] = useState({ open: false, title: '', message: '', onClose: null, content: null });
+	const showModal = (title, message, onClose, content = null) => setModal({ open: true, title, message, onClose, content });
 
 	useEffect(() => {
 		async function fetchQuestions() {
@@ -56,6 +63,27 @@ export function ExplorePage() {
 				if (res.ok) {
 					const data = await res.json();
 					setQuestions(data.data || []);
+					// Fetch upvote counts per question to avoid drift
+					const ids = (data.data || []).map((q) => q._id || q.id).filter(Boolean);
+					const counts = {};
+					await Promise.all(
+						ids.map(async (qid) => {
+							try {
+								const r = await fetch(`/api/questions/${qid}/upvote`);
+								if (r.ok) {
+									const c = await r.json();
+									counts[qid] = c.upvotes ?? 0;
+								}
+								// Also fetch replies count for display
+								const rr = await fetch(`/api/questions/${qid}/replies`);
+								if (rr.ok) {
+									const list = await rr.json();
+									setReplies((prev) => ({ ...prev, [qid]: Array.isArray(list?.data) ? list.data.length : 0 }));
+								}
+							} catch {}
+						})
+					);
+					setLikes((prev) => ({ ...prev, ...counts }));
 				}
 			} catch (e) {
 				// Optionally handle error
@@ -77,45 +105,48 @@ export function ExplorePage() {
 		setSearchQuery(searchInput);
 	};
 
-	// Upvote handler
+	// Upvote handler (guests/patients can view counts but cannot upvote)
 	const handleUpvote = async (question) => {
-		if (!isPatientAuthenticated()) {
+		if (!currentUser) {
+			const content = (
+				<div className="space-y-3">
+					<p className="text-gray-700">Join our community to upvote and help others find the best answers.</p>
+					<div className="flex flex-col items-stretch gap-2">
+						<Link href="/auth/login" className="px-4 py-2 bg-primary text-white rounded-md text-sm font-semibold text-center">Sign In</Link>
+						<div className="text-center text-sm text-gray-600">or</div>
+						<Link href="/auth/options" className="px-4 py-2 bg-blue-100 text-blue-700 border border-blue-300 rounded-md text-sm font-semibold text-center">Don't have an account? Sign Up</Link>
+					</div>
+				</div>
+			);
 			showModal(
-				t('explore.signInRequiredTitle'),
-				t('explore.signInRequiredBody'),
-				() => {
-					setModal((m) => ({ ...m, open: false }));
-					router.push("/auth/patient");
-				}
+				"Sign in to Upvote",
+				null,
+				() => setModal((m) => ({ ...m, open: false })),
+				content
 			);
 			return;
 		}
-		if (upvotedQuestions.has(question._id)) {
-			showModal(
-				t('explore.alreadyUpvotedTitle'),
-				t('explore.alreadyUpvotedBody'),
-				() => setModal((m) => ({ ...m, open: false }))
-			);
-			return;
-		}
+
 		try {
-			const res = await fetch(`/api/questions/${question._id}`, {
-				method: "PATCH",
+			const res = await fetch(`/api/questions/${question._id}/upvote`, {
+				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ $inc: { likesCount: 1 } }),
 			});
 			if (res.ok) {
+				const data = await res.json();
 				setLikes((l) => ({
 					...l,
-					[question._id]: (l[question._id] || question.likesCount || 0) + 1,
+					[question._id]: data.upvotes ?? ((l[question._id] || 0) + 1),
 				}));
 				const updated = new Set(upvotedQuestions);
 				updated.add(question._id);
 				setUpvotedQuestions(updated);
 				localStorage.setItem('upvotedQuestions', JSON.stringify(Array.from(updated)));
+			} else if (res.status === 409) {
+				showToast('You already upvoted this question.', 'info');
 			}
 		} catch (e) {
-			showModal(t('common.error'), t('explore.errorLiking'), () => setModal((m) => ({ ...m, open: false })));
+			showToast("We couldn't record your upvote. Please try again.", 'error');
 		}
 	};
 
@@ -127,14 +158,42 @@ useEffect(() => {
 
 	const handleReply = async (question) => {
 		if (!currentUser || currentUser.role !== "doctor") {
-			// Show all replies in a modal for patients/guests
-			showModal(
-				t('explore.questionRepliesTitle'),
-				null,
-				() => setModal((m) => ({ ...m, open: false })),
-				question // pass question for rendering replies
-			);
-			setModal((m) => ({ ...m, question }));
+			// Patients and guests: fetch replies and show in modal
+			try {
+				const rr = await fetch(`/api/questions/${question._id}/replies`);
+				if (rr.ok) {
+					const list = await rr.json();
+					const items = Array.isArray(list?.data) ? list.data : [];
+					const content = (
+						<div className="space-y-4">
+							{items.length === 0 ? (
+								<p className="text-gray-600">{t('explore.noRepliesYet')}</p>
+							) : (
+								items.map((r) => (
+									<div key={r._id} className="flex items-start gap-3">
+										<img src={r.user_id?.avatarUrl} alt={r.user_id?.name} className="w-8 h-8 rounded-full object-cover" />
+										<div>
+											<p className="text-sm text-gray-800"><span className="font-medium">{r.user_id?.name}</span> — {r.user_id?.specialty}</p>
+											<p className="text-gray-700">{r.content}</p>
+											<p className="text-xs text-gray-500">{new Date(r.created_at).toLocaleString()}</p>
+										</div>
+									</div>
+								))
+							)}
+						</div>
+					);
+					showModal(
+						t('explore.questionRepliesTitle'),
+						null,
+						() => setModal((m) => ({ ...m, open: false })),
+						content
+					);
+				} else {
+					showToast('Could not load replies.', 'error');
+				}
+			} catch {
+				showToast('Could not load replies.', 'error');
+			}
 			return;
 		}
 		// Only doctors can write replies
@@ -147,10 +206,13 @@ useEffect(() => {
 					body: JSON.stringify({ content: reply }),
 				});
 				if (res.ok) {
-					setReplies((r) => ({
-						...r,
-						[question._id]: (r[question._id] || (Array.isArray(question.replies) ? question.replies.length : 0)) + 1,
-					}));
+					// refresh replies count from server to avoid drift
+					const rr = await fetch(`/api/questions/${question._id}/replies`);
+					if (rr.ok) {
+						const list = await rr.json();
+						setReplies((r) => ({ ...r, [question._id]: Array.isArray(list?.data) ? list.data.length : (r[question._id] || 0) }));
+					}
+					showToast('Reply posted', 'success');
 				}
 			} catch (e) {
 				showModal(t('common.error'), t('explore.errorReplying'), () => setModal((m) => ({ ...m, open: false })));
@@ -160,13 +222,16 @@ useEffect(() => {
 
 	return (
 		<div className="min-h-screen bg-white" dir={isRTL ? "rtl" : "ltr"}>
+			<Toast open={toast.open} message={toast.message} type={toast.type} />
 			<SimpleModal
 				open={modal.open}
 				title={modal.title}
 				message={modal.message}
 				onClose={modal.onClose || (() => setModal((m) => ({ ...m, open: false })))}
 			>
-				{modal.question && Array.isArray(modal.question.replies) && modal.question.replies.length > 0 ? (
+				{modal.content ? (
+					modal.content
+				) : modal.question && Array.isArray(modal.question.replies) && modal.question.replies.length > 0 ? (
 					<div className="space-y-6">
 						{modal.question.replies.map((reply, idx) => (
 							<div key={reply._id || idx} className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-primary/20">
@@ -278,8 +343,10 @@ useEffect(() => {
 
 				{/* QUESTIONS LIST */}
 				<div className="space-y-6">
-					 {loading ? (
-						 <div className="text-center text-blue-700 py-10">{t('common.loading')}</div>
+								 {loading ? (
+										 <div className="py-10">
+											 <MedicalSpinner />
+										 </div>
 					 ) : questions.length === 0 ? (
 						 <div className="text-center text-blue-700 py-10">{t('explore.noQuestions')}</div>
 					) : questions.map((question) => (
@@ -396,7 +463,7 @@ useEffect(() => {
 										   >
 											<ArrowBigUp className="w-5 h-5" />
 											   <span className="font-medium">
-												   {likes[question._id] ?? question.likesCount ?? 0}
+												   {likes[question._id] ?? 0}
 											   </span>
 											<span className="text-sm hidden sm:inline">{t('explore.labels.upvotes')}</span>
 										</div>

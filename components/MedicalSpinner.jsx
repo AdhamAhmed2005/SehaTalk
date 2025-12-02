@@ -10,10 +10,10 @@ export function MedicalSpinner() {
         {/* Middle pulsing ring */}
         <div className="absolute inset-4 rounded-full border-2 border-primary/30 animate-pulse"></div>
         
-        {/* Medical icon center */}
+        {/* Medical icon center (no bounce to avoid overflow) */}
         <div className="absolute inset-0 flex items-center justify-center">
           <svg
-            className="w-16 h-16 text-primary animate-bounce"
+            className="w-14 h-14 text-primary"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"

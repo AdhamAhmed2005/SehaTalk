@@ -15,6 +15,7 @@ import Doctor from "../models/Doctor.js";
 import Patient from "../models/Patient.js";
 import Question from "../models/Question.js";
 import Answer from "../models/Answer.js";
+import PostComment from "../models/PostComment.js";
 import Admin from "../models/Admin.js";
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -622,6 +623,47 @@ async function seedDatabase() {
     const createdQuestions = await Question.insertMany(sampleQuestions);
     console.log(`✅ Created ${createdQuestions.length} questions`);
 
+    // Seed Arabic Questions with multiple replies
+    console.log("❓ Seeding Arabic questions and replies...");
+    const arQuestions = [
+      {
+        patient: createdPatients[0]._id,
+        title: "سعال مستمر بعد الإنفلونزا",
+        description: "أصبت بالإنفلونزا قبل أسبوعين وما زال لدي سعال مستمر. هل هذا طبيعي؟",
+        category: createdCategories.find((c) => c.slug === "pulmonology")._id,
+        urgencyLevel: "Low Priority - General Question",
+        previousTreatments: "Honey tea and rest",
+        attachments: [],
+        likesCount: 0,
+        viewsCount: 0,
+      },
+      {
+        patient: createdPatients[2]._id,
+        title: "قلق بشأن عدم انتظام ضربات القلب",
+        description: "أحيانًا أشعر بأن قلبي يتخطى النبضات. ماذا أفعل؟",
+        category: createdCategories.find((c) => c.slug === "cardiology")._id,
+        urgencyLevel: "Medium Priority - Important Question",
+        previousTreatments: "None",
+        attachments: [],
+        likesCount: 0,
+        viewsCount: 0,
+      },
+      {
+        patient: createdPatients[4]._id,
+        title: "حب الشباب يزداد سوءًا في الشتاء",
+        description: "حب الشباب يزداد سوءًا في الشتاء. هل هناك نصائح لتقليل الالتهابات؟",
+        category: createdCategories.find((c) => c.slug === "dermatology")._id,
+        urgencyLevel: "Low Priority - General Question",
+        previousTreatments: "OTC creams",
+        attachments: [],
+        likesCount: 0,
+        viewsCount: 0,
+      },
+    ];
+
+    const createdArQuestions = await Question.insertMany(arQuestions);
+    console.log(`✅ Created ${createdArQuestions.length} Arabic questions`);
+
     // Seed Sample Answers
     console.log("💬 Seeding answers...");
     const sampleAnswers = [
@@ -757,6 +799,34 @@ async function seedDatabase() {
     await Question.findByIdAndUpdate(createdQuestions[1]._id, {
       $push: { replies: createdAnswers[1]._id },
     });
+
+    // Seed multiple doctor comments for Arabic questions using PostComment
+    console.log("💬 Seeding Arabic replies (PostComment)...");
+    for (const q of createdArQuestions) {
+      const docs = [createdDoctors[0], createdDoctors[2], createdDoctors[3]]; // pick some doctors
+      const comments = [
+        {
+          post_id: q._id,
+          user_id: docs[0]._id,
+          userModel: "Doctor",
+          content: "ننصح بمراجعة الطبيب إذا استمر السعال أكثر من 3 أسابيع.",
+        },
+        {
+          post_id: q._id,
+          user_id: docs[1]._id,
+          userModel: "Doctor",
+          content: "يرجى تجنب المحفزات ومتابعة الأعراض، وقد تحتاج لفحوصات بسيطة للاطمئنان.",
+        },
+        {
+          post_id: q._id,
+          user_id: docs[2]._id,
+          userModel: "Doctor",
+          content: "اشرب سوائل دافئة، واستخدم مرطب للهواء داخل المنزل، والمتابعة إذا ساءت الحالة.",
+        },
+      ];
+      await PostComment.insertMany(comments);
+    }
+    console.log("✅ Arabic replies seeded");
 
     console.log("\n🎉 Database seeded successfully!");
     console.log("\n📊 Summary:");
