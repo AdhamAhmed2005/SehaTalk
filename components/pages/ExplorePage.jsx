@@ -12,8 +12,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar.jsx";
 import { useLanguage } from "../../lib/i18n/LanguageProvider";
 import MedicalSpinner from "../MedicalSpinner.jsx";
 import Link from "next/link";
-
-// ...existing code...
 import { SimpleModal } from "../ui/SimpleModal.jsx";
 import Toast from "../ui/Toast.jsx";
 import { fetchCurrentUser } from "../../lib/utils/authClient";
@@ -35,6 +33,10 @@ export function ExplorePage() {
 			setTimeout(() => setToast({ open: false, message: '', type }), 2000);
 		};
 	const [replies, setReplies] = useState({});
+	const [expandedQuestions, setExpandedQuestions] = useState(() => {
+		if (typeof window !== 'undefined') return new Set(JSON.parse(localStorage.getItem('expandedQuestions') || '[]'));
+		return new Set();
+	});
 	const [upvotedQuestions, setUpvotedQuestions] = useState(() => {
 		if (typeof window !== 'undefined') {
 			return new Set(JSON.parse(localStorage.getItem('upvotedQuestions') || '[]'));
@@ -59,12 +61,17 @@ export function ExplorePage() {
 				if (searchQuery) params.append('search', searchQuery);
 				if (category && category !== 'all') params.append('category', category);
 				if (sortBy) params.append('sortBy', sortBy);
+				// Request only non-completed from server when possible (defensive)
+				params.append('completed', 'false');
 				const res = await fetch(`/api/questions?${params.toString()}`);
 				if (res.ok) {
 					const data = await res.json();
-					setQuestions(data.data || []);
-					// Fetch upvote counts per question to avoid drift
-					const ids = (data.data || []).map((q) => q._id || q.id).filter(Boolean);
+					// Filter out completed questions (client-side defensive filter)
+					const rawList = data.data || [];
+					const visible = rawList.filter((q) => !isQuestionCompleted(q));
+					setQuestions(visible);
+					// Fetch upvote/replies counts only for visible questions
+					const ids = visible.map((q) => q._id || q.id).filter(Boolean);
 					const counts = {};
 					await Promise.all(
 						ids.map(async (qid) => {
@@ -93,6 +100,21 @@ export function ExplorePage() {
 		}
 		fetchQuestions();
 	}, [searchQuery, category, sortBy]);
+
+	// Helper: robust check for completed questions
+	const isQuestionCompleted = (q) => {
+		if (!q) return false;
+		// boolean flags
+		if (q.completed === true || q.isCompleted === true || q.closed === true) return true;
+		// string flags
+		if (String(q.completed) === "true") return true;
+		// common status values that indicate finished/resolved
+		const status = (q.status || "").toString().toLowerCase();
+		if (["completed", "closed", "resolved", "done", "answered"].includes(status)) return true;
+		// fallback: check for a completedAt / closedAt timestamp
+		if (q.completedAt || q.closedAt || q.resolvedAt) return true;
+		return false;
+	};
 
 	// Handler for search bar input
 	const handleSearchInputChange = (val) => setSearchInput(val);
@@ -218,6 +240,19 @@ useEffect(() => {
 				showModal(t('common.error'), t('explore.errorReplying'), () => setModal((m) => ({ ...m, open: false })));
 			}
 		}
+	};
+
+	// Toggle expanded state for question description (used on small screens)
+	const toggleExpand = (qid) => {
+		setExpandedQuestions((prev) => {
+			const next = new Set(prev);
+			if (next.has(qid)) next.delete(qid);
+			else next.add(qid);
+			if (typeof window !== 'undefined') {
+				localStorage.setItem('expandedQuestions', JSON.stringify(Array.from(next)));
+			}
+			return next;
+		});
 	};
 
 	return (
@@ -349,9 +384,11 @@ useEffect(() => {
 										 </div>
 					 ) : questions.length === 0 ? (
 						 <div className="text-center text-blue-700 py-10">{t('explore.noQuestions')}</div>
-					) : questions.map((question) => (
+					) : questions.filter(q => !isQuestionCompleted(q)).map((question) => {
+						const qid = question._id || question.id;
+						return (
 						<Card
-							key={question._id || question.id}
+							key={qid}
 							className="
                 bg-white/80 backdrop-blur-xl border border-blue-100 
                 shadow-md hover:shadow-xl transition-all duration-300 
@@ -364,11 +401,11 @@ useEffect(() => {
 								>
 									{/* Header Row */}
 									<div
-										className={`flex items-center gap-4 mb-5 ${
-											isRTL ? "flex-row-reverse" : ""
+										className={`flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-5 ${
+											isRTL ? "sm:flex-row-reverse" : ""
 										}`}
 									>
-										 <Avatar className="w-14 h-14 border-2 border-primary/20 shadow-sm">
+										 <Avatar className="w-14 h-14 border-2 border-primary/20 shadow-sm flex-shrink-0">
 												 <AvatarFallback className="bg-primary/10 text-primary font-semibold text-lg">
 														 {question.patient?.name?.charAt(0) || "?"}
 												 </AvatarFallback>
@@ -377,31 +414,34 @@ useEffect(() => {
 												 )}
 										 </Avatar>
 
-										<div className="flex justify-between gap-2 flex-wrap">
-											   <Badge className="bg-primary/10 text-primary border-primary/20 mt-3 font-medium capitalize">
-												   {question.category?.name || t(`categories.${question.category}`) || question.category}
-											   </Badge>
+										<div className="flex-1 w-full">
+											<div
+												className={`flex items-center gap-2 text-blue-600 mb-2 ${
+													isRTL ? "flex-row-reverse" : ""
+												}`}
+											>
+												 <span className="font-medium">{question.patient?.name}</span>
+												 <span className="w-1 h-1 bg-blue-300 rounded-full"></span>
+												 <span className="text-sm">
+														 {typeof question.createdAt === "object"
+															 ? question.createdAt[language]
+															 : new Date(question.createdAt).toLocaleString(language)}
+												 </span>
+											</div>
 
-											   {Array.isArray(question.replies) && question.replies.some(r => r.doctor?.verified) && (
-												   <VerifiedBadge
-													   className="h-6 text-green-500"
-													   title={t('explore.verifiedDoctor')}
-												   />
-											   )}
+											<div className={`flex flex-wrap gap-2 ${isRTL ? "flex-row-reverse" : ""}`}>
+												   <Badge className="bg-primary/10 text-primary border-primary/20 font-medium capitalize">
+													   {question.category?.name || t(`categories.${question.category}`) || question.category}
+												   </Badge>
+
+												   {Array.isArray(question.replies) && question.replies.some(r => r.doctor?.verified) && (
+													   <VerifiedBadge
+														   className="h-6 text-green-500"
+														   title={t('explore.verifiedDoctor')}
+													   />
+												   )}
+											</div>
 										</div>
-										<div
-											className={`flex items-center gap-2 text-blue-600 mt-3 ${
-												isRTL ? "flex-row-reverse" : ""
-											}`}
-										>
-											 <span className="font-medium">{question.patient?.name}</span>
-											 <span className="w-1 h-1 bg-blue-300 rounded-full"></span>
-											 <span className="text-sm">
-													 {typeof question.createdAt === "object"
-														 ? question.createdAt[language]
-														 : new Date(question.createdAt).toLocaleString(language)}
-											 </span>
-                      </div>
 									</div>
 
 									{/* Title */}
@@ -420,13 +460,25 @@ useEffect(() => {
 
 									{/* Meta Info */}
 
-									{/* Content Preview */}
-									   <p className="text-blue-700 mb-6 line-clamp-2 text-lg leading-relaxed">
-										   {typeof question.description === "object"
-											 ? question.description[language] || question.description.en || Object.values(question.description)[0]
-											 : question.description}
-									   </p>
+										{/* Content Preview */}
+										   <p className={`text-blue-700 mb-6 text-lg leading-relaxed ${expandedQuestions.has(qid) ? '' : 'line-clamp-2'}`}>
+											   {typeof question.description === "object"
+												 ? question.description[language] || question.description.en || Object.values(question.description)[0]
+												 : question.description}
+										   </p>
 
+										   
+										   {/* Show expand/collapse only for questions that are NOT completed */}
+										   {!isQuestionCompleted(question) && (
+											   <div className="sm:hidden mb-4">
+												   <button
+													   className="text-sm text-primary font-medium"
+													   onClick={() => toggleExpand(qid)}
+												   >
+													   {expandedQuestions.has(qid) ? '' : 'show more'}
+												   </button>
+											   </div>
+										   )}
 									{/* Stats Row */}
 									<div
 										className={`flex flex-wrap sm:flex-nowrap items-center gap-6 mt-2 ${
@@ -474,7 +526,8 @@ useEffect(() => {
 								   <div className="h-1 bg-linear-to-r from-transparent via-primary/40 to-transparent"></div>
 							</CardContent>
 						</Card>
-					))}
+						);
+					})}
 				</div>
 			</div>
 		</div>

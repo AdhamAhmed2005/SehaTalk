@@ -8,8 +8,8 @@ export function SubmitSection({ isSubmitting, onSubmit }) {
   const { t, isRTL } = useLanguage();
   
   return (
-    <div className={`flex justify-between items-center pt-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-      <div className={`text-sm text-blue-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+    <div className={`flex flex-col md:flex-row md:justify-between md:items-center gap-4 pt-4 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
+      <div className={`text-sm text-blue-600 order-1 md:order-none ${isRTL ? 'text-right' : 'text-left'}`}>
         <p className={`flex items-center gap-2 mb-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
           <CheckCircle className="w-4 h-4 text-green-600" />
           {t('form.doctorReview')}
@@ -21,7 +21,7 @@ export function SubmitSection({ isSubmitting, onSubmit }) {
       </div>
       <Button 
         type="submit" 
-        className="btn-primary px-8 py-3 text-lg"
+        className="btn-primary px-8 py-3 text-lg w-full md:w-auto order-2 md:order-none"
         disabled={isSubmitting}
         onClick={onSubmit}
       >
