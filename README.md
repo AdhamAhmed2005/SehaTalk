@@ -11,11 +11,11 @@ SehaTalk is a bilingual (Arabic/English) medical consultation platform that conn
 
 Choose the documentation that fits your needs:
 
-| Document | For | Content |
-|----------|-----|---------|
-| **[USER_GUIDE_PRACTICAL.md](USER_GUIDE_PRACTICAL.md)** | 👤 Users & Patients | How to use the platform, ask questions, find doctors, FAQs, safety & privacy |
-| **[TECHNICAL_DOCUMENTATION.md](TECHNICAL_DOCUMENTATION.md)** | 👨‍💻 Developers | Architecture, API docs, database models, deployment, development guide |
-| **[README.md](README.md)** | 🏢 Quick Overview | Features, tech stack, installation, deployment |
+| Document | Language | For | Content |
+|----------|----------|-----|---------|
+| **[USER_GUIDE_PRACTICAL.md](USER_GUIDE_PRACTICAL.md)** | 🇬🇧 English | 👤 Users & Patients | How to use the platform, ask questions, find doctors, FAQs, safety & privacy |
+| **[USER_GUIDE_PRACTICAL_AR.md](USER_GUIDE_PRACTICAL_AR.md)** | 🇸🇦 العربية | 👤 المستخدمون والمرضى | كيفية استخدام المنصة, طرح الأسئلة, البحث عن الأطباء, الأسئلة الشائعة, الأمان |
+| **[TECHNICAL_DOCUMENTATION.md](TECHNICAL_DOCUMENTATION.md)** | 🇬🇧 English | 👨‍💻 Developers | Architecture, API docs, database models, deployment, development guide |
 
 ### Quick Links
 - 🚀 [Getting Started](#getting-started) - Setup development environment
