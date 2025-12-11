@@ -5,6 +5,26 @@
 
 SehaTalk is a bilingual (Arabic/English) medical consultation platform that connects patients with verified Egyptian doctors through a trusted community-driven Q&A system.
 
+---
+
+## 📚 Documentation
+
+Choose the documentation that fits your needs:
+
+| Document | For | Content |
+|----------|-----|---------|
+| **[USER_GUIDE_PRACTICAL.md](USER_GUIDE_PRACTICAL.md)** | 👤 Users & Patients | How to use the platform, ask questions, find doctors, FAQs, safety & privacy |
+| **[TECHNICAL_DOCUMENTATION.md](TECHNICAL_DOCUMENTATION.md)** | 👨‍💻 Developers | Architecture, API docs, database models, deployment, development guide |
+| **[README.md](README.md)** | 🏢 Quick Overview | Features, tech stack, installation, deployment |
+
+### Quick Links
+- 🚀 [Getting Started](#getting-started) - Setup development environment
+- 🏥 [Features](#features) - What SehaTalk offers
+- 🛠️ [Tech Stack](#tech-stack) - Technologies used
+- 📖 [Documentation Files](#documentation-files) - Full guides
+
+---
+
 ## ✨ Features
 
 ### 🌐 Bilingual Support

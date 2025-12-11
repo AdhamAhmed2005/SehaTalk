@@ -8,13 +8,8 @@ import {
   Stethoscope,
   ChevronDown,
   Search,
-  Bell,
   User,
-  Shield,
-  Phone,
-  MessageSquare,
   Plus,
-  AlertCircle,
 } from "lucide-react";
 import { Button } from "./ui/button.jsx";
 import { useLanguage } from "../lib/i18n/LanguageProvider";
